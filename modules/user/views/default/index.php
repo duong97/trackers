@@ -1,10 +1,11 @@
 <div>
-    <?php echo \app\components\ProductViewWidget::widget() ?>
-    <?php
-    echo '<pre>';
-    print_r($aData['item']['price']);
-    echo '</pre>';
-        ?>
+    <?php // echo \app\components\ProductViewWidget::widget() ?>
+    <?php echo "name: ".!empty($aData['name']) ? $aData['name'] : "" ?><br>
+    <?php echo "price: ".isset($aData['price']) ? $aData['price'] : "" ?><br>
+    <?php if(!empty($aData['image'])){ ?>
+    <?php foreach ($aData['image'] as $img_url) { ?>
+    <img src="<?php echo $img_url['normal'] ?>" style="height: 100px"><br>
+    <?php }} ?>
     <h1><?= $this->context->action->uniqueId ?></h1>
     <p>
         This is the view content for action "<?= $this->context->action->id ?>".

@@ -28,7 +28,9 @@ class Tools{
         return $ipaddress;
     }
     
-    
+    public static function formatCurrency($price){
+        return number_format($price , 0 , '.' , ',');
+    }
 
 }
 

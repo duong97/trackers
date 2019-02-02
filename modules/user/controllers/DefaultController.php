@@ -12,7 +12,8 @@
 namespace app\modules\user\controllers;
 
 use app\controllers\BaseController;
-use app\models\simple_html_dom;
+use app\models\GetData;
+
 /**
  * Default controller for the `user` module
  */
@@ -24,15 +25,10 @@ class DefaultController extends BaseController
      */
     public function actionIndex()
     {
-        $aData = [];
-        
+        $aData      = [];
         if(!empty($_GET['search-value'])){
-            $url=$_GET['search-value'];
-            $aUrlParams = explode("-i.", $url);
-            $aId = explode(".", $aUrlParams[1]);
-            $api = "https://shopee.vn/api/v2/item/get?itemid={$aId[1]}&shopid={$aId[0]}";
-            $result = file_get_contents($api);
-            $aData = json_decode($result, true);
+            $url    = $_GET['search-value'];
+            $aData  = GetData::instance()->getInfo($url);
         }
         return $this->render('index', [
             'aData' => $aData

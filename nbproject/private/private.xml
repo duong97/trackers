@@ -3,13 +3,10 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/var/www/html/basic/modules/user/controllers/DefaultController.php</file>
-            <file>file:/var/www/html/basic/views/layouts/main.php</file>
-            <file>file:/var/www/html/basic/models/GetData.php</file>
-            <file>file:/var/www/html/basic/modules/user/views/default/index.php</file>
-            <file>file:/var/www/html/basic/components/views/ProductView/index.php</file>
-            <file>file:/var/www/html/basic/config/web.php</file>
-            <file>file:/var/www/html/basic/components/ProductViewWidget.php</file>
+            <file>file:/var/www/html/trackers/modules/user/views/default/index.php</file>
+            <file>file:/var/www/html/trackers/helpers/Constants.php</file>
+            <file>file:/var/www/html/trackers/models/GetData.php</file>
+            <file>file:/var/www/html/trackers/modules/user/controllers/DefaultController.php</file>
         </group>
     </open-files>
 </project-private>
