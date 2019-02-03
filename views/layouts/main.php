@@ -92,7 +92,7 @@ AppAsset::register($this);
         <div style="position: fixed; top: 50px; left:0;width: 100%;padding: 5px;background: #222;z-index: 1;">
             <div class="col-sm-3"></div>
             <div class="input-group col-sm-6">
-                <input type="text" name="search-value" class="form-control" placeholder="<?= Yii::t('app', 'Search') ?>" id="txtSearch" value="<?= isset($_GET['search-value']) ? $_GET['search-value'] : '' ?>"/>
+                <input type="text" name="search-value" class="form-control" placeholder="<?= Yii::t('app', 'Search') ?>" id="txtSearch" value="<?= isset($_GET['search-value']) ? $_GET['search-value'] : '' ?>" autocomplete="off"/>
                 <div class="input-group-btn">
                     <button class="btn btn-primary" type="submit" style="color: white; background: #279033; border-color: #279033;">
                         <span class="glyphicon glyphicon-search"></span>

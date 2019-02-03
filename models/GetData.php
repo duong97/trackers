@@ -246,13 +246,28 @@ class GetData extends BaseModel
     }
     
     /*
-     * not working
      * @des get data from Ebay by crawl
      * @link_test:
      * https://www.ebay.com/itm/NOW-Foods-MCT-Oil-Liquid-16-fl-oz-FREE-SHIPPING-MADE-IN-USA/372409979059
      */
     public function getEbay($url){
-        $elm = 'span[id=prcIsum]';
-        return $this->getByCrawl($url, $elm);
+        $elm_name       = 'h1[id=itemTitle]';
+        $elm_img        = 'img[id=icImg]';
+        $elm_price      = 'span[id=convbinPrice]';
+        $elm_price2     = 'span[id=prcIsum]';
+        $aData          = $this->getByCrawl($url, $elm_name, $elm_img, $elm_price, $elm_price2);
+        $aImg           = array_unique($aData['image']);
+        $aNewImage      = [];
+        if(!empty($aImg)){
+            foreach ($aImg as $img) {
+                $aNewImage[] = [
+                    'normal' => $img,
+                    'small'  => $img
+                ];
+            }
+        }
+        unset($aData['image']);
+        $aData['image'] = $aNewImage;
+        return $aData;
     }
 }
