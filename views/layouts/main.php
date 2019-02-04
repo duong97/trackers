@@ -10,10 +10,11 @@ use yii\bootstrap\NavBar;
 use yii\widgets\Breadcrumbs;
 use app\assets\AppAsset;
 use app\helpers\Constants;
-use yii\helpers\Url;
+use app\helpers\Htmls;
 use yii\widgets\ActiveForm;
 
 AppAsset::register($this);
+$url = \Yii::$app->getUrlManager();
 ?>
 <?php $this->beginPage() ?>
 <!DOCTYPE html>
@@ -63,18 +64,8 @@ AppAsset::register($this);
             ) : '',
             [
                 'label' => '<span class="glyphicon glyphicon-globe"></span>',
-                'items' => [
-                     '<li class="dropdown-header">'. Yii::t('app', 'Select language') .'</li>',
-                     '<li class="divider"></li>',
-//                     ['label' => 'English', 'url' => Url::toRoute(["site/change-language", 'lang'=>'en'],true)],
-//                     ['label' => 'Vietnamese', 'url' => Url::toRoute(["site/change-language", 'lang'=>'vi'], true)],
-                     ['label' => 'English', 'url' => Url::base() . "/site/change-language?lang=en"],
-                     ['label' => 'Vietnamese', 'url' => Url::base() . "/site/change-language?lang=vi"],
-                ],
+                'items' => Htmls::getChangeLanguageItems()
             ],
-//            [
-//                'label' => '<div class="input-group"><input type="text" class="form-control" placeholder="Search" id="txtSearch"/><div class="input-group-btn"><button class="btn btn-primary" type="submit"><span class="glyphicon glyphicon-search"></span></button></div></div>',
-//            ],
         ],
     ]);
     NavBar::end();
@@ -84,10 +75,10 @@ AppAsset::register($this);
     <!--Search bar-->
     <?php 
     $form = ActiveForm::begin([
-        'id' => 'search-form',
-        'options' => ['class' => 'form-horizontal'],
-        'method' => 'get',
-        'action' => Url::base(true) . '/user/default'
+        'id'        => 'search-form',
+        'options'   => ['class' => 'form-horizontal'],
+        'method'    => 'get',
+        'action'    => $url->createUrl(['product/action/search'])
     ]) ?>
         <div style="position: fixed; top: 50px; left:0;width: 100%;padding: 5px;background: #222;z-index: 1;">
             <div class="col-sm-3"></div>

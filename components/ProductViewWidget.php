@@ -12,7 +12,7 @@ use yii\base\Widget;
 
 class ProductViewWidget extends Widget
 {
-    public $message;
+    public $aData;
 
     public function init()
     {
@@ -22,6 +22,6 @@ class ProductViewWidget extends Widget
 
     public function run()
     {
-        return $this->render('ProductView/index',['ms'=>'123']);
+        return $this->render('ProductView/index',['aData'=> $this->aData]);
     }
 }

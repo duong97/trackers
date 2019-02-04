@@ -78,10 +78,11 @@ $config = [
             'rules' => [
 //                '' => 'site/index',
                 '' => 'user/default',
-                'module/<module:\w+>/<controller:\w+>/<action:\w+>' => '<module>/<controller>/<action>',
-                '<controller:\w+>/<id:\d+>' => '<controller>/view',
-                '<controller:\w+>/<action:\w+>/<id:\d+>' => '<controller>/<action>',
-                '<controller:\w+>/<action:\w+>' => '<controller>/<action>',
+                '<module:\w+>/<controller:\w+>/<action:\w+>' => '<module>/<controller>/<action>',
+//                '<controller:\w+>/<id:\d+>' => '<controller>/view',
+//                '<controller:\w+>/<action:\w+>/<id:\d+>' => '<controller>/<action>',
+//                '<controller:\w+>/<action:\w+>' => '<controller>/<action>',
+                '<module:\w+>/<controller:\w+>' => '<module>/<controller>',
             ],
         ],
     ],
@@ -89,6 +90,9 @@ $config = [
     'modules' => [
         'user' => [
             'class' => 'app\modules\user\UserModule',
+        ],
+        'product' => [
+            'class' => 'app\modules\product\ProductModule',
         ],
     ],
 ];
@@ -112,6 +116,12 @@ if (YII_ENV_DEV) {
                 'class' => 'yii\gii\generators\module\Generator', // generator class
                 'templates' => [ //setting for out templates
                     'anivia' => '@app/templates/module/default', // template name => path to template
+                ]
+            ],
+            'model' => [ // generator name
+                'class' => 'yii\gii\generators\model\Generator', // generator class
+                'templates' => [ //setting for out templates
+                    'anivia' => '@app/templates/model/default', // template name => path to template
                 ]
             ]
         ],

@@ -3,18 +3,30 @@
 namespace app\models;
 
 use Yii;
-use yii\helpers\Url;
+//use yii\helpers\Url;
 use app\models\simple_html_dom;
 use app\helpers\Constants;
 use app\helpers\Tools;
 
 class GetData extends BaseModel
 {
- 
+
     /*
      * @des detect website and choose methode
      */
-    public function getInfo($url){
+    public function getInfo($searchValue){
+        $parse          = parse_url($searchValue);
+        if(isset($parse['host'])){
+            return $this->searchUrl($searchValue);
+        } else {
+            return $this->searchKeyword($searchValue);
+        }
+    }
+    
+    /*
+     * Search for url
+     */
+    public function searchUrl($url){
         $parse          = parse_url($url);
         $domain         = str_replace("www.", "", $parse['host']);
         $aWebsiteDomain = Constants::$aWebsiteDomain;
@@ -46,6 +58,14 @@ class GetData extends BaseModel
         return $ret;
     }
     
+    /*
+     * Search for keyword
+     */
+    public function searchKeyword($keyword){
+        $aProduct = Products::find()->where("name like '%{$keyword}%'")->all();
+        return $aProduct;
+    }
+
     /*
      * @des use crawl to get data, use by other functions
      */

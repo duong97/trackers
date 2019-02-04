@@ -22,6 +22,9 @@ class DetailViewWidget extends Widget
 
     public function run()
     {
+        $this->aData['name']  = isset($this->aData['name'])  ? $this->aData['name']  : "";
+        $this->aData['price'] = isset($this->aData['price']) ? $this->aData['price'] : "";
+        $this->aData['image'] = isset($this->aData['image']) ? $this->aData['image'] : "";
         return $this->render('DetailView/index',['aData'=> $this->aData]);
     }
 }

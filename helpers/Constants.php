@@ -38,5 +38,10 @@ class Constants{
         self::AMAZON    => 'Aazon',
         self::EBAY      => 'Ebay',
     ];
+    
+    public static $aLanguage = [
+        'en' => 'English',
+        'vi' => 'Vietnamese',
+    ];
 }
 

@@ -25,13 +25,6 @@ class DefaultController extends BaseController
      */
     public function actionIndex()
     {
-        $aData      = [];
-        if(!empty($_GET['search-value'])){
-            $url    = $_GET['search-value'];
-            $aData  = GetData::instance()->getInfo($url);
-        }
-        return $this->render('index', [
-            'aData' => $aData
-        ]);
+        return $this->render('index');
     }
 }

@@ -1,3 +1,3 @@
 <div>
-    <?php echo \app\components\DetailViewWidget::widget(['aData'=>$aData]) ?>
+    welcom to index site
 </div>
