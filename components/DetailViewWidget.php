@@ -13,6 +13,7 @@ use yii\base\Widget;
 class DetailViewWidget extends Widget
 {
     public $aData;
+    public $aPriceLog;
 
     public function init()
     {
@@ -25,6 +26,10 @@ class DetailViewWidget extends Widget
         $this->aData['name']  = isset($this->aData['name'])  ? $this->aData['name']  : "";
         $this->aData['price'] = isset($this->aData['price']) ? $this->aData['price'] : "";
         $this->aData['image'] = isset($this->aData['image']) ? $this->aData['image'] : "";
-        return $this->render('DetailView/index',['aData'=> $this->aData]);
+        $this->aPriceLog      = isset($this->aPriceLog)      ? $this->aPriceLog : [];
+        return $this->render('DetailView/index',[
+            'aData'=> $this->aData,
+            'aPriceLog'=> $this->aPriceLog,
+        ]);
     }
 }

@@ -4,7 +4,6 @@ namespace app\models;
 
 use Yii;
 use yii\base\Model;
-use app\helpers\Tools;
 use \app\helpers\Constants;
 
 /**
@@ -83,7 +82,7 @@ class RegisterForm extends Model
         $user->last_name        = $this->last_name;
         $user->role             = Constants::USER;
         $user->status           = Users::STT_VERIFYING;
-        $user->ip               = Tools::getIp();
+        $user->ip               = Yii::$app->request->userIP;
         $user->save();
     }
 }

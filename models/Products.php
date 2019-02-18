@@ -13,6 +13,7 @@
 namespace app\models;
 
 use Yii;
+use app\helpers\Constants;
 
 /**
  * This is the model class for table "products".
@@ -42,14 +43,10 @@ class Products extends BaseModel
     public function rules()
     {
         return [
-            [['link'], 'string'],
-            [['seller', 'status'], 'integer'],
-            [['created_date'], 'safe'],
-            [['name'], 'string', 'max' => 255],
-            [['price'], 'string', 'max' => 50],
+            
         ];
     }
-
+    
     /**
      * {@inheritdoc}
      */
@@ -57,12 +54,41 @@ class Products extends BaseModel
     {
         return [
             'id' => 'ID',
-            'name' => Yii::t('app', 'Name'),
             'link' => Yii::t('app', 'Link'),
-            'seller' => Yii::t('app', 'Seller'),
-            'price' => Yii::t('app', 'Price'),
-            'status' => Yii::t('app', 'Status'),
             'created_date' => Yii::t('app', 'Created Date'),
         ];
     }
+    
+    /*
+     * remove trash of get params on url
+     */
+    public function handleUrl() {
+        $parse          = parse_url($this->url);
+        $domain         = str_replace("www.", "", $parse['host']);
+        $aWebsiteDomain = Constants::$aWebsiteDomain;
+        switch ($domain) {
+            case $aWebsiteDomain[Constants::SHOPEE]:
+                
+                break;
+            case $aWebsiteDomain[Constants::SENDO]:
+                $this->url = strstr($this->url, ".html", true) . ".html";
+                break;
+            case $aWebsiteDomain[Constants::TIKI]:
+                $this->url = strstr($this->url, ".html", true) . ".html";
+                break;
+            case $aWebsiteDomain[Constants::AMAZON]:
+                
+                break;
+            case $aWebsiteDomain[Constants::EBAY]:
+                
+                break;
+
+            default:
+                
+                break;
+        }
+    }
+    
+    
+    
 }

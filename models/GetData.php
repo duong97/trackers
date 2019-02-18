@@ -6,7 +6,7 @@ use Yii;
 //use yii\helpers\Url;
 use app\models\simple_html_dom;
 use app\helpers\Constants;
-use app\helpers\Tools;
+use app\helpers\MyFormat;
 
 class GetData extends BaseModel
 {
@@ -93,6 +93,19 @@ class GetData extends BaseModel
         return $ret;
     }
     
+    public function onlyNumber(&$price){
+        preg_match_all('!\d+!', $price, $matches);
+        // Get only number from price string when crawl
+        if(is_array($matches[0])){
+            $price = "";
+            foreach ($matches[0] as $v) {
+                $price .= $v;
+            }
+        } else {
+            $price = $matches[0];
+        }
+    }
+    
     /*
      * @des get data from Shopee by api
      */
@@ -112,10 +125,11 @@ class GetData extends BaseModel
                 ];
             }
         }
-        $price      = isset($aData['item']['price']) ? str_replace("00000", "", $aData['item']['price']) : "";
+        $price      = isset($aData['item']['price']) ? substr($aData['item']['price'], 0, -5) : "";
+        $this->onlyNumber($price);
         $ret        = [
             'name'  => isset($aData['item']['name']) ? $aData['item']['name'] : "",
-            'price' => number_format($price , 0 , '.' , ','),
+            'price' => $price,
             'image' => $aImage
         ];
         return $ret;
@@ -143,7 +157,7 @@ class GetData extends BaseModel
         $price      = isset($aData['result']['data']['final_price']) ? $aData['result']['data']['final_price'] : "";
         $ret        = [
             'name'  => isset($aData['result']['data']['name']) ? $aData['result']['data']['name'] : "",
-            'price' => Tools::formatCurrency($price),
+            'price' => $price,
             'image' => $aImage
         ];
         return $ret;
@@ -171,17 +185,19 @@ class GetData extends BaseModel
     }
     
     /*
-     * test again
      * @des get data from Tiki by crawl
+     * @link test:
+     * https://tiki.vn/may-anh-canon-750d-lens-18-55-is-stm-le-bao-minh-p440702.html?spid=146473&src=deal-hot&2hi=0
+     * https://tiki.vn/quat-thap-tiross-ts9180-den-p519278.html?src=view-together&2hi=0
+     * https://tiki.vn/man-hinh-benq-gw2270-22inch-fullhd-5ms-60hz-va-hang-chinh-hang-p551192.html?src=recently-viewed&2hi=0
      */
     public function getTiki($url){
         $elm_name       = 'h1[id=product-name]';
         $elm_img        = 'img[alt=Product]';
-        $elm_price      = 'span[class=price]';
-        $elm_price2     = 'span[id=span-price]';
+        $elm_price      = 'span#span-price';
+        $elm_price2     = 'span[class=price]';
         $aData          = $this->getByCrawl($url, $elm_name, $elm_img, $elm_price, $elm_price2);
-        preg_match('/([0-9]+\.[0-9]+)/', $aData['price'], $matches);
-        $aData['price'] = $matches[0];
+        $this->onlyNumber($aData['price']);
         foreach ($aData['image'] as $key => $img) {
             $aData['image'][$key] = [
                 'normal'=> str_replace("/cache/75x75", "", $img),
