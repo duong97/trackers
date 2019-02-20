@@ -8,6 +8,9 @@ use yii\helpers\Html;
         <div class="col-sm-4">
             <?php 
             $imgUrl = isset($aData['image'][0]['normal']) ? $aData['image'][0]['normal'] : ""; 
+            if(empty($imgUrl)){
+                $imgUrl = isset($aData['image'][0]) ? $aData['image'][0] : "";
+            }
             ?>
             <img src="<?= $imgUrl ?>" style="width: 100%">
         </div>

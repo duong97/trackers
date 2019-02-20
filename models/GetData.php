@@ -6,7 +6,6 @@ use Yii;
 //use yii\helpers\Url;
 use app\models\simple_html_dom;
 use app\helpers\Constants;
-use app\helpers\MyFormat;
 
 class GetData extends BaseModel
 {
@@ -32,6 +31,9 @@ class GetData extends BaseModel
         $aWebsiteDomain = Constants::$aWebsiteDomain;
         $ret            = "";
         switch ($domain) {
+            case $aWebsiteDomain[Constants::LAZADA]:
+                $ret = $this->getLazada($url);
+                break;
             case $aWebsiteDomain[Constants::SHOPEE]:
                 $ret = $this->getShopee($url);
                 break;
@@ -104,6 +106,7 @@ class GetData extends BaseModel
         } else {
             $price = $matches[0];
         }
+        $price = (int)$price;
     }
     
     /*
@@ -136,7 +139,7 @@ class GetData extends BaseModel
     }
     
     /*
-     * @des get price from Sendo by api
+     * @des get data from Sendo by api
      */
     public function getSendo($url){
         $r          = str_replace(["https://www.sendo.vn/",".html"], "", $url);
@@ -164,25 +167,60 @@ class GetData extends BaseModel
     }
     
     /*
+     * @des get data from Lazada by crawl
+     */
+    public function getLazada($url){
+        $html       = new simple_html_dom();
+        $html->load_file($url);
+        $script     = $html->find('script');
+        $aImg       = $aData = []; 
+        $title      = "";
+        // Crawl data from <script> tag
+        foreach ($script as $s) {
+            $txt            = $s->innertext;
+            $regexImg       = "/(https\:\/\/vn-test-11\.slatic\.net\/p\/2\/)[0-9a-zA-Z%._-]{10,200}(.jpg)/";
+            $regexTitle     = "/(\"pdt\_name\"\:\")([\w\s]+){4,300}(\"\,)/";
+            $regexPrice     = "/(\"salePrice\"\:\{\"text\"\:\")([0-9.]){4,20}/";
+            preg_match_all($regexPrice, $txt, $aMatchPrice);
+            if(!empty($aMatchPrice[0])){
+                $aData['price'] = array_unique($aMatchPrice[0])[0];
+            }
+            preg_match_all($regexTitle, $txt, $aMatchTitle);
+            if(!empty($aMatchTitle[0])){
+                $title      = array_unique($aMatchTitle[0])[0];
+            }
+            preg_match_all($regexImg, $txt, $aMatchImg);
+            if(!empty($aMatchImg[0])){
+                $aImg[]     = array_unique($aMatchImg[0])[0];
+            }
+        }
+        $aData['image']     = $aImg;
+        $titleTmp           = explode('":"', $title);
+        $aData['name']      = isset($titleTmp[1]) ? substr($titleTmp[1] , 0, -2) : "";
+        $this->onlyNumber($aData['price']);
+        return $aData;
+    }
+    
+    /*
      * @des get price from Tiki by api, not often use
      */
-    public function getTikiPrice($url){
-        $start   = '-p';
-        $end     = '.html';
-        $pattern = sprintf(
-            '/%s(.+?)%s/ims',
-            preg_quote($start, '/'), preg_quote($end, '/')
-        );
-        $product_id = 0;
-        if (preg_match($pattern, $url, $matches)) {
-            list(, $product_id) = $matches;
-        }
-        $api        = "https://tiki.vn/api/v2/products/{$product_id}/info";
-        $result     = file_get_contents($api);
-        $aData      = json_decode($result, true);
-        $price      = isset($aData['price']) ? $aData['price'] : "";
-        return $price;
-    }
+//    public function getTikiPrice($url){
+//        $start   = '-p';
+//        $end     = '.html';
+//        $pattern = sprintf(
+//            '/%s(.+?)%s/ims',
+//            preg_quote($start, '/'), preg_quote($end, '/')
+//        );
+//        $product_id = 0;
+//        if (preg_match($pattern, $url, $matches)) {
+//            list(, $product_id) = $matches;
+//        }
+//        $api        = "https://tiki.vn/api/v2/products/{$product_id}/info";
+//        $result     = file_get_contents($api);
+//        $aData      = json_decode($result, true);
+//        $price      = isset($aData['price']) ? $aData['price'] : "";
+//        return $price;
+//    }
     
     /*
      * @des get data from Tiki by crawl
@@ -216,20 +254,20 @@ class GetData extends BaseModel
         $elm_name       = 'span[id=productTitle]';
         $elm_price      = 'span[id=priceblock_ourprice]';
         $elm_price2     = 'span[class="a-size-base a-color-price a-color-price"]';
-        $html    = new simple_html_dom();
+        $html           = new simple_html_dom();
         $html->load_file($url);
-        $pr      = $html->find($elm_price, 0);
+        $pr             = $html->find($elm_price, 0);
         if(empty($pr)){
-            $pr  = $html->find($elm_price2, 0);
+            $pr         = $html->find($elm_price2, 0);
         }
         $price  = isset($pr->plaintext) ? $pr->plaintext : "";
         $name   = isset($html->find($elm_name, 0)->plaintext) ? $html->find($elm_name, 0)->plaintext : "";
-        $aImage     = [];
-        $aImageTmp = [];
+        $aImage         = [];
+        $aImageTmp      = [];
         foreach($html->find('script') as $element)
         {
             $linkkk = $element->innertext; 
-            $regex = "/(https\:\/\/images-na\.ssl-images-amazon\.com\/images\/I\/)[0-9a-zA-Z%._]{10,30}(.jpg)/";
+            $regex  = "/(https\:\/\/images-na\.ssl-images-amazon\.com\/images\/I\/)[0-9a-zA-Z%._]{10,30}(.jpg)/";
             preg_match_all($regex, $linkkk, $matches);
             if(!empty($matches[0])){
                 $aImageTmp[] = $matches[0];

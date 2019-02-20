@@ -40,9 +40,10 @@ class ActionController extends BaseController
             $aData              = [];
             if(!empty($_GET['search-value'])){
                 $searchValue    = $_GET['search-value'];
-                $aData          = GetData::instance()->getInfo($searchValue);
-                if(!empty($aData['name'])){
-                    return $this->redirect(['action/detail','url'=>$searchValue]);
+                $mGetData       = new GetData();
+                $aData          = $mGetData->getInfo($searchValue);
+                if(!empty($aData['price'])){
+                    return $this->redirect(['action/detail', 'url' => $searchValue]);
                 }
             }
             return $this->render('index', [
