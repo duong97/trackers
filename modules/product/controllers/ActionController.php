@@ -76,7 +76,7 @@ class ActionController extends BaseController
     public function actionStartTracking(){
         try {
             $product = new Products();
-            $product->url = isset($_GET['url']) ? $_GET['url'] : "";
+            $product->attributes = \Yii::$app->request->post('Products');
             $product->handleUrl();
             $models = Products::find()->where(['url' => $product->url])->one();
             if(!$models){ // Save if product doesn't exists

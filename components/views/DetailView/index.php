@@ -1,30 +1,43 @@
 <?php 
 use app\helpers\MyFormat;
 use yii\helpers\Html;
+use yii\widgets\ActiveForm;
+use app\models\Products;
 ?>
 <div class="container-fluid">
     <div class="row">
         <div class="col-sm-1"></div>
         <div class="col-sm-4">
             <?php 
-            $imgUrl = isset($aData['image'][0]['normal']) ? $aData['image'][0]['normal'] : ""; 
-            if(empty($imgUrl)){
-                $imgUrl = isset($aData['image'][0]) ? $aData['image'][0] : "";
-            }
+            $productUrl = isset($_GET['url']) ? $_GET['url'] : "";
+            $imgUrl     = isset($aData['image']) ? $aData['image'] : ""; 
             ?>
             <img src="<?= $imgUrl ?>" style="width: 100%">
         </div>
         <div class="col-sm-6">
             <h3><?= $aData['name'] ?></h3>
             <p class="price"><?= MyFormat::formatCurrency($aData['price']) ?></p>
-            <?= empty($aPriceLog) ? Html::a(
-                    Yii::t('app', 'Start tracking'),
-                    [
-                        'action/start-tracking',
-                        'url' => isset($_GET['url']) ? $_GET['url'] : "",
-                        'price' => $aData['price']
-                    ],
-                    ['class'=>'btn btn-primary']) : "" ?>
+            <?php if(empty($aPriceLog)): ?>
+                <?php 
+                $urlManager  = \Yii::$app->getUrlManager();
+                $form = ActiveForm::begin([
+                    'id' => 'product-form',
+                    'action' => $urlManager->createUrl(['product/action/start-tracking']),
+                    'options' => ['class' => 'form-horizontal'],
+                ]) ?>
+                    <?php $model = new Products(); ?>
+                    <?= $form->field($model, 'name')->hiddenInput(['value'=> $aData['name']])->label(false) ?>
+                    <?= $form->field($model, 'url')->hiddenInput(['value'=> $productUrl])->label(false) ?>
+                    <?= $form->field($model, 'price')->hiddenInput(['value'=> $aData['price']])->label(false) ?>
+                    <?= $form->field($model, 'image')->hiddenInput(['value'=> $imgUrl])->label(false) ?>
+
+                    <div class="form-group">
+                        <div class="col-lg-offset-1 col-lg-11">
+                            <?= Html::submitButton(Yii::t('app', 'Start tracking'), ['class' => 'btn btn-primary']) ?>
+                        </div>
+                    </div>
+                <?php ActiveForm::end() ?>
+            <?php endif; ?>
         </div>
         <div class="col-sm-1"></div>
     </div>

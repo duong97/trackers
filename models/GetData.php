@@ -26,6 +26,23 @@ class GetData extends BaseModel
      * Search for url
      */
     public function searchUrl($url){
+        return empty($this->searchExistsUrl($url)) ? $this->searchNewUrl($url) : $this->searchExistsUrl($url);
+    }
+    
+    /*
+     * Search for url in database
+     */
+    public function searchExistsUrl($url){
+        $product = new Products();
+        $urlShort = $product->handleUrl($url);
+        $mProduct = Products::find()->where(['url' => $urlShort])->one();
+        return empty($mProduct) ? [] : $mProduct->attributes;
+    }
+    
+    /*
+     * Search for url by crawl or api
+     */
+    public function searchNewUrl($url){
         $parse          = parse_url($url);
         $domain         = str_replace("www.", "", $parse['host']);
         $aWebsiteDomain = Constants::$aWebsiteDomain;
@@ -123,8 +140,9 @@ class GetData extends BaseModel
         if(isset($aData['item']['images'])){
             foreach ($aData['item']['images'] as $id_img) {
                 $aImage[] = [
-                    'normal' => $url_img.$id_img,
-                    'small' => $url_img.$id_img
+                    $url_img.$id_img
+//                    'normal' => $url_img.$id_img,
+//                    'small' => $url_img.$id_img
                 ];
             }
         }
@@ -133,7 +151,7 @@ class GetData extends BaseModel
         $ret        = [
             'name'  => isset($aData['item']['name']) ? $aData['item']['name'] : "",
             'price' => $price,
-            'image' => $aImage
+            'image' => $aImage[0]
         ];
         return $ret;
     }
@@ -151,8 +169,9 @@ class GetData extends BaseModel
             foreach ($aData['result']['data']['media'] as $media) {
                 if($media['type'] == 'image'){
                     $aImage[] = [
-                        'normal' => $media['image'],
-                        'small'  => $media['image_50x50']
+                        $media['image'],
+//                        'normal' => $media['image'],
+//                        'small'  => $media['image_50x50']
                     ];
                 }
             }
@@ -161,7 +180,7 @@ class GetData extends BaseModel
         $ret        = [
             'name'  => isset($aData['result']['data']['name']) ? $aData['result']['data']['name'] : "",
             'price' => $price,
-            'image' => $aImage
+            'image' => $aImage[0]
         ];
         return $ret;
     }
@@ -194,7 +213,7 @@ class GetData extends BaseModel
                 $aImg[]     = array_unique($aMatchImg[0])[0];
             }
         }
-        $aData['image']     = $aImg;
+        $aData['image']     = $aImg[0];
         $titleTmp           = explode('":"', $title);
         $aData['name']      = isset($titleTmp[1]) ? substr($titleTmp[1] , 0, -2) : "";
         $this->onlyNumber($aData['price']);
@@ -231,17 +250,26 @@ class GetData extends BaseModel
      */
     public function getTiki($url){
         $elm_name       = 'h1[id=product-name]';
-        $elm_img        = 'img[alt=Product]';
+        $elm_img        = 'img';
         $elm_price      = 'span#span-price';
         $elm_price2     = 'span[class=price]';
         $aData          = $this->getByCrawl($url, $elm_name, $elm_img, $elm_price, $elm_price2);
         $this->onlyNumber($aData['price']);
-        foreach ($aData['image'] as $key => $img) {
-            $aData['image'][$key] = [
-                'normal'=> str_replace("/cache/75x75", "", $img),
-                'small' => $img
-            ];
+        $regexImg       = "/(https\:\/\/salt\.tikicdn\.com\/cache\/)[0-9a-zA-Z\/]{30,80}(.jpg)/";
+        $aImgTemp       = [];
+        foreach ($aData['image'] as $img) {
+            preg_match_all($regexImg, $img, $aMatchImage);
+            if(!empty($aMatchImage[0])){
+                $aImgTemp[] = array_unique($aMatchImage[0])[0];
+            }
         }
+//        foreach ($aData['image'] as $key => $img) {
+//            $aData['image'][$key] = [
+//                'normal'=> str_replace("/cache/75x75", "", $img),
+//                'small' => $img
+//            ];
+//        }
+        $aData['image'] = $aImgTemp[0];
         return $aData;
     }
     
@@ -307,14 +335,15 @@ class GetData extends BaseModel
         }
         foreach ($aImageTmp2 as $key => $aImg) {
             $aImage[] = [
-                'normal' => end($aImg),
-                'small' => reset($aImg)
+                end($aImg)
+//                'normal' => end($aImg),
+//                'small' => reset($aImg)
             ];
         }
         $ret    = [
             'name' => empty($name) ? "" : $name,
             'price' => $price,
-            'image' => $aImage
+            'image' => $aImage[0]
         ];
         return $ret;
     }
@@ -335,13 +364,14 @@ class GetData extends BaseModel
         if(!empty($aImg)){
             foreach ($aImg as $img) {
                 $aNewImage[] = [
-                    'normal' => $img,
-                    'small'  => $img
+                    $img
+//                    'normal' => $img,
+//                    'small'  => $img
                 ];
             }
         }
         unset($aData['image']);
-        $aData['image'] = $aNewImage;
+        $aData['image'] = $aNewImage[0];
         return $aData;
     }
 }

@@ -20,11 +20,9 @@ use app\helpers\Constants;
  *
  * @property string $id
  * @property string $name
- * @property string $link
- * @property int $seller
+ * @property string $url
  * @property string $price
  * @property string $image
- * @property int $status
  * @property string $created_date
  */
 class Products extends BaseModel
@@ -43,7 +41,7 @@ class Products extends BaseModel
     public function rules()
     {
         return [
-            
+            [['name', 'url', 'price', 'image'], 'safe']
         ];
     }
     
@@ -62,8 +60,9 @@ class Products extends BaseModel
     /*
      * remove trash of get params on url
      */
-    public function handleUrl() {
-        $parse          = parse_url($this->url);
+    public function handleUrl($urlOut = "") {
+        $url = empty($urlOut) ? $this->url : $urlOut;
+        $parse          = parse_url($url);
         $domain         = str_replace("www.", "", $parse['host']);
         $aWebsiteDomain = Constants::$aWebsiteDomain;
         switch ($domain) {
@@ -71,10 +70,12 @@ class Products extends BaseModel
                 
                 break;
             case $aWebsiteDomain[Constants::SENDO]:
-                $this->url = strstr($this->url, ".html", true) . ".html";
+                $this->url = strstr($url, ".html", true) . ".html";
+                $url       = strstr($url, ".html", true) . ".html";
                 break;
             case $aWebsiteDomain[Constants::TIKI]:
-                $this->url = strstr($this->url, ".html", true) . ".html";
+                $this->url = strstr($url, ".html", true) . ".html";
+                $url       = strstr($url, ".html", true) . ".html";
                 break;
             case $aWebsiteDomain[Constants::AMAZON]:
                 
@@ -87,6 +88,7 @@ class Products extends BaseModel
                 
                 break;
         }
+        return $url;
     }
     
     
