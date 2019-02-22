@@ -255,7 +255,7 @@ class GetData extends BaseModel
         $elm_price2     = 'span[class=price]';
         $aData          = $this->getByCrawl($url, $elm_name, $elm_img, $elm_price, $elm_price2);
         $this->onlyNumber($aData['price']);
-        $regexImg       = "/(https\:\/\/salt\.tikicdn\.com\/cache\/)[0-9a-zA-Z\/]{30,80}(.jpg)/";
+        $regexImg       = "/(https\:\/\/salt\.tikicdn\.com\/cache\/)[0-9a-zA-Z-.\/]{30,80}(.jpg)/";
         $aImgTemp       = [];
         foreach ($aData['image'] as $img) {
             preg_match_all($regexImg, $img, $aMatchImage);

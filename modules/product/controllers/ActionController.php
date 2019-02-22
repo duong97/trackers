@@ -83,7 +83,7 @@ class ActionController extends BaseController
                 $product->save();
                 $pLog = new PriceLogs();
                 $pLog->product_id = $product->id;
-                $pLog->price      = isset($_GET['price']) ? $_GET['price'] : 0;
+                $pLog->price      = $product->price;
                 $pLog->save();
             }
             return $this->redirect(Yii::$app->request->referrer ?: Yii::$app->homeUrl);
