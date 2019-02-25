@@ -1,4 +1,4 @@
 
 
-<?php echo \app\components\ProductViewWidget::widget(['aData'=>$aData]) ?>
+<?= \app\components\ProductViewWidget::widget(['aData'=>$aData]) ?>
         

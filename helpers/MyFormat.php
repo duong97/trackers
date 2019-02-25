@@ -9,8 +9,14 @@ namespace app\helpers;
 
 class MyFormat{
     
+    const str_max_length = 30;
+    
     public static function formatCurrency($price){
         return number_format($price , 0 , '.' , ',') . '₫';
+    }
+    
+    public static function shortenName($name){
+        return (strlen($name) > self::str_max_length) ? mb_substr($name, 0, self::str_max_length,"utf-8")."..." : $name;
     }
     
     /*

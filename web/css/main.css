@@ -14,3 +14,12 @@ and open the template in the editor.
     font-weight: 500;
     font-size: 19px;
 }
+.prd-container{
+    padding: 5px;
+}
+.prd-container .prd-image{
+    padding: 3px;
+}
+.prd-container .prd-image img{
+    width: 100%;
+}

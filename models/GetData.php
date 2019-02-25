@@ -81,7 +81,7 @@ class GetData extends BaseModel
      * Search for keyword
      */
     public function searchKeyword($keyword){
-        $aProduct = Products::find()->where("name like '%{$keyword}%'")->all();
+        $aProduct = Products::find()->where("name like '%{$keyword}%' COLLATE utf8_vietnamese_ci")->all();
         return $aProduct;
     }
 
@@ -139,11 +139,11 @@ class GetData extends BaseModel
         $aImage     = [];
         if(isset($aData['item']['images'])){
             foreach ($aData['item']['images'] as $id_img) {
-                $aImage[] = [
-                    $url_img.$id_img
+                $aImage[] = $url_img.$id_img;
+//                        [
 //                    'normal' => $url_img.$id_img,
 //                    'small' => $url_img.$id_img
-                ];
+//                ];
             }
         }
         $price      = isset($aData['item']['price']) ? substr($aData['item']['price'], 0, -5) : "";
@@ -151,7 +151,7 @@ class GetData extends BaseModel
         $ret        = [
             'name'  => isset($aData['item']['name']) ? $aData['item']['name'] : "",
             'price' => $price,
-            'image' => $aImage[0]
+            'image' => isset($aImage[0]) ? $aImage[0] : ""
         ];
         return $ret;
     }
@@ -168,11 +168,11 @@ class GetData extends BaseModel
         if(isset($aData['result']['data']['media'])){
             foreach ($aData['result']['data']['media'] as $media) {
                 if($media['type'] == 'image'){
-                    $aImage[] = [
-                        $media['image'],
+                    $aImage[] = $media['image'];
+//                            [
 //                        'normal' => $media['image'],
 //                        'small'  => $media['image_50x50']
-                    ];
+//                    ];
                 }
             }
         }
@@ -180,7 +180,7 @@ class GetData extends BaseModel
         $ret        = [
             'name'  => isset($aData['result']['data']['name']) ? $aData['result']['data']['name'] : "",
             'price' => $price,
-            'image' => $aImage[0]
+            'image' => isset($aImage[0]) ? $aImage[0] : ""
         ];
         return $ret;
     }
@@ -191,31 +191,36 @@ class GetData extends BaseModel
     public function getLazada($url){
         $html       = new simple_html_dom();
         $html->load_file($url);
-        $script     = $html->find('script');
-        $aImg       = $aData = []; 
-        $title      = "";
+        $script     = $html->find('script[type=application/ld+json]',0);
+//        $aImg       = $aData = []; 
+//        $title      = "";
         // Crawl data from <script> tag
-        foreach ($script as $s) {
-            $txt            = $s->innertext;
-            $regexImg       = "/(https\:\/\/vn-test-11\.slatic\.net\/p\/2\/)[0-9a-zA-Z%._-]{10,200}(.jpg)/";
-            $regexTitle     = "/(\"pdt\_name\"\:\")([\w\s]+){4,300}(\"\,)/";
-            $regexPrice     = "/(\"salePrice\"\:\{\"text\"\:\")([0-9.]){4,20}/";
-            preg_match_all($regexPrice, $txt, $aMatchPrice);
-            if(!empty($aMatchPrice[0])){
-                $aData['price'] = array_unique($aMatchPrice[0])[0];
-            }
-            preg_match_all($regexTitle, $txt, $aMatchTitle);
-            if(!empty($aMatchTitle[0])){
-                $title      = array_unique($aMatchTitle[0])[0];
-            }
-            preg_match_all($regexImg, $txt, $aMatchImg);
-            if(!empty($aMatchImg[0])){
-                $aImg[]     = array_unique($aMatchImg[0])[0];
-            }
-        }
-        $aData['image']     = $aImg[0];
-        $titleTmp           = explode('":"', $title);
-        $aData['name']      = isset($titleTmp[1]) ? substr($titleTmp[1] , 0, -2) : "";
+        $json = htmlspecialchars_decode($script->innertext);
+        $aJsonData = json_decode($json, true);
+//        print_r($json);
+//        die;
+//        $regexImg       = "/(https\:\/\/vn-test-11\.slatic\.net\/p\/2\/)[0-9a-zA-Z%._-]{10,200}(.jpg)/";
+//        $regexTitle     = "/(\"pdt\_name\"\:\")([\w\s]+){4,300}(\"\,)/";
+//        $regexPrice     = "/(\"salePrice\"\:\{\"text\"\:\")([0-9.]){4,20}/";
+//        preg_match_all($regexPrice, $txt, $aMatchPrice);
+//        if(!empty($aMatchPrice[0])){
+//            $aData['price'] = array_unique($aMatchPrice[0])[0];
+//        }
+//        preg_match_all($regexTitle, $txt, $aMatchTitle);
+//        if(!empty($aMatchTitle[0])){
+//            $title      = array_unique($aMatchTitle[0])[0];
+//        }
+//        preg_match_all($regexImg, $txt, $aMatchImg);
+//        if(!empty($aMatchImg[0])){
+//            $aImg[]     = array_unique($aMatchImg[0])[0];
+//        }
+            
+//        $aData['image']     = isset($aImg[0]) ? $aImg[0] : "";
+//        $titleTmp           = explode('":"', $title);
+//        $aData['name']      = isset($titleTmp[1]) ? substr($titleTmp[1] , 0, -2) : "";
+        $aData['image']     = isset($aJsonData['image']) ? $aJsonData['image'] : "";
+        $aData['name']      = isset($aJsonData['name']) ? $aJsonData['name'] : "";
+        $aData['price']      = isset($aJsonData['offers']['price']) ? $aJsonData['offers']['price'] : "";
         $this->onlyNumber($aData['price']);
         return $aData;
     }
