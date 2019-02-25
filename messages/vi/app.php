@@ -44,4 +44,6 @@ return [
     'Current price'         =>'Giá hiện tại',
     'Highest price'         =>'Giá cao nhất',
     'Lowest price'          =>'Giá thấp nhất',
+    'Previous price'        =>'Giá trước đó',
+    'Current price'         =>'Giá hiện tại',
 ];

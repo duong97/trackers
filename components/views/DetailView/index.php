@@ -100,5 +100,6 @@ use app\models\Products;
         </div>
         <div class="col-sm-1"></div>
     </div>
+    <?php count($aPriceLog)>1 ? include('chart.php') : "" ?>
     <?php endif; ?>
 </div>

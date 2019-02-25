@@ -15,7 +15,9 @@ use app\helpers\MyFormat;
                         </a>
                     </div>
                     <div class="prd-info">
-                        <a href="<?= $p->url ?>" title="<?= $p->name ?>">
+                        <?php $urlManager = \Yii::$app->getUrlManager();
+                        $url = $urlManager->createUrl(['product/action/detail', 'url' => $p->url]); ?>
+                        <a href="<?= $url ?>" title="<?= $p->name ?>">
                             <?= MyFormat::shortenName($p->name) ?>
                         </a>
                         <p><?= MyFormat::formatCurrency($p->price) ?></p>
