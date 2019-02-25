@@ -32,6 +32,26 @@ class Htmls{
         return $ret;
     }
     
+    /*
+     * Get array user items for main menu
+     */
+    public static function getUserItems(){
+        $url        = \Yii::$app->getUrlManager();
+        $aOption    = [
+            Yii::t('app', 'Profile'),
+            Yii::t('app', 'Tracking items'),
+            Yii::t('app', 'Settings')
+        ];
+        $ret        = [];
+        foreach ($aOption as $name) {
+            $ret[] = [
+                'label' => $name,
+                'url' => $url->createUrl(['user/default/profile']),
+            ];
+        }
+        return $ret;
+    }
+    
 
 }
 

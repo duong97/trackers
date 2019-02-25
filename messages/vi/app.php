@@ -46,4 +46,9 @@ return [
     'Lowest price'          =>'Giá thấp nhất',
     'Previous price'        =>'Giá trước đó',
     'Current price'         =>'Giá hiện tại',
+    'Profile'               =>'Hồ sơ',
+    'Tracking items'        =>'Sản phẩm đang theo dõi',
+    'Settings'              =>'Cài đặt',
+    'The request page does not exists'=>'Trang không tồn tại',
+    'Update'                => 'Cập nhật'
 ];

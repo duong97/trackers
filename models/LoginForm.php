@@ -75,6 +75,7 @@ class LoginForm extends Model
     public function login()
     {
         if ($this->validate()) {
+            $this->beforeLogin();
             return Yii::$app->user->login($this->getUser(), $this->rememberMe ? 3600*24*30 : 0);
         }
         return false;
@@ -94,5 +95,16 @@ class LoginForm extends Model
         }
 
         return $this->_user;
+    }
+    
+    /*
+     * Update last access of user
+     */
+    public function beforeLogin(){
+        $model = Users::find()->where(['id' => $this->_user->id])->one();
+        if($model){
+            $model->last_access = date('Y-m-d H:i:s');
+            $model->update();
+        }
     }
 }

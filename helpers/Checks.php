@@ -6,11 +6,12 @@
  * and open the template in the editor.
  */
 namespace app\helpers;
+
 use yii\web\NotFoundHttpException;
+use Yii;
 
 class Checks{
     public function notFoundExc() {
-//        throw new NotFoundHttpException("hihi");
-        throw new NotFoundHttpException("The request page does not exists!");
+        throw new NotFoundHttpException(Yii::t('app', 'The request page does not exists'));
     }
 }

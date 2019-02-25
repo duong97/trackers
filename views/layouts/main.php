@@ -63,6 +63,10 @@ $url = \Yii::$app->getUrlManager();
                 ['label' => Yii::t('app', 'Register'), 'url' => ['/site/register']]
             ) : '',
             [
+                'label' => '<span class="glyphicon glyphicon-user"></span>',
+                'items' => Htmls::getUserItems()
+            ],
+            [
                 'label' => '<span class="glyphicon glyphicon-globe"></span>',
                 'items' => Htmls::getChangeLanguageItems()
             ],
