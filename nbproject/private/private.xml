@@ -3,15 +3,13 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/var/www/html/trackers/models/Products.php</file>
+            <file>file:/var/www/html/trackers/models/LoginForm.php</file>
             <file>file:/var/www/html/trackers/components/views/DetailView/index.php</file>
-            <file>file:/var/www/html/trackers/modules/product/views/action/detail.php</file>
             <file>file:/var/www/html/trackers/modules/product/controllers/ActionController.php</file>
+            <file>file:/var/www/html/trackers/controllers/SiteController.php</file>
             <file>file:/var/www/html/trackers/helpers/Htmls.php</file>
-            <file>file:/var/www/html/trackers/web/css/main.css</file>
-            <file>file:/var/www/html/trackers/models/GetData.php</file>
+            <file>file:/var/www/html/trackers/views/layouts/main.php</file>
             <file>file:/var/www/html/trackers/components/views/ProductView/index.php</file>
-            <file>file:/var/www/html/trackers/helpers/MyFormat.php</file>
         </group>
     </open-files>
 </project-private>

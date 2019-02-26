@@ -78,11 +78,12 @@ class SiteController extends BaseController
         if (!Yii::$app->user->isGuest) {
             return $this->goHome();
         }
-
+        
         $model = new LoginForm();
         if ($model->load(Yii::$app->request->post()) && $model->login()) {
             return $this->goBack();
         }
+        Yii::$app->user->returnUrl = Yii::$app->request->referrer;
 
         $model->password = '';
         return $this->render('login', [
@@ -143,8 +144,8 @@ class SiteController extends BaseController
     public function actionLogout()
     {
         Yii::$app->user->logout();
-
-        return $this->goHome();
+        return $this->goBack(Yii::$app->request->referrer);
+//        return $this->goHome();
     }
 
     /**
@@ -182,6 +183,6 @@ class SiteController extends BaseController
             'name' => 'language',
             'value' => $lang,
         ]));
-        return $this->redirect(Yii::$app->request->referrer ?: Yii::$app->homeUrl);
+        return $this->goBack(Yii::$app->request->referrer);
     }
 }

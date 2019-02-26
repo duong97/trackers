@@ -50,5 +50,15 @@ return [
     'Tracking items'        =>'Sản phẩm đang theo dõi',
     'Settings'              =>'Cài đặt',
     'The request page does not exists'=>'Trang không tồn tại',
-    'Update'                => 'Cập nhật'
+    'Update'                => 'Cập nhật',
+    '2 weeks'               => '2 tuần',
+    '1 month'               => '1 tháng',
+    '3 months'              => '3 tháng',
+    '6 months'              => '6 tháng',
+    '1 year'                => '1 năm',
+    'Until canceled'        => 'Cho đến khi hủy',
+    'Track for'             => 'Theo dõi trong',
+    'Products are being tracked'=> 'Sản phẩm đang được theo dõi',
+    'Start date'            => 'Ngày bắt đầu',
+    'End date'              => 'Ngày kết thúc'
 ];

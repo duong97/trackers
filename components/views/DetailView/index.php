@@ -1,8 +1,9 @@
 <?php 
 use app\helpers\MyFormat;
 use yii\helpers\Html;
-use yii\widgets\ActiveForm;
-use app\models\Products;
+use yii\bootstrap\ActiveForm;
+use app\models\UserTracking;
+
 ?>
 <div class="container-fluid">
     <div class="row">
@@ -17,27 +18,51 @@ use app\models\Products;
         <div class="col-sm-6">
             <h3><?= $aData['name'] ?></h3>
             <p class="price"><?= MyFormat::formatCurrency($aData['price']) ?></p>
-            <?php if(empty($aPriceLog)): ?>
+            <?php 
+            $isTracked          = false;
+            if(isset($aData['id'])){
+                $mUserTracking  = new UserTracking();
+                $mUserTracking->product_id = $aData['id'];
+                $isTracked      = $mUserTracking->isTracked();
+            }
+            
+            ?>
+            <?php if(!$isTracked){ ?>
                 <?php 
-                $urlManager  = \Yii::$app->getUrlManager();
+                $urlManager     = \Yii::$app->getUrlManager();
+                $action         = Yii::$app->user->isGuest ?
+                                    $urlManager->createUrl(['site/login']) :
+                                    $urlManager->createUrl(['product/action/start-tracking']);
                 $form = ActiveForm::begin([
-                    'id' => 'product-form',
-                    'action' => $urlManager->createUrl(['product/action/start-tracking']),
-                    'options' => ['class' => 'form-horizontal'],
+                    'id'        => 'product-form',
+                    'layout'    => 'horizontal',
+                    'action'    => $action,
+                    'options'   => ['class' => 'form-horizontal'],
                 ]) ?>
-                    <?php $model = new Products(); ?>
-                    <?= $form->field($model, 'name')->hiddenInput(['value'=> $aData['name']])->label(false) ?>
-                    <?= $form->field($model, 'url')->hiddenInput(['value'=> $productUrl])->label(false) ?>
-                    <?= $form->field($model, 'price')->hiddenInput(['value'=> $aData['price']])->label(false) ?>
-                    <?= $form->field($model, 'image')->hiddenInput(['value'=> $imgUrl])->label(false) ?>
+                    
+                    <?php $model = new UserTracking(); ?>
+                    <?= $form->field($model, 'end_date')->dropDownList(UserTracking::aTrackingTime()) ?>
+            
+                    <input type="hidden" name="Products[name]" value="<?= $aData['name'] ?>">
+                    <input type="hidden" name="Products[url]" value="<?= $productUrl ?>">
+                    <input type="hidden" name="Products[price]" value="<?= $aData['price'] ?>">
+                    <input type="hidden" name="Products[image]" value="<?= $imgUrl ?>">
 
                     <div class="form-group">
-                        <div class="col-lg-offset-1 col-lg-11">
-                            <?= Html::submitButton(Yii::t('app', 'Start tracking'), ['class' => 'btn btn-primary']) ?>
-                        </div>
+                        <?= Html::submitButton(Yii::t('app', 'Start tracking'), ['class' => 'btn btn-primary']) ?>
                     </div>
                 <?php ActiveForm::end() ?>
-            <?php endif; ?>
+            <?php } else { ?>
+                        <?php 
+                        $session        = Yii::$app->session; 
+                        $aTrackingItems = $session->get('aTrackingItems');
+                        $startDate      = isset($aTrackingItems[$aData['id']]) ? $aTrackingItems[$aData['id']]->start_date : "";
+                        $endDate        = isset($aTrackingItems[$aData['id']]) ? $aTrackingItems[$aData['id']]->end_date : "";
+                        ?>
+                    <p><?= Yii::t('app', 'Products are being tracked') ."!" ?></p>
+                    <p><?= Yii::t('app', 'Start date') . ": " . MyFormat::formatDatetime($startDate) ?></p>
+                    <p><?= Yii::t('app', 'End date') . ": " . MyFormat::formatDate($endDate) ?></p>
+            <?php } ?>
         </div>
         <div class="col-sm-1"></div>
     </div>

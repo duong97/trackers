@@ -61,7 +61,8 @@ class Products extends BaseModel
      * remove trash of get params on url
      */
     public function handleUrl($urlOut = "") {
-        $url = empty($urlOut) ? $this->url : $urlOut;
+        $url            = empty($urlOut) ? $this->url : $urlOut;
+        if(empty($url)) return "";
         $parse          = parse_url($url);
         $domain         = str_replace("www.", "", $parse['host']);
         $aWebsiteDomain = Constants::$aWebsiteDomain;

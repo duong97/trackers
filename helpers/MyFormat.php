@@ -58,5 +58,22 @@ class MyFormat{
         return preg_replace('/[^A-Za-z0-9\-]/', '', $str);
     } 
 
+    /**
+     *  cộng hoặc trừ thêm ngày
+     * @param: $date: 2013-05-26
+     * @param: $day_add: 16
+     * @param: $operator: + or - default is +
+     * @param: $amount_of_days: day, month, year, week default is "day"
+     * @param: $format: default "Y-m-d"
+     * @return: $format: default "Y-m-d"
+     */
+    public static function modifyDays($date, $day_add, $operator = '+', $amount_of_days = 'day', $format = 'Y-m-d')
+    {
+        if ($day_add == 0 || empty($day_add)) {
+            return $date;
+        }
+        return date($format, strtotime($operator.$day_add." ".$amount_of_days));
+    }
+    
 }
 

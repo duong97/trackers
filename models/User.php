@@ -11,7 +11,7 @@ class User extends \yii\base\BaseObject implements \yii\web\IdentityInterface
     public $auth_key;
     public $first_name, $last_name;
     public $role, $status, $ip, $last_access, $created_date;
-
+    
     /**
      * {@inheritdoc}
      */

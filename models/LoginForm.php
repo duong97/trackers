@@ -4,6 +4,7 @@ namespace app\models;
 
 use Yii;
 use yii\base\Model;
+use app\models\UserTracking;
 
 /**
  * LoginForm is the model behind the login form.
@@ -101,7 +102,12 @@ class LoginForm extends Model
      * Update last access of user
      */
     public function beforeLogin(){
-        $model = Users::find()->where(['id' => $this->_user->id])->one();
+        $model                  = Users::find()->where(['id' => $this->_user->id])->one();
+        $session                = Yii::$app->session;
+        $userTracking           = new UserTracking();
+        $userTracking->user_id  = $this->_user->id;
+        $aTrackingItems         = $userTracking->getUserTrackingItems();
+        $session->set('aTrackingItems', $aTrackingItems);
         if($model){
             $model->last_access = date('Y-m-d H:i:s');
             $model->update();
