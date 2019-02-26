@@ -15,6 +15,7 @@ and open the template in the editor.
     font-size: 19px;
 }
 .prd-container{
+    position: relative;
     padding: 5px;
 }
 .prd-container .prd-image{
@@ -22,4 +23,9 @@ and open the template in the editor.
 }
 .prd-container .prd-image img{
     width: 100%;
+}
+.prd-container .tracking-label{
+    position: absolute;
+    top: 3px; 
+    right: 3px;
 }

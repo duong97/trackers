@@ -60,5 +60,6 @@ return [
     'Track for'             => 'Theo dõi trong',
     'Products are being tracked'=> 'Sản phẩm đang được theo dõi',
     'Start date'            => 'Ngày bắt đầu',
-    'End date'              => 'Ngày kết thúc'
+    'End date'              => 'Ngày kết thúc',
+    'Tracking'              => 'Đang theo dõi',
 ];

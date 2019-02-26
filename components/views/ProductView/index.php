@@ -1,5 +1,6 @@
 <?php 
 use app\helpers\MyFormat;
+use app\models\UserTracking;
 ?>
 
 <div class="row">
@@ -8,7 +9,15 @@ use app\helpers\MyFormat;
         <div class="row">
         <?php if(isset($aData)): ?>
             <?php foreach ($aData as $p) : ?>
+                <?php 
+                $mUserTracking              = new UserTracking();
+                $mUserTracking->product_id  = $p->id;
+                $isTracked                  = $mUserTracking->isTracked();
+                ?>
                 <div class="prd-container col-md-2 col-sm-3 col-xs-4">
+                    <?php if($isTracked): ?>
+                        <span class="label label-success tracking-label"><?= Yii::t('app', 'Tracking') ?></span>
+                    <?php endif; ?>
                     <div class="prd-image">
                         <a href="<?= $p->url ?>">
                             <img src="<?= $p->image ?>" alt="<?= $p->image ?>">
