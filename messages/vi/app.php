@@ -62,4 +62,5 @@ return [
     'Start date'            => 'Ngày bắt đầu',
     'End date'              => 'Ngày kết thúc',
     'Tracking'              => 'Đang theo dõi',
+    'Stop tracking'         => 'Dừng theo dõi',
 ];

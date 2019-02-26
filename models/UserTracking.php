@@ -22,9 +22,12 @@ use Yii;
  * @property int $product_id
  * @property string $start_date
  * @property string $end_date
+ * @property int $status
  */
 class UserTracking extends BaseModel
 {
+    const stt_active        = 1;
+    const stt_inactive      = 2;
 
     /**
      * {@inheritdoc}
@@ -40,7 +43,7 @@ class UserTracking extends BaseModel
     public function rules()
     {
         return [
-            [['start_date', 'end_date', 'user_id', 'product_id'], 'safe'],
+            [['start_date', 'end_date', 'user_id', 'product_id', 'status'], 'safe'],
         ];
     }
 
@@ -74,9 +77,14 @@ class UserTracking extends BaseModel
     
     /*
      * get tracking items of user by id
+     * @params: $this->user_id
      */
     public function getUserTrackingItems(){
-        $models = UserTracking::find()->where(['user_id' => $this->user_id])->all();
+        $models = UserTracking::find()
+                ->where([
+                    'user_id' => $this->user_id, 
+                    'status' => self::stt_active])
+                ->all();
         $ret    = [];
         if($models){
             foreach ($models as $row) {
@@ -86,8 +94,40 @@ class UserTracking extends BaseModel
         return $ret;
     }
     
+    /*
+     * Check if product is tracked
+     * @params: $this->product_id
+     */
     public function isTracked(){
-        $models = UserTracking::find()->where(['user_id' => Yii::$app->user->id, 'product_id' => $this->product_id])->one();
+        $models = UserTracking::find()
+                ->where([
+                    'user_id' => Yii::$app->user->id, 
+                    'product_id' => $this->product_id,
+                    'status' => self::stt_active])
+                ->one();
         return $models ? true : false;
+    }
+    
+    /*
+     * Check if product is tracked before (current no)
+     * @params: $this->product_id
+     */
+    public function isTrackedBefore(){
+        $models = UserTracking::find()
+                ->where([
+                    'user_id' => Yii::$app->user->id, 
+                    'product_id' => $this->product_id,
+                    'status' => self::stt_inactive])
+                ->one();
+        return $models ? $models : false;
+    }
+    
+    public function findByProductId() {
+        return UserTracking::find()
+                ->where([
+                    'user_id' => Yii::$app->user->id, 
+                    'product_id' => $this->product_id,
+                    'status' => self::stt_active])
+                ->one();
     }
 }

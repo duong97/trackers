@@ -4,6 +4,7 @@ use yii\helpers\Html;
 use yii\bootstrap\ActiveForm;
 use app\models\UserTracking;
 
+$urlManager     = \Yii::$app->getUrlManager();
 ?>
 <div class="container-fluid">
     <div class="row">
@@ -29,7 +30,6 @@ use app\models\UserTracking;
             ?>
             <?php if(!$isTracked){ ?>
                 <?php 
-                $urlManager     = \Yii::$app->getUrlManager();
                 $action         = Yii::$app->user->isGuest ?
                                     $urlManager->createUrl(['site/login']) :
                                     $urlManager->createUrl(['product/action/start-tracking']);
@@ -53,15 +53,34 @@ use app\models\UserTracking;
                     </div>
                 <?php ActiveForm::end() ?>
             <?php } else { ?>
-                        <?php 
-                        $session        = Yii::$app->session; 
-                        $aTrackingItems = $session->get('aTrackingItems');
-                        $startDate      = isset($aTrackingItems[$aData['id']]) ? $aTrackingItems[$aData['id']]->start_date : "";
-                        $endDate        = isset($aTrackingItems[$aData['id']]) ? $aTrackingItems[$aData['id']]->end_date : "";
-                        ?>
-                    <p><?= Yii::t('app', 'Products are being tracked') ."!" ?></p>
-                    <p><?= Yii::t('app', 'Start date') . ": " . MyFormat::formatDatetime($startDate) ?></p>
-                    <p><?= Yii::t('app', 'End date') . ": " . MyFormat::formatDate($endDate) ?></p>
+                <?php 
+                $session        = Yii::$app->session; 
+                $aTrackingItems = $session->get('aTrackingItems');
+                $startDate      = isset($aTrackingItems[$aData['id']]) ? $aTrackingItems[$aData['id']]->start_date : "";
+                $endDate        = isset($aTrackingItems[$aData['id']]) ? $aTrackingItems[$aData['id']]->end_date : "";
+                ?>
+                <p class="label label-success">
+                    <?= Yii::t('app', 'Products are being tracked') ."!" ?>
+                </p><br>
+                <p class="label label-default">
+                    <?= Yii::t('app', 'Start date') . ": " . MyFormat::formatDatetime($startDate) ?>
+                </p><br>
+                <p class="label label-default">
+                    <?= Yii::t('app', 'End date') . ": " . MyFormat::formatDate($endDate) ?>
+                </p><br><br>
+                
+                <?php 
+                $form = ActiveForm::begin([
+                    'id'        => 'product-form',
+                    'layout'    => 'horizontal',
+                    'action'    => $urlManager->createUrl(['product/action/stop-tracking']),
+                ]) ?>
+                
+                <input type="hidden" name="Products[id]" value="<?= $aData['id'] ?>">
+                <button class="btn btn-danger" type="submit">
+                    <?= Yii::t('app', 'Stop tracking') ?>
+                </button>
+                <?php ActiveForm::end() ?>
             <?php } ?>
         </div>
         <div class="col-sm-1"></div>
