@@ -52,7 +52,9 @@ class Products extends BaseModel
     {
         return [
             'id' => 'ID',
-            'link' => Yii::t('app', 'Link'),
+            'url' => Yii::t('app', 'Product link'),
+            'name' => Yii::t('app', 'Name'),
+            'image' => Yii::t('app', 'Images'),
             'created_date' => Yii::t('app', 'Created Date'),
         ];
     }

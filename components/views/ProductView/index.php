@@ -13,19 +13,20 @@ use app\models\UserTracking;
                 $mUserTracking              = new UserTracking();
                 $mUserTracking->product_id  = $p->id;
                 $isTracked                  = $mUserTracking->isTracked();
+                $urlManager = \Yii::$app->getUrlManager();
+                $url        = $urlManager->createUrl(['product/action/detail', 'url' => $p->url]);
                 ?>
                 <div class="prd-container col-md-2 col-sm-3 col-xs-4">
                     <?php if($isTracked): ?>
                         <span class="label label-success tracking-label"><?= Yii::t('app', 'Tracking') ?></span>
                     <?php endif; ?>
                     <div class="prd-image">
-                        <a href="<?= $p->url ?>">
+                        <a href="<?= $url ?>">
                             <img src="<?= $p->image ?>" alt="<?= $p->image ?>">
                         </a>
                     </div>
                     <div class="prd-info">
-                        <?php $urlManager = \Yii::$app->getUrlManager();
-                        $url = $urlManager->createUrl(['product/action/detail', 'url' => $p->url]); ?>
+                        
                         <a href="<?= $url ?>" title="<?= $p->name ?>">
                             <?= MyFormat::shortenName($p->name) ?>
                         </a>

@@ -80,4 +80,8 @@ class Users extends BaseModel
         $pw = md5(trim($password));
         return $pw === $this->password;
     }
+    
+    public function getFullName(){
+        return $this->first_name . " " . $this->last_name;
+    }
 }

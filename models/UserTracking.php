@@ -44,7 +44,22 @@ class UserTracking extends BaseModel
     {
         return [
             [['start_date', 'end_date', 'user_id', 'product_id', 'status'], 'safe'],
+            [['rUser', 'rProduct'], 'safe'],
         ];
+    }
+    
+    /*
+     * relations
+     */
+    public function getRUser(){
+        return $this->hasOne(Users::className(), ['id' => 'user_id']);
+    }
+    
+    /*
+     * relations
+     */
+    public function getRProduct(){
+        return $this->hasOne(Products::className(), ['id' => 'product_id']);
     }
 
     /**
@@ -82,7 +97,7 @@ class UserTracking extends BaseModel
     public function getUserTrackingItems(){
         $models = UserTracking::find()
                 ->where([
-                    'user_id' => $this->user_id, 
+                    'user_id' => Yii::$app->user->id, 
                     'status' => self::stt_active])
                 ->all();
         $ret    = [];

@@ -63,10 +63,12 @@ $url = \Yii::$app->getUrlManager();
             Yii::$app->user->isGuest ? (
                 ['label' => Yii::t('app', 'Register'), 'url' => ['/site/register']]
             ) : '',
-            [
-                'label' => '<span class="glyphicon glyphicon-user"></span>',
-                'items' => Htmls::getUserItems()
-            ],
+            Yii::$app->user->isGuest ? '' : (
+                [
+                    'label' => '<span class="glyphicon glyphicon-user"></span>',
+                    'items' => Htmls::getUserItems()
+                ]
+            ),
             [
                 'label' => '<span class="glyphicon glyphicon-globe"></span>',
                 'items' => Htmls::getChangeLanguageItems()

@@ -11,7 +11,14 @@ use yii\web\NotFoundHttpException;
 use Yii;
 
 class Checks{
-    public function notFoundExc() {
+    
+    public static function notFoundExc() {
         throw new NotFoundHttpException(Yii::t('app', 'The request page does not exists'));
+    }
+    
+    public static function requireLogin(){
+        if(Yii::$app->user->isGuest){
+            Checks::notFoundExc();
+        }
     }
 }

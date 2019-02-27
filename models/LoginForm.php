@@ -103,11 +103,11 @@ class LoginForm extends Model
      */
     public function beforeLogin(){
         $model                  = Users::find()->where(['id' => $this->_user->id])->one();
-        $session                = Yii::$app->session;
-        $userTracking           = new UserTracking();
-        $userTracking->user_id  = $this->_user->id;
-        $aTrackingItems         = $userTracking->getUserTrackingItems();
-        $session->set('aTrackingItems', $aTrackingItems);
+//        $session                = Yii::$app->session;
+//        $userTracking           = new UserTracking();
+//        $userTracking->user_id  = $this->_user->id;
+//        $aTrackingItems         = $userTracking->getUserTrackingItems();
+//        $session->set('aTrackingItems', $aTrackingItems);
         if($model){
             $model->last_access = date('Y-m-d H:i:s');
             $model->update();

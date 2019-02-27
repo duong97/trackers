@@ -32,7 +32,7 @@ $urlManager     = \Yii::$app->getUrlManager();
                 <?php 
                 $action         = Yii::$app->user->isGuest ?
                                     $urlManager->createUrl(['site/login']) :
-                                    $urlManager->createUrl(['product/action/start-tracking']);
+                                    $urlManager->createUrl(['user/default/start-tracking']);
                 $form = ActiveForm::begin([
                     'id'        => 'product-form',
                     'layout'    => 'horizontal',
@@ -54,8 +54,8 @@ $urlManager     = \Yii::$app->getUrlManager();
                 <?php ActiveForm::end() ?>
             <?php } else { ?>
                 <?php 
-                $session        = Yii::$app->session; 
-                $aTrackingItems = $session->get('aTrackingItems');
+                $userTracking   = new UserTracking();
+                $aTrackingItems = $userTracking->getUserTrackingItems();
                 $startDate      = isset($aTrackingItems[$aData['id']]) ? $aTrackingItems[$aData['id']]->start_date : "";
                 $endDate        = isset($aTrackingItems[$aData['id']]) ? $aTrackingItems[$aData['id']]->end_date : "";
                 ?>
@@ -69,18 +69,20 @@ $urlManager     = \Yii::$app->getUrlManager();
                     <?= Yii::t('app', 'End date') . ": " . MyFormat::formatDate($endDate) ?>
                 </p><br><br>
                 
+                    <?php $url = $urlManager->createUrl(['user/default/stop-tracking', 'id' => $aData['id']]); ?>
+                    <?= Html::a(Yii::t('app', 'Stop tracking'), $url, ['class' => 'btn btn-danger']) ?>
                 <?php 
-                $form = ActiveForm::begin([
-                    'id'        => 'product-form',
-                    'layout'    => 'horizontal',
-                    'action'    => $urlManager->createUrl(['product/action/stop-tracking']),
-                ]) ?>
+//                $form = ActiveForm::begin([
+//                    'id'        => 'product-form',
+//                    'layout'    => 'horizontal',
+//                    'action'    => $urlManager->createUrl(['product/action/stop-tracking']),
+//                ]) ?>
                 
-                <input type="hidden" name="Products[id]" value="<?= $aData['id'] ?>">
+<!--                <input type="hidden" name="Products[id]" value="//<?= $aData['id'] ?>">
                 <button class="btn btn-danger" type="submit">
                     <?= Yii::t('app', 'Stop tracking') ?>
-                </button>
-                <?php ActiveForm::end() ?>
+                </button>-->
+                <?php // ActiveForm::end() ?>
             <?php } ?>
         </div>
         <div class="col-sm-1"></div>

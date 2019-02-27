@@ -38,15 +38,15 @@ class Htmls{
     public static function getUserItems(){
         $url        = \Yii::$app->getUrlManager();
         $aOption    = [
-            Yii::t('app', 'Profile'),
-            Yii::t('app', 'Tracking items'),
-            Yii::t('app', 'Settings')
+            'profile' => Yii::t('app', 'Profile'),
+            'tracking-items' => Yii::t('app', 'Tracking items'),
+            'settings' => Yii::t('app', 'Settings')
         ];
         $ret        = [];
-        foreach ($aOption as $name) {
+        foreach ($aOption as $action => $name) {
             $ret[] = [
                 'label' => $name,
-                'url' => $url->createUrl(['user/default/profile']),
+                'url' => $url->createUrl(["user/default/{$action}"]),
             ];
         }
         return $ret;

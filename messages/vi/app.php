@@ -63,4 +63,8 @@ return [
     'End date'              => 'Ngày kết thúc',
     'Tracking'              => 'Đang theo dõi',
     'Stop tracking'         => 'Dừng theo dõi',
+    'Product link'          => 'Đường dẫn sản phẩm',
+    'Name'                  => 'Tên sản phẩm',
+    'Images'                => 'Hình ảnh',
+    'Are you sure'          => 'Bạn có chắc',
 ];
