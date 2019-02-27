@@ -28,6 +28,20 @@ class UserTracking extends BaseModel
 {
     const stt_active        = 1;
     const stt_inactive      = 2;
+    
+    /*
+     * get array tracking time
+     */
+    public static function aTrackingTime(){
+        return [
+            14 => Yii::t('app', '2 weeks'),
+            30 => Yii::t('app', '1 month'),
+            90 => Yii::t('app', '3 months'),
+            180 => Yii::t('app', '6 months'),
+            365 => Yii::t('app', '1 year'),
+            0 => Yii::t('app', 'Until canceled'),
+        ];
+    }
 
     /**
      * {@inheritdoc}
@@ -73,20 +87,6 @@ class UserTracking extends BaseModel
             'product_id' => 'Product ID',
             'start_date' => 'Start Date',
             'end_date' => Yii::t('app', 'Track for'),
-        ];
-    }
-    
-    /*
-     * get array tracking time
-     */
-    public static function aTrackingTime(){
-        return [
-            14 => Yii::t('app', '2 weeks'),
-            30 => Yii::t('app', '1 month'),
-            90 => Yii::t('app', '3 months'),
-            180 => Yii::t('app', '6 months'),
-            365 => Yii::t('app', '1 year'),
-            0 => Yii::t('app', 'Until canceled'),
         ];
     }
     

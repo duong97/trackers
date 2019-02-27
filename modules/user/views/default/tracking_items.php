@@ -1,6 +1,9 @@
 <?php 
 use yii\grid\GridView;
 use yii\helpers\Html;
+
+$this->title = Yii::t('app', 'Tracking items');
+$this->params['breadcrumbs'][] = $this->title;
 ?>
 
 <?= GridView::widget([

@@ -26,7 +26,23 @@ class Users extends BaseModel
 {
     const STT_VERIFYING         = 1;
     const STT_ACTIVE            = 2;
-    /**
+    
+    const notify_increase       = 1;
+    const notify_decrease       = 2;
+    const notify_both           = 3;
+    
+    /*
+     * get array notify type
+     */
+    public static function aNotifyType(){
+        return [
+            self::notify_increase => Yii::t('app', 'Prices increase'),
+            self::notify_decrease => Yii::t('app', 'Prices decrease'),
+            self::notify_both     => Yii::t('app', 'Both'),
+        ];
+    }
+
+        /**
      * {@inheritdoc}
      */
     public static function tableName()
@@ -41,6 +57,7 @@ class Users extends BaseModel
     {
         return [
             [['email', 'password', 'salt', 'first_name', 'last_name', 'status', 'last_access', 'created_date'], 'safe'],
+            [['is_notify_fb', 'is_notify_email', 'notify_type'], 'safe'],
         ];
     }
 

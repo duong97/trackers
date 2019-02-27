@@ -4,6 +4,9 @@ use yii\helpers\Html;
 use yii\bootstrap\ActiveForm;
 use app\models\UserTracking;
 
+$this->title = $aData['name'];
+$this->params['breadcrumbs'][] = $this->title;
+
 $urlManager     = \Yii::$app->getUrlManager();
 ?>
 <div class="container-fluid">
@@ -50,6 +53,13 @@ $urlManager     = \Yii::$app->getUrlManager();
 
                     <div class="form-group">
                         <?= Html::submitButton(Yii::t('app', 'Start tracking'), ['class' => 'btn btn-primary']) ?>
+                        <?php if(Yii::$app->user->isGuest): ?>
+                            <?php 
+                                $urlManager = \Yii::$app->getUrlManager();
+                                $urlLogin = $urlManager->createUrl(['site/login']);
+                            ?>
+                            <p><?= "* " . Yii::t('app', 'You need to ') . Html::a(Yii::t('app', 'login'), $urlLogin) . Yii::t('app', ' to track product prices') . "!" ?></p>
+                        <?php endif; ?>
                     </div>
                 <?php ActiveForm::end() ?>
             <?php } else { ?>

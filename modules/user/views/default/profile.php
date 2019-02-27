@@ -2,6 +2,9 @@
 use yii\helpers\Html;
 use app\helpers\MyFormat;
 use yii\bootstrap\ActiveForm;
+
+$this->title = Yii::t('app', 'Profile');
+$this->params['breadcrumbs'][] = $this->title;
 ?>
 
 <div class="row" style="margin-top: 20px;">
@@ -16,8 +19,14 @@ use yii\bootstrap\ActiveForm;
             <?php 
             $aLabel = $model->attributeLabels()
             ?>
+            
+            <div class="form-group field-users-created_date">
+                <label class="control-label col-sm-3" for="users-email"><?= $aLabel['email'] ?></label>
+                <div class="col-sm-6">
+                    <p style="margin-top: 8px;"><?= $model->email ?></p>
+                </div>
+            </div>
         
-            <?= $form->field($model, 'email') ?>
             <?= $form->field($model, 'first_name') ?>
             <?= $form->field($model, 'last_name') ?>
             

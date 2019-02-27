@@ -144,8 +144,8 @@ class SiteController extends BaseController
     public function actionLogout()
     {
         Yii::$app->user->logout();
-        return $this->goBack(Yii::$app->request->referrer);
-//        return $this->goHome();
+//        return $this->goBack(Yii::$app->request->referrer);
+        return $this->goHome();
     }
 
     /**
@@ -183,6 +183,7 @@ class SiteController extends BaseController
             'name' => 'language',
             'value' => $lang,
         ]));
-        return $this->goBack(Yii::$app->request->referrer);
+        return $this->redirect(Yii::$app->request->referrer ?: Yii::$app->homeUrl);
+//        return $this->goBack(Yii::$app->request->referrer);
     }
 }

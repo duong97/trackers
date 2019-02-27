@@ -12,12 +12,15 @@
 namespace app\modules\user\controllers;
 
 use app\controllers\BaseController;
-use app\helpers\Checks;
+use yii\data\ActiveDataProvider;
+
 use app\models\Users;
 use app\models\UserTracking;
-use yii\data\ActiveDataProvider;
 use app\models\Products;
+
+use app\helpers\Checks;
 use app\helpers\MyFormat;
+use app\helpers\Constants;
 use Yii;
 
 /**
@@ -135,6 +138,28 @@ class DefaultController extends BaseController
                 }
             }
             return $this->goBack(Yii::$app->request->referrer);
+        } catch (Exception $exc) {
+            
+        }
+    }
+    
+    /*
+     * User setting
+     */
+    public function actionSettings(){
+        try {
+            Checks::requireLogin();
+            $user = Users::find()
+                ->where([
+                    'id' => Yii::$app->user->id, 
+                    'role' => Constants::USER])
+                ->one();
+            $post = Yii::$app->request->post('Users');
+            if(isset($post)){
+                $user->attributes = $post;
+                $user->update();
+            }
+            return $this->render('settings', ['user' => $user]);
         } catch (Exception $exc) {
             
         }

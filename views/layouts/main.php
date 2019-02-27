@@ -78,7 +78,6 @@ $url = \Yii::$app->getUrlManager();
     NavBar::end();
     ?>
     
-    
     <!--Search bar-->
     <?php 
     $form = ActiveForm::begin([
@@ -101,8 +100,12 @@ $url = \Yii::$app->getUrlManager();
         </div>
     <?php ActiveForm::end() ?>
     
-    <div class="container" style="margin-top: 25px;">
+    <div class="container" style="margin-top: 40px;">
         <?= Breadcrumbs::widget([
+            'homeLink' => [ 
+                      'label' => Yii::t('yii', 'Home'),
+                      'url' => Yii::$app->homeUrl,
+                ],
             'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
         ]) ?>
         <?= Alert::widget() ?>
