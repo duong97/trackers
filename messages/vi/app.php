@@ -82,4 +82,6 @@ return [
     'You need to '          => 'Bạn cần ',
     'login'                 => 'đăng nhập',
     ' to track product prices' => ' để theo dõi giá sản phẩm',
+    'Welcome to '           => 'Chào mừng đến với ',
+    ' is the place to keep track of the price of a product on e-commerce websites, so you can buy products at the best prices, save costs, and have fun shopping experiences.' => ' là nơi theo dõi giá của một sản phẩm trên các website thương mại điện tử, giúp bạn có thể mua hàng với giá tốt nhất, tiết kiệm chi phí cùng những trải nghiệm mua sắm thú vị.',
 ];

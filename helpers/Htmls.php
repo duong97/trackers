@@ -15,7 +15,7 @@ class Htmls{
      * Get array language items for main menu
      */
     public static function getChangeLanguageItems(){
-        $url        = \Yii::$app->getUrlManager();
+        $urlM       = \Yii::$app->getUrlManager();
         $cLanguage  = \Yii::$app->language;
         $aLanguage  = Constants::$aLanguage;
         $ret        = [
@@ -23,9 +23,10 @@ class Htmls{
             '<li class="divider"></li>'
         ];
         foreach ($aLanguage as $key => $name) {
+            $url = $urlM->createUrl(['site/change-language', 'lang'=>$key]);
             $ret[] = [
                 'label' => $name,
-                'url' => $url->createUrl(['site/change-language', 'lang'=>$key]),
+                'url' => ($cLanguage == $key) ? "#" : $url,
                 'options' => ($cLanguage == $key) ? ['class' => 'active'] : []
             ];
         }

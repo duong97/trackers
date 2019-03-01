@@ -1,3 +1,1 @@
-<div>
-    welcom to index site
-</div>
+<div class="home-background"></div>

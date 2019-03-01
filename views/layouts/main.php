@@ -11,10 +11,8 @@ use yii\widgets\Breadcrumbs;
 use app\assets\AppAsset;
 use app\helpers\Constants;
 use app\helpers\Htmls;
-use yii\widgets\ActiveForm;
 
 AppAsset::register($this);
-$url = \Yii::$app->getUrlManager();
 ?>
 <?php $this->beginPage() ?>
 <!DOCTYPE html>
@@ -32,75 +30,56 @@ $url = \Yii::$app->getUrlManager();
 <?php $this->beginBody() ?>
 
 <div class="wrap">
-    <?php
-    NavBar::begin([
-        'brandLabel' => Constants::website_name,
-        'brandUrl' => Yii::$app->homeUrl,
-        'options' => [
-            'class' => 'navbar-inverse navbar-fixed-top',
-            'style' => 'border-color:#222;'
-        ],
-    ]);
-    echo Nav::widget([
-        'options' => ['class' => 'navbar-nav navbar-right'],
-        'encodeLabels' => false,
-        'items' => [
-            ['label' => Yii::t('app', 'Home'), 'url' => Yii::$app->homeUrl],
-//            ['label' => Yii::t('app', 'About'), 'url' => ['/site/about']],
-//            ['label' => Yii::t('app', 'Contact'), 'url' => ['/site/contact']],
-            Yii::$app->user->isGuest ? (
-                ['label' => Yii::t('app', 'Login'), 'url' => ['/site/login']]
-            ) : (
-                '<li>'
-                . Html::beginForm(['/site/logout'], 'post')
-                . Html::submitButton(
-                    Yii::t('app', 'Logout').' (' . Yii::$app->user->identity->first_name . ')',
-                    ['class' => 'btn btn-link logout']
-                )
-                . Html::endForm()
-                . '</li>'
-            ),
-            Yii::$app->user->isGuest ? (
-                ['label' => Yii::t('app', 'Register'), 'url' => ['/site/register']]
-            ) : '',
-            Yii::$app->user->isGuest ? '' : (
-                [
-                    'label' => '<span class="glyphicon glyphicon-user"></span>',
-                    'items' => Htmls::getUserItems()
-                ]
-            ),
-            [
-                'label' => '<span class="glyphicon glyphicon-globe"></span>',
-                'items' => Htmls::getChangeLanguageItems()
+    <!-- top menu -->
+    <div class="navbar-fixed-top navbar-default nav-container">
+        <?php
+        NavBar::begin([
+            'brandLabel' => Constants::website_name,
+            'brandUrl' => Yii::$app->homeUrl,
+            'headerContent' => $this->render('_nav_search'),
+            'options' => [
+                'class' => 'nav-main-menu',
             ],
-        ],
-    ]);
-    NavBar::end();
-    ?>
+        ]);
+        echo Nav::widget([
+            'options' => ['class' => 'navbar-nav navbar-right'],
+            'encodeLabels' => false,
+            'items' => [
+                ['label' => Yii::t('app', 'Home'), 'url' => Yii::$app->homeUrl],
+    //            ['label' => Yii::t('app', 'About'), 'url' => ['/site/about']],
+    //            ['label' => Yii::t('app', 'Contact'), 'url' => ['/site/contact']],
+                Yii::$app->user->isGuest ? (
+                    ['label' => Yii::t('app', 'Login'), 'url' => ['/site/login']]
+                ) : (
+                    '<li>'
+                    . Html::beginForm(['/site/logout'], 'post')
+                    . Html::submitButton(
+                        Yii::t('app', 'Logout').' (' . Yii::$app->user->identity->first_name . ')',
+                        ['class' => 'btn btn-link logout']
+                    )
+                    . Html::endForm()
+                    . '</li>'
+                ),
+                Yii::$app->user->isGuest ? (
+                    ['label' => Yii::t('app', 'Register'), 'url' => ['/site/register']]
+                ) : '',
+                Yii::$app->user->isGuest ? '' : (
+                    [
+                        'label' => '<span class="glyphicon glyphicon-user"></span>',
+                        'items' => Htmls::getUserItems()
+                    ]
+                ),
+                [
+                    'label' => '<span class="glyphicon glyphicon-globe"></span>',
+                    'items' => Htmls::getChangeLanguageItems()
+                ],
+            ],
+        ]);
+        NavBar::end();
+        ?>
+    </div><!-- top menu -->
     
-    <!--Search bar-->
-    <?php 
-    $form = ActiveForm::begin([
-        'id'        => 'search-form',
-        'options'   => ['class' => 'form-horizontal'],
-        'method'    => 'get',
-        'action'    => $url->createUrl(['product/action/search'])
-    ]) ?>
-        <div style="position: fixed; top: 50px; left:0;width: 100%;padding: 5px;background: #222;z-index: 1;">
-            <div class="col-sm-3"></div>
-            <div class="input-group col-sm-6">
-                <input type="text" name="search-value" class="form-control" placeholder="<?= Yii::t('app', 'Search') ?>" id="nav-search-product" value="<?= isset($_GET['search-value']) ? $_GET['search-value'] : '' ?>" autocomplete="off"/>
-                <div class="input-group-btn">
-                    <button class="btn btn-primary" id="search-product-btn" type="submit" style="color: white; background: #279033; border-color: #279033;">
-                        <span class="glyphicon glyphicon-search"></span>
-                    </button>
-                </div>
-            </div>
-            <div class="col-sm-3"></div>
-        </div>
-    <?php ActiveForm::end() ?>
-    
-    <div class="container" style="margin-top: 40px;">
+    <div class="main-container">
         <?= Breadcrumbs::widget([
             'homeLink' => [ 
                       'label' => Yii::t('yii', 'Home'),
@@ -113,9 +92,38 @@ $url = \Yii::$app->getUrlManager();
     </div>
 </div>
 
-<footer class="footer">
-    <div class="container">
-        <p class="pull-left">&copy; <?= Constants::website_name." ".date('Y') ?></p>
+<footer>
+    <div class="footer-info">
+        <div class="container">
+            <div class="row">
+                <div class="col-xs-6 col-md-3 footer-col">
+                    <span><?= Yii::t('app', 'Explode') ?></span>
+                    <?= Html::a(Yii::t('app', 'Home'), '#', ['class' => 'footer-link']) ?>
+                    <?= Html::a(Yii::t('app', 'About'), '#', ['class' => 'footer-link']) ?>
+                </div>
+                <div class="col-xs-6 col-md-3 footer-col">
+                    <span><?= Yii::t('app', 'Contact') ?></span>
+                    <p>123 Điện Biên Phủ, P.8</p>
+                    <p>Q.Bình Thạnh, TP.HCM, Vietnam</p>
+                    <p>test@test.vn</p>
+                    <p>0912 378 123</p>
+                </div>
+                <div class="col-xs-6 col-md-3 footer-col">
+                    <span><?= Yii::t('app', 'Follow') ?></span>
+                    <?= Html::a('Facebook', '#', ['class' => 'footer-link']) ?>
+                    <?= Html::a('Instagram', '#', ['class' => 'footer-link']) ?>
+                    <?= Html::a('Youtube', '#', ['class' => 'footer-link']) ?>
+                </div>
+                <div class="col-xs-6 col-md-3 footer-col">
+                    <span><?= Yii::t('app', 'Legal') ?></span>
+                    <?= Html::a(Yii::t('app', 'Terms'), '#', ['class' => 'footer-link']) ?>
+                    <?= Html::a(Yii::t('app', 'Privacy'), '#', ['class' => 'footer-link']) ?>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="footer">
+        <p class="ft-copyright">&copy; <?= strtoupper(Constants::website_name)." ".date('Y') . ". ALL RIGHTS RESERVED." ?></p>
 
         <!--<p class="pull-right"><?= Yii::powered() ?></p>-->
     </div>

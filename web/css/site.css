@@ -16,9 +16,8 @@ body {
 
 .footer {
     height: 60px;
-    background-color: #f5f5f5;
-    border-top: 1px solid #ddd;
-    padding-top: 20px;
+    background-color: #f3f3f3;
+    padding: 45px 0 55px 0;
 }
 
 .jumbotron {

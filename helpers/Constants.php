@@ -8,7 +8,7 @@
 namespace app\helpers;
 
 class Constants{
-    const website_name = "Price Tracker";
+    const website_name = "Ding";
     
     const ADMIN         = 1;
     const USER          = 2;
@@ -35,9 +35,9 @@ class Constants{
         self::LAZADA    => 'Lazada',
         self::SHOPEE    => 'Shopee',
         self::SENDO     => 'Sendo',
-        self::AMAZON    => 'Aazon',
+        self::AMAZON    => 'Amazon',
         self::EBAY      => 'Ebay',
-    ];
+    ];    
     
     public static $aLanguage = [
         'en' => 'English',
