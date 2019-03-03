@@ -10,37 +10,66 @@ use yii\bootstrap\ActiveForm;
 $this->title = Yii::t('app', 'Login');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="site-login">
-    <h1><?= Html::encode($this->title) ?></h1>
 
-    <p><?= Yii::t('app', 'Please fill out the following fields to login') ?>:</p>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-12 col-md-8 col-md-offset-2 col-lg-6 col-lg-offset-3 text-center">
+            <h1><?= Html::encode($this->title) ?></h1>
+            <p><?= Yii::t('app', 'Login with social media or manually') ?></p>
+            <hr class="hr-style">
+        </div>
+        <!--Login using email and password-->
+        <div class="col-sm-6 col-md-4 col-md-offset-2 col-lg-3 col-lg-offset-3">
+            <div class="site-login">
+                <?php $form = ActiveForm::begin([
+                    'id' => 'login-form',
+//                    'layout' => 'horizontal',
+                    'fieldConfig' => [
+//                        'template' => "{label}\n<div class=\"col-lg-3\">{input}</div>\n<div class=\"col-lg-8\">{error}</div>",
+//                        'labelOptions' => ['class' => 'col-lg-1 control-label'],
+                    ],
+                ]); ?>
 
-    <?php $form = ActiveForm::begin([
-        'id' => 'login-form',
-        'layout' => 'horizontal',
-        'fieldConfig' => [
-            'template' => "{label}\n<div class=\"col-lg-3\">{input}</div>\n<div class=\"col-lg-8\">{error}</div>",
-            'labelOptions' => ['class' => 'col-lg-1 control-label'],
-        ],
-    ]); ?>
+                    <?php echo $form->field($model, 'email')
+                                    ->textInput([
+                                        'autofocus' => true, 
+                                        'placeholder' => $model->attributeLabels()['email'],
+                                        'class' => 'square form-control'
+                                    ])
+                                    ->label(false) ?>
 
-        <?= $form->field($model, 'email')->textInput(['autofocus' => true]) ?>
+                    <?php echo $form->field($model, 'password')
+                                    ->passwordInput([
+                                        'placeholder' => $model->attributeLabels()['password'],
+                                        'class' => 'square form-control'
+                                    ])
+                                    ->label(false) ?>
 
-        <?= $form->field($model, 'password')->passwordInput() ?>
+                    <?php 
+                    echo $form->field($model, 'rememberMe')->checkbox([
+//                        'template' => "<div class=\"col-lg-offset-1 col-lg-3\">{input} {label}</div>\n<div class=\"col-lg-8\">{error}</div>",
+                    ]) 
+                    ?>
 
-        <?= $form->field($model, 'rememberMe')->checkbox([
-            'template' => "<div class=\"col-lg-offset-1 col-lg-3\">{input} {label}</div>\n<div class=\"col-lg-8\">{error}</div>",
-        ]) ?>
+                    <div class="form-group">
+                        <?= Html::submitButton(Yii::t('app', 'Login'), ['class' => 'btn btn-success btn-block', 'name' => 'login-button']) ?>
+                    </div>
 
-        <div class="form-group">
-            <div class="col-lg-offset-1 col-lg-11">
-                <?= Html::submitButton(Yii::t('app', 'Login'), ['class' => 'btn btn-primary', 'name' => 'login-button']) ?>
+                <?php ActiveForm::end(); ?>
             </div>
         </div>
-
-    <?php ActiveForm::end(); ?>
-
-    <div class="col-lg-offset-1" style="color:#999;">
         
+        <!--Login use social media-->
+        <div class="col-sm-6 col-md-4 col-lg-3">
+            <div class="login-social-container">
+                <a href="#" class="fb login-social">
+                    <i class="fab fa-facebook"></i> <?= Yii::t('app', 'Login with Facebook') ?>
+                </a>
+                <a href="#" class="google login-social">
+                    <i class="fab fa-google"></i>   <?= Yii::t('app', 'Login with Google+') ?>
+                </a>
+            </div>
+        </div>
     </div>
 </div>
+            

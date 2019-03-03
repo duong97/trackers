@@ -3,11 +3,11 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/var/www/html/trackers/views/layouts/homepage.php</file>
+            <file>file:/var/www/html/trackers/views/layouts/main.php</file>
             <file>file:/var/www/html/trackers/web/css/responsive.css</file>
-            <file>file:/var/www/html/trackers/helpers/Constants.php</file>
             <file>file:/var/www/html/trackers/web/css/main.css</file>
-            <file>file:/var/www/html/trackers/views/site/homepage.php</file>
+            <file>file:/var/www/html/trackers/views/layouts/_nav_search.php</file>
+            <file>file:/var/www/html/trackers/views/site/login.php</file>
         </group>
     </open-files>
 </project-private>

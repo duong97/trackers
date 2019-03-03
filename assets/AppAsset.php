@@ -24,6 +24,7 @@ class AppAsset extends AssetBundle
         'css/site.css',
         'css/main.css',
         'css/responsive.css',
+        'fontawesome-5.7.2/css/all.css'
     ];
     public $js = [
         'js/main.js',
