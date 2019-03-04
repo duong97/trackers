@@ -17,6 +17,7 @@ use yii\data\ActiveDataProvider;
 use app\models\Users;
 use app\models\UserTracking;
 use app\models\Products;
+use app\models\PriceLogs;
 
 use app\helpers\Checks;
 use app\helpers\MyFormat;
@@ -47,8 +48,13 @@ class DefaultController extends BaseController
             $request    = Yii::$app->request;
             $post       = $request->post();
             if($request->isPost && $post){
+                if(isset($post['Users']['newPassword'])){
+                    $model->generatePassword($post['Users']['newPassword']);
+                }
                 $model->attributes = $post['Users'];
                 $model->update();
+                Yii::$app->session->setFlash('success', "Your profile has been updated successfully.");
+                return $this->redirect(['default/profile']);
             }
             return $this->render('profile', ['model' => $model]);
         } catch (Exception $exc) {

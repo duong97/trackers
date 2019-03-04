@@ -13,8 +13,7 @@ $this->params['breadcrumbs'][] = $this->title;
         'method' => 'post'
     ]) ?>
 <div class="row" style="margin-top: 20px;">
-    <div class="col-sm-2"></div>
-    <div class="col-sm-8">
+    <div class="col-sm-8 col-sm-offset-2">
         
         <ul class="list-group">
             <label><?= Yii::t('app', 'Notification settings') ?></label>
@@ -24,7 +23,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     <span class="slider round"></span>
                 </label>
                 <div>
-                    <p><?= Yii::t('app', 'Notify via message') ?></p>
+                    <p><b><?= Yii::t('app', 'Notify via message') ?></b></p>
                     <p><?= Yii::t('app', 'Receive notifications via Facebook Messenger, require login with Facebook') . "." ?></p>
                 </div>
             </li>
@@ -34,23 +33,20 @@ $this->params['breadcrumbs'][] = $this->title;
                     <span class="slider round"></span>
                 </label>
                 <div>
-                    <p><?= Yii::t('app', 'Notify via email') ?></p>
+                    <p><b><?= Yii::t('app', 'Notify via email') ?></b></p>
                     <p><?= Yii::t('app', 'Receive notifications via your login email') ."." ?></p>
                 </div>
             </li>
             <li class="list-group-item">
                 <?= Html::activeDropDownList($user, 'notify_type', Users::aNotifyType(),['class'=>'form-control']) ?>
                 <div>
-                    <p><?= Yii::t('app', 'When notify') . "?" ?></p>
+                    <p><b><?= Yii::t('app', 'When notify') . "?" ?></b></p>
                     <p><?= Yii::t('app', 'When do you want to receive notifications, prices increase, prices decrease or both') . "?" ?></p>
                 </div>
             </li>
         </ul>
         
-        
-        
         <?= Html::submitButton(Yii::t('app', 'Save'), ['class' => 'btn btn-success']) ?>
     </div>
-    <div class="col-sm-2"></div>
 </div>
 <?php ActiveForm::end() ?>

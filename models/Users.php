@@ -31,6 +31,8 @@ class Users extends BaseModel
     const notify_decrease       = 2;
     const notify_both           = 3;
     
+    public $newPassword, $cnewPassword;
+    
     /*
      * get array notify type
      */
@@ -58,6 +60,16 @@ class Users extends BaseModel
         return [
             [['email', 'password', 'salt', 'first_name', 'last_name', 'status', 'last_access', 'created_date'], 'safe'],
             [['is_notify_fb', 'is_notify_email', 'notify_type'], 'safe'],
+            ['cnewPassword', 'compare', 'compareAttribute' => 'newPassword'],
+            ['newPassword', 'string', 'length' => [6,25], 
+                'tooShort' => Yii::t("app", "Password must be between 6 and 25 characters long"),
+                'tooLong'  => Yii::t("app", "Password must be between 6 and 25 characters long")],
+            ['cnewPassword', 'required', 'when' => function ($model) {
+                return $model->newPassword != '';
+            }, 'whenClient' => "function (attribute, value) {
+                return $('#users-newpassword').val() != '';
+            }"],
+            [['newPassword', 'cnewPassword'], 'safe']
         ];
     }
 
@@ -77,6 +89,8 @@ class Users extends BaseModel
             'ip'            => Yii::t('app', 'Ip'),
             'last_access'   => Yii::t('app', 'Last Access'),
             'created_date'  => Yii::t('app', 'Created Date'),
+            'newPassword'   => Yii::t('app', 'New password'),
+            'cnewPassword'  => Yii::t('app', 'Confirm new password'),
         ];
     }
     
@@ -91,6 +105,10 @@ class Users extends BaseModel
     public function getUrlConfirm(){
         $q = $this->id ."i". md5($this->email);
         return Yii::$app->request->serverName.Url::to(["site/registration-result", 'q'=> $q]);
+    }
+    
+    public function generatePassword($pw){
+        $this->password = md5(trim($pw));
     }
     
     public function validatePassword($password){

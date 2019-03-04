@@ -88,4 +88,8 @@ return [
     'Login with Google+'    => 'Đăng nhập bằng Google+',
     'Login with social media or manually' => 'Đăng nhập bằng mạng xã hội hoặc thủ công',
     'Create new account with your email' => 'Tạo tài khoản bằng email của bạn',
+    'New password'          => 'Mật khẩu mới',
+    'Confirm new password'  => 'Xác nhận mật khẩu',
+    'Your profile has been updated successfully.'  => 'Hồ sơ của bạn đã được cập nhật thành công.',
+    'Leave blank if you want to keep the old password'  => 'Để trống nếu bạn muốn giữ mật khẩu cũ',
 ];

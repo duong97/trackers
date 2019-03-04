@@ -44,6 +44,14 @@ $this->params['breadcrumbs'][] = $this->title;
                 </div>
             </div>
 
+            <div style="border: 1px solid black; margin: 20px; padding: 20px;">
+                <p class="col-sm-9 col-sm-offset-3"><i>* <?= Yii::t('app', 'Leave blank if you want to keep the old password') ?></i></p>
+
+                <?= $form->field($model, 'newPassword')->passwordInput() ?>
+
+                <?= $form->field($model, 'cnewPassword')->passwordInput() ?>
+            </div>
+        
             <div class="form-group">
                 <div class="col-lg-offset-3 col-lg-6">
                     <?= Html::submitButton(Yii::t('app', 'Update'), ['class' => 'btn btn-primary']) ?>

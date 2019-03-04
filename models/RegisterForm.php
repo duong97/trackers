@@ -77,7 +77,8 @@ class RegisterForm extends Model
         $user->created_date     = date('Y-m-d H:i:s');
         $user->last_access      = date('Y-m-d H:i:s');
         $user->salt             = md5($user->created_date);
-        $user->password         = md5(trim($this->password));
+//        $user->password         = md5(trim($this->password));
+        $user->generatePassword($this->password);
         $user->first_name       = $this->first_name;
         $user->last_name        = $this->last_name;
         $user->role             = Constants::USER;
