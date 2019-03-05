@@ -60,6 +60,7 @@ class Users extends BaseModel
         return [
             [['email', 'password', 'salt', 'first_name', 'last_name', 'status', 'last_access', 'created_date'], 'safe'],
             [['is_notify_fb', 'is_notify_email', 'notify_type'], 'safe'],
+            [['first_name', 'last_name'], 'required', 'on' => 'editProfile'],
             ['cnewPassword', 'compare', 'compareAttribute' => 'newPassword'],
             ['newPassword', 'string', 'length' => [6,25], 
                 'tooShort' => Yii::t("app", "Password must be between 6 and 25 characters long"),

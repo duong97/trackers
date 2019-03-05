@@ -45,6 +45,7 @@ class DefaultController extends BaseController
         try {
             Checks::requireLogin();
             $model      = Users::find()->where(['id' => Yii::$app->user->id])->one();
+            $model->scenario = 'editProfile';
             $request    = Yii::$app->request;
             $post       = $request->post();
             if($request->isPost && $post){
