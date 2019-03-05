@@ -7,7 +7,7 @@ use app\models\UserTracking;
     <div class="col-sm-1"></div>
     <div class="col-sm-10">
         <div class="row">
-        <?php if(isset($aData)): ?>
+        <?php if(!empty($aData)){ ?>
             <?php foreach ($aData as $p) : ?>
                 <?php 
                 $mUserTracking              = new UserTracking();
@@ -34,7 +34,12 @@ use app\models\UserTracking;
                     </div>
                 </div>
             <?php endforeach; ?>
-        <?php endif; ?>
+        <?php } else { ?>
+            <?php 
+            $searchValue = isset($_GET['search-value']) ? $_GET['search-value'] : "";
+            echo Yii::t('app', 'No results for ') .'"'.$searchValue.'"';
+            ?>
+        <?php } ?>
         </div>
     </div>
     <div class="col-sm-1"></div>

@@ -6,12 +6,16 @@ use Yii;
 use yii\filters\AccessControl;
 use yii\web\Response;
 use yii\filters\VerbFilter;
+
 use app\models\LoginForm;
 use app\models\RegisterForm;
 use app\models\ContactForm;
 use app\models\Users;
+use app\models\SupportedWebsites;
+
 use app\helpers\Mailer;
 use yii\helpers\Url;
+use yii\data\ActiveDataProvider;
 
 
 class SiteController extends BaseController
@@ -186,4 +190,24 @@ class SiteController extends BaseController
         return $this->redirect(Yii::$app->request->referrer ?: Yii::$app->homeUrl);
 //        return $this->goBack(Yii::$app->request->referrer);
     }
+    
+    /*
+     * List supported websites
+     */
+    public function actionSupportedWebsites(){
+        try {
+            $dataProvider = new ActiveDataProvider([
+                'query' => SupportedWebsites::find(),
+                'pagination' => [
+                    'pageSize' => 20,
+                ],
+            ]);
+            return $this->render('supported_websites', [
+                'dataProvider' => $dataProvider,
+            ]);
+        } catch (Exception $exc) {
+            
+        }
+    }
+    
 }

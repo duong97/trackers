@@ -64,7 +64,7 @@ return [
     'Tracking'              => 'Đang theo dõi',
     'Stop tracking'         => 'Dừng theo dõi',
     'Product link'          => 'Đường dẫn sản phẩm',
-    'Name'                  => 'Tên sản phẩm',
+    'Name'                  => 'Tên',
     'Images'                => 'Hình ảnh',
     'Are you sure'          => 'Bạn có chắc',
     'Notify via message'    => 'Thông báo qua tin nhắn',
@@ -92,4 +92,9 @@ return [
     'Confirm new password'  => 'Xác nhận mật khẩu',
     'Your profile has been updated successfully.'  => 'Hồ sơ của bạn đã được cập nhật thành công.',
     'Leave blank if you want to keep the old password'  => 'Để trống nếu bạn muốn giữ mật khẩu cũ',
+    'No results for '       => 'không có kết quả nào cho ',
+    'Currency'              => 'Đơn vị tiền tệ',
+    'Status'                => 'Trạng thái',
+    'List of supported websites' => 'Danh sách những website hỗ trợ',
+    'Supported websites' => 'Những website hỗ trợ',
 ];

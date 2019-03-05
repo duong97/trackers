@@ -76,7 +76,7 @@ $urlManager     = \Yii::$app->getUrlManager();
                     <?= Yii::t('app', 'Start date') . ": " . MyFormat::formatDatetime($startDate) ?>
                 </p><br>
                 <p class="label label-default">
-                    <?= Yii::t('app', 'End date') . ": " . MyFormat::formatDate($endDate) ?>
+                    <?= Yii::t('app', 'End date') . ": " . (empty($endDate) ? Yii::t('app', 'Until canceled') : MyFormat::formatDate($endDate)) ?>
                 </p><br><br>
                 
                     <?php $url = $urlManager->createUrl(['user/default/stop-tracking', 'id' => $aData['id']]); ?>

@@ -25,7 +25,7 @@ class MyFormat{
      * format date to d/m/Y
      */
     public static function formatDate($date){
-        return date(self::date_format, strtotime($date));
+        return empty($date) ? "" : date(self::date_format, strtotime($date));
     }
     
     /*
