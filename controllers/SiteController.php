@@ -180,6 +180,26 @@ class SiteController extends BaseController
         return $this->render('about');
     }
     
+    /**
+     * Displays terms page.
+     *
+     * @return string
+     */
+    public function actionTerms()
+    {
+        return $this->render('terms');
+    }
+    
+    /**
+     * Displays privacy page.
+     *
+     * @return string
+     */
+    public function actionPrivacy()
+    {
+        return $this->render('privacy');
+    }
+    
     public function actionChangeLanguage($lang){
         \Yii::$app->language = $lang;
         $cookies = Yii::$app->response->cookies;

@@ -91,4 +91,13 @@ class SupportedWebsites extends BaseModel
         $aCurrency = SupportedWebsites::$aCurrency;
         return isset($aCurrency[$this->currency]) ? $aCurrency[$this->currency] : "";
     }
+    
+    public function getAll(){
+        $models = SupportedWebsites::find()->all();
+        $ret    = [];
+        foreach ($models as $value) {
+            $ret[$value->id] = $value;
+        }
+        return $ret;
+    }
 }

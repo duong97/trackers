@@ -52,7 +52,7 @@ $urlManager     = \Yii::$app->getUrlManager();
                     <input type="hidden" name="Products[image]" value="<?= $imgUrl ?>">
 
                     <div class="form-group">
-                        <?= Html::submitButton(Yii::t('app', 'Start tracking'), ['class' => 'btn btn-primary']) ?>
+                        <?= Html::submitButton(Yii::t('app', 'Start tracking'), ['class' => 'btn btn-primary', Yii::$app->user->isGuest ? 'disabled' : null]) ?>
                         <?php if(Yii::$app->user->isGuest): ?>
                             <?php 
                                 $urlManager = \Yii::$app->getUrlManager();

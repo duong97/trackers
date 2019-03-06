@@ -8,7 +8,6 @@ and open the template in the editor.
     Author     : duong
 */
 /*This css use for all page, include in every head tag of app*/
-
 .price{
     color: #ff3425;
     font-weight: 500;
@@ -17,6 +16,7 @@ and open the template in the editor.
 .prd-container{
     position: relative;
     padding: 5px;
+    height: 275px;
 }
 .prd-container .prd-image{
     padding: 3px;
@@ -28,6 +28,10 @@ and open the template in the editor.
     position: absolute;
     top: 3px; 
     right: 3px;
+}
+.prd-info{
+    position: absolute;
+    bottom: 0;
 }
 .thumb{
     width: 100px;
@@ -72,6 +76,7 @@ div.nav-transparent .btn-link:hover{
 div.nav-transparent .navbar-toggle .icon-bar{
     background: #dedede;
 }
+.navbar-header{width: 100%;}
 
 
 /* The switch - the box around the slider */

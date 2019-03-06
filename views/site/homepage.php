@@ -1,6 +1,7 @@
 <?php 
 use app\helpers\Constants;
 use yii\helpers\Html;
+use app\models\SupportedWebsites;
 
 $this->registerCss("
 div.main-container{
@@ -27,10 +28,15 @@ div.main-container{
 <div class="list-support-website">
     <h3 class="medium-title color-bold"><?= Yii::t('app', 'SUPPORT WEBSITE') ?></h3>
     <div class="list-support-group">
-    <?php foreach (Constants::$aWebsiteName as $key => $wname) { ?>
+    <?php 
+    $mSpWebsite = new SupportedWebsites();
+    $aSite      = $mSpWebsite->getAll();
+    ?>
+    <?php foreach ($aSite as $key => $item) { ?>
         <div class="list-support-item">
-            <a href="https://<?= Constants::$aWebsiteDomain[$key] ?>" target="_blank">
-            <?= Html::img("@web/images/support_website/".strtolower($wname).".png", ['class' => 'img-responsive']) ?>
+            <a href="<?= $item->url ?>" target="_blank">
+            <?php // echo Html::img("@web/images/support_website/".strtolower($item->name).".png", ['class' => 'img-responsive']) ?>
+            <?= Html::img(str_replace('_logo.png', '.png', $item->logo), ['class' => 'img-responsive']) ?>
             </a>
         </div>
     <?php } ?>

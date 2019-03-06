@@ -30,14 +30,14 @@ class Constants{
         self::EBAY      => 'ebay.com',
     ];
     
-    public static $aWebsiteName = [
-        self::TIKI      => 'Tiki',
-        self::LAZADA    => 'Lazada',
-        self::SHOPEE    => 'Shopee',
-        self::SENDO     => 'Sendo',
-        self::AMAZON    => 'Amazon',
-        self::EBAY      => 'Ebay',
-    ];    
+//    public static $aWebsiteName = [
+//        self::TIKI      => 'Tiki',
+//        self::LAZADA    => 'Lazada',
+//        self::SHOPEE    => 'Shopee',
+//        self::SENDO     => 'Sendo',
+//        self::AMAZON    => 'Amazon',
+//        self::EBAY      => 'Ebay',
+//    ];    
     
     public static $aLanguage = [
         'en' => 'English',

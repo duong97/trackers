@@ -11,6 +11,13 @@ $this->params['breadcrumbs'][] = $this->title;
     'columns' => [
         ['class' => 'yii\grid\SerialColumn'],
         [
+            'attribute' => 'logo',
+            'format' => 'raw',
+            'value' => function ($model){
+                return Html::img($model->logo, ['class'=>'xx']);
+            }
+        ],
+        [
             'attribute' => 'name',
             'value' => 'name'
         ],

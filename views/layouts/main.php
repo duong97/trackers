@@ -99,8 +99,8 @@ AppAsset::register($this);
             <div class="row">
                 <div class="col-xs-6 col-md-3 footer-col">
                     <span><?= Yii::t('app', 'Explode') ?></span>
-                    <?= Html::a(Yii::t('app', 'Home'), '#', ['class' => 'footer-link']) ?>
-                    <?= Html::a(Yii::t('app', 'About'), '#', ['class' => 'footer-link']) ?>
+                    <?= Html::a(Yii::t('app', 'Home'), Yii::$app->homeUrl, ['class' => 'footer-link']) ?>
+                    <?= Html::a(Yii::t('app', 'About'), ['site/about'], ['class' => 'footer-link']) ?>
                 </div>
                 <div class="col-xs-6 col-md-3 footer-col">
                     <span><?= Yii::t('app', 'Contact') ?></span>
@@ -117,8 +117,8 @@ AppAsset::register($this);
                 </div>
                 <div class="col-xs-6 col-md-3 footer-col">
                     <span><?= Yii::t('app', 'Legal') ?></span>
-                    <?= Html::a(Yii::t('app', 'Terms'), '#', ['class' => 'footer-link']) ?>
-                    <?= Html::a(Yii::t('app', 'Privacy'), '#', ['class' => 'footer-link']) ?>
+                    <?= Html::a(Yii::t('app', 'Terms'), ['site/terms'], ['class' => 'footer-link']) ?>
+                    <?= Html::a(Yii::t('app', 'Privacy'), ['site/privacy'], ['class' => 'footer-link']) ?>
                 </div>
             </div>
         </div>
