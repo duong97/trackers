@@ -35,7 +35,8 @@ class DefaultController extends BaseController
      */
     public function actionIndex()
     {
-        return $this->render('index');
+        Checks::notFoundExc();
+//        return $this->render('index');
     }
     
     /*
@@ -95,13 +96,22 @@ class DefaultController extends BaseController
             if(!$models){ // Save as New product and price log if product doesn't exists
                 $product->slug = MyFormat::slugify($product->name);
                 $product->save();
-                $models = $product;
+                $models = $product; // If model empty
+            }
+            $mLogExists = PriceLogs::find()
+                            ->where([
+                                'product_id' => $models->id,
+                                'price' => $models->price
+                            ])->one();
+            // If product doesn exist, save firt price
+            if(!$mLogExists){
                 $pLog             = new PriceLogs();
-                $pLog->product_id = $product->id;
-                $pLog->price      = $product->price;
+                $pLog->product_id = $models->id;
+                $pLog->price      = $models->price;
                 $pLog->save();
             }
             if(!Yii::$app->user->isGuest){ // Save tracking info of user (logged in)
+                // Save user tracking info
                 $userTracking = new UserTracking();
                 $userTracking->user_id        = Yii::$app->user->id;
                 $userTracking->product_id     = $models->id;
@@ -144,7 +154,7 @@ class DefaultController extends BaseController
                     $model->update();
                 }
             }
-            return $this->goBack(Yii::$app->request->referrer);
+            return $this->redirect(Yii::$app->request->referrer ?: Yii::$app->homeUrl);
         } catch (Exception $exc) {
             
         }

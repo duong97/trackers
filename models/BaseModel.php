@@ -26,10 +26,10 @@ class BaseModel extends \yii\db\ActiveRecord
     public function beforeSave($insert) {
         if($this->isNewRecord){
             if($this->hasAttribute('created_date') ){
-                $this->created_date = (empty($this->created_date) ? date('Y-m-d H:i:s') : $this->created_date);
+                $this->created_date = empty($this->created_date) ? date('Y-m-d H:i:s') : $this->created_date;
             }
             if($this->hasAttribute('updated_date') ){
-                $this->updated_date = (empty($this->updated_date) ? date('Y-m-d H:i:s') : $this->updated_date);
+                $this->updated_date = empty($this->updated_date) ? date('Y-m-d H:i:s') : $this->updated_date;
             }
         }
         return parent::beforeSave($insert);

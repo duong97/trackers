@@ -97,7 +97,7 @@ class GetData extends BaseModel
         if(empty($pr)){
             $pr  = $html->find($elm_price_2, 0);
         }
-        $price  = isset($pr->plaintext) ? $pr->plaintext : "";
+        $price  = isset($pr->plaintext) ? $pr->plaintext : 0;
         $name   = isset($html->find($elm_name, 0)->plaintext) ? $html->find($elm_name, 0)->plaintext : "";
         $img    = $html->find($elm_img);
         $aImage = [];

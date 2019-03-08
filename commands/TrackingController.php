@@ -9,9 +9,11 @@ namespace app\commands;
 
 use yii\console\Controller;
 use yii\console\ExitCode;
-use app\models\Products;
+use app\models\UserTracking;
 use app\models\PriceLogs;
 use app\models\GetData;
+use app\models\Products;
+use app\models\Loggers;
 
 /**
  * This command echoes the first argument that you have entered.
@@ -41,21 +43,36 @@ class TrackingController extends Controller
     public function actionTrackHourly()
     {
         try {
-            $allProducts  = Products::find()->all();
-            $plog         = new PriceLogs();
-            $allLogs      = $plog->getAll();
-            foreach ($allProducts as $p) {
-                $aData          = GetData::instance()->getInfo($p->url);
+            Loggers::WriteLog("Cron start at: ".date('d/m/Y H:i:s'), Loggers::type_cron);
+//            echo "Cron start at: ".date('d/m/Y H:i:s')."\n";
+            $timeStart = microtime(true);
+            $mUserTracking  = new UserTracking();
+            $plog           = new PriceLogs();
+            $aProductId     = $mUserTracking->getArrayActive();
+            $aLastPrice     = $plog->getArrayLastPrice($aProductId);
+            $aProducts      = Products::findAll($aProductId);
+            $numProduct     = 0;
+            foreach ($aProducts as $p) {
+                $aData      = GetData::instance()->searchNewUrl($p->url);
                 if(!empty($aData['price'])){
                     // If prices are change -> save to PriceLogs
-                    if($aData['price'] != end($allLogs[$p->id])->price){
+                    if($aData['price'] != $aLastPrice[$p->id]){
                         $pLog               = new PriceLogs();
                         $pLog->product_id   = $p->id;
                         $pLog->price        = $aData['price'];
+                        $pLog->updated_date = date('Y-m-d H:i:s');
                         $pLog->save();
+                        $numProduct++;
+//                        echo "Cron price | product_id:$p->id, new price:{$aData['price']}\n";
+                        Loggers::WriteLog("Cron price | product_id: $p->id, new price: {$aData['price']}", Loggers::type_cron);
                     }
                 }
             }
+            $timeEnd = microtime(true);
+//            echo "Cron end at: ".date('d/m/Y H:i:s')."\n";
+//            echo "Cron report | last ".($timeEnd-$timeStart).'(s) | total: '.count($aProducts)." | change: $numProduct\n";
+            Loggers::WriteLog("Cron end at: ".date('d/m/Y H:i:s'), Loggers::type_cron);
+            Loggers::WriteLog('Cron report | last '.($timeEnd-$timeStart).'(s) | total: '.count($aProducts)." | change: $numProduct\n", Loggers::type_cron);
             return ExitCode::OK;
         } catch (Exception $exc) {
             

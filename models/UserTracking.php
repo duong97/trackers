@@ -145,4 +145,19 @@ class UserTracking extends BaseModel
                     'status' => self::stt_active])
                 ->one();
     }
+    
+    /**
+     * @todo get list active product id
+     */
+    public function getArrayActive(){
+        $aModels  = UserTracking::find()
+                        ->select('DISTINCT(product_id)')
+                        ->where(['status' => UserTracking::stt_active])
+                        ->all();
+        $ret      = [];
+        foreach ($aModels as $value) {
+            $ret[$value->product_id] = $value->product_id;
+        }
+        return $ret;
+    }
 }

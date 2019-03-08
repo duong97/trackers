@@ -2,6 +2,8 @@
 
 namespace app\models;
 
+use app\helpers\Constants;
+
 class User extends \yii\base\BaseObject implements \yii\web\IdentityInterface
 {
     public $id;
@@ -76,5 +78,12 @@ class User extends \yii\base\BaseObject implements \yii\web\IdentityInterface
     {
         $pw = md5(trim($password));
         return ($pw === $this->password && $this->status = Users::STT_ACTIVE);
+    }
+    
+    /**
+     * @todo check if user is admin
+     */
+    public function isAdmin(){
+        return ($this->role == Constants::ADMIN);
     }
 }

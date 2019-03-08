@@ -86,4 +86,26 @@ class PriceLogs extends BaseModel
         }
         return $ret;
     }
+    
+    /**
+     * @todo get array last price of list product
+     * @return [ product_id => price ]
+     */
+    public function getArrayLastPrice($aProductId, $onlyPrice = true){
+        $aAll = PriceLogs::find()
+                ->where(['IN', 'product_id', $aProductId])
+                ->orderBy('updated_date ASC')
+                ->all();
+        $ret    = [];
+        $aSLogs = [];
+        foreach ($aAll as $l) {
+            $aSLogs[$l->product_id][] = $l;
+        }
+        foreach ($aSLogs as $p_id => $aLogs) {
+//            $lastLogs = array_slice( $aLogs, -1, 1, TRUE );
+            $lastLogs   = end( $aLogs );
+            $ret[$p_id] = $onlyPrice ? $lastLogs->price : $lastLogs;
+        }
+        return $ret;
+    }
 }

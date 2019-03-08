@@ -7,14 +7,28 @@ $config = [
     'id' => 'basic-console',
     'basePath' => dirname(__DIR__),
     'bootstrap' => ['log'],
+    'timeZone' => 'Asia/Ho_Chi_Minh', // add
     'controllerNamespace' => 'app\commands',
     'aliases' => [
         '@bower' => '@vendor/bower-asset',
         '@npm'   => '@vendor/npm-asset',
     ],
+    'vendorPath' => '../../yii2-framework/vendor', // add
     'components' => [
         'cache' => [
             'class' => 'yii\caching\FileCache',
+        ],
+        'mailer' => [ // add
+            'class' => 'yii\swiftmailer\Mailer',
+            'useFileTransport' => false,
+            'transport' => [
+                'class' => 'Swift_SmtpTransport',
+                'host' => 'smtp.gmail.com',  
+                'username' => $params['verifyEmail'],
+                'password' => $params['verifyEmailPassword'],
+                'port' => '25', 
+                'encryption' => 'tls', 
+            ],
         ],
         'log' => [
             'targets' => [
