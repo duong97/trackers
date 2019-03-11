@@ -1,0 +1,29 @@
+/*MOBILE*/
+@media (min-width: 400px) and (max-width: 767px) {
+    .home-background>.banner-container>h1{
+        font-size: 25px;
+    }
+    .home-background>.banner-container>p{
+        padding: 0;
+        font-size: 14px;
+    }
+    .home-background>.banner-container>.button-container{
+        top: 240px;
+    }
+    
+    div.navbar-default.nav-transparent .navbar-nav .open .dropdown-menu > li > a,
+    div.navbar-default.nav-transparent .navbar-nav .dropdown-header{
+        color: white;
+    }
+    div.navbar-default.nav-transparent .navbar-nav .open .dropdown-menu > li.active > a{
+        color: #696969;
+    }
+    div.nav-transparent .navbar-collapse {
+        border-color: white;
+        background-color: #458f34;
+    } 
+    .main-container{
+        margin: 0;
+        padding: 70px 15px 0;
+    }
+}
