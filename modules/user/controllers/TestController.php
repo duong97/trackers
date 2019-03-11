@@ -13,4 +13,9 @@ class TestController extends BaseController
     {
         return $this->render('index');
     }
+    
+    public function actionContract()
+    {
+        return $this->render('contract');
+    }
 }
