@@ -27,6 +27,14 @@ class Loggers extends BaseModel
 {
     const type_debug = 1;
     const type_cron  = 2;
+    const type_app   = 3; //application error
+    
+    public static $aLogType = [
+        self::type_debug    => 'Debug',
+        self::type_cron     => 'Cron',
+        self::type_app      => 'Application Error',
+    ];
+    
     /**
      * {@inheritdoc}
      */

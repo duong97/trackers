@@ -60,7 +60,7 @@ class DefaultController extends BaseController
             }
             return $this->render('profile', ['model' => $model]);
         } catch (Exception $exc) {
-            
+            Checks::catchAllExeption($exc);
         }
     }
     
@@ -79,7 +79,7 @@ class DefaultController extends BaseController
             ]);
             return $this->render('tracking_items', ['dataProvider' => $provider]);
         } catch (Exception $exc) {
-            
+            Checks::catchAllExeption($exc);
         }
     }
     
@@ -134,7 +134,7 @@ class DefaultController extends BaseController
             }
             return $this->redirect(Yii::$app->request->referrer ?: Yii::$app->homeUrl);
         } catch (Exception $exc) {
-            
+            Checks::catchAllExeption($exc);
         }
     }
     
@@ -156,7 +156,7 @@ class DefaultController extends BaseController
             }
             return $this->redirect(Yii::$app->request->referrer ?: Yii::$app->homeUrl);
         } catch (Exception $exc) {
-            
+            Checks::catchAllExeption($exc);
         }
     }
     
@@ -169,7 +169,8 @@ class DefaultController extends BaseController
             $user = Users::find()
                 ->where([
                     'id' => Yii::$app->user->id, 
-                    'role' => Constants::USER])
+//                    'role' => Constants::USER
+                ])
                 ->one();
             $post = Yii::$app->request->post('Users');
             if(isset($post)){
@@ -178,7 +179,7 @@ class DefaultController extends BaseController
             }
             return $this->render('settings', ['user' => $user]);
         } catch (Exception $exc) {
-            
+            Checks::catchAllExeption($exc);
         }
     }
     

@@ -8,6 +8,9 @@ and open the template in the editor.
     Author     : duong
 */
 /*This css use for all page, include in every head tag of app*/
+div.navbar-default .navbar-brand:hover{
+    color: white;
+}
 .price{
     color: #ff3425;
     font-weight: 500;

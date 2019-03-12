@@ -7,6 +7,7 @@ use app\models\Users;
 use app\models\UserTracking;
 use app\models\Products;
 use app\models\PriceLogs;
+use app\models\Controllers;
 
 use app\helpers\Checks;
 use app\helpers\MyFormat;
@@ -14,12 +15,8 @@ use app\helpers\Constants;
 
 $mPriceLogs = new PriceLogs;
 $mUserTracking = new UserTracking;
-$aProductId     = $mUserTracking->getArrayActive();
-$array = $mPriceLogs->getArrayLastPrice($aProductId);
+$mC = new app\models\ActionRoles;
 echo '<pre>';
-print_r(microtime(true));
+print_r($mC->getArrayAccess(3));
 echo '</pre>';
 die;
-$prev = strtotime(date('Y-m-d 23:29:00'));
-$now = strtotime(date('Y-m-d H:i:s'));
-echo $now - $prev;

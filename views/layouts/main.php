@@ -11,6 +11,7 @@ use yii\widgets\Breadcrumbs;
 use app\assets\AppAsset;
 use app\helpers\Constants;
 use app\helpers\Htmls;
+use app\helpers\Checks;
 
 AppAsset::register($this);
 ?>
@@ -64,7 +65,7 @@ AppAsset::register($this);
                 Yii::$app->user->isGuest ? (
                     ['label' => Yii::t('app', 'Register'), 'url' => ['/site/register']]
                 ) : '',
-                Yii::$app->user->isGuest ? '' : (
+                Yii::$app->user->isGuest ? '' : ( // If loged in
                     [
                         'label' => '<span class="glyphicon glyphicon-user"></span>',
                         'items' => Htmls::getUserItems()

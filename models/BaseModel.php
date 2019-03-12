@@ -34,4 +34,15 @@ class BaseModel extends \yii\db\ActiveRecord
         }
         return parent::beforeSave($insert);
     }
+    
+    public function can($action){
+        $session        = Yii::$app->session;
+        $aAccessAction  = $session->get('listAccessAction');
+        $refClass       = new \ReflectionClass($this->className());
+        $ctlName        = $refClass->getShortName() . 'Controller';
+        if( isset($aAccessAction[$ctlName]) ){
+            return in_array($action, $aAccessAction[$ctlName]);
+        }
+        return true;
+    }
 }

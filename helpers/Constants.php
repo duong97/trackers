@@ -10,9 +10,10 @@ namespace app\helpers;
 class Constants{
     const website_name = "Ding";
     
-    const ADMIN         = 1;
+    const GUEST         = 1;
     const USER          = 2;
-    const GUEST         = 3;
+    const ADMIN         = 3;
+    const ROOT          = 4;
     
     const TIKI          = 1;
     const LAZADA        = 2;
@@ -28,6 +29,18 @@ class Constants{
         self::SENDO     => 'sendo.vn',
         self::AMAZON    => 'amazon.com',
         self::EBAY      => 'ebay.com',
+    ];
+    
+    public static $aRole = [
+        self::GUEST     => 'Guest',
+        self::USER      => 'Loggin User',
+        self::ADMIN     => 'Admin',
+        self::ROOT      => 'Root Admin',
+    ];
+    
+    public static $aRoleAdmin = [
+        self::ADMIN     => 'Admin',
+        self::ROOT      => 'Root Admin',
     ];
     
 //    public static $aWebsiteName = [

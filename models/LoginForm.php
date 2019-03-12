@@ -109,6 +109,11 @@ class LoginForm extends Model
 //        $aTrackingItems         = $userTracking->getUserTrackingItems();
 //        $session->set('aTrackingItems', $aTrackingItems);
         if($model){
+            $session     = Yii::$app->session;
+            $mActionRole = new ActionRoles();
+            $aCA         = $mActionRole->getArrayAccess($model->role);
+            $session->set('listAccessAction', $aCA);
+        
             $model->last_access = date('Y-m-d H:i:s');
             $model->update();
         }

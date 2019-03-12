@@ -15,6 +15,7 @@ namespace app\modules\product\controllers;
 use app\controllers\BaseController;
 use app\models\GetData;
 use app\models\PriceLogs;
+use app\helpers\Checks;
 
 /**
  * Default controller for the `product` module
@@ -48,7 +49,7 @@ class ActionController extends BaseController
                 'aData' => $aData
             ]);
         } catch (Exception $exc) {
-            
+            Checks::catchAllExeption($exc);
         }
     }
     
@@ -64,7 +65,7 @@ class ActionController extends BaseController
                 'aPriceLog' => $aPriceLog,
             ]);
         } catch (Exception $exc) {
-            
+            Checks::catchAllExeption($exc);
         }
     }
     

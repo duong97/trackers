@@ -94,6 +94,9 @@ $config = [
         'product' => [
             'class' => 'app\modules\product\ProductModule',
         ],
+        'admin' => [
+            'class' => 'app\modules\admin\AdminModule',
+        ],
     ],
 ];
 
@@ -122,6 +125,12 @@ if (YII_ENV_DEV) {
                 'class' => 'yii\gii\generators\model\Generator', // generator class
                 'templates' => [ //setting for out templates
                     'anivia' => '@app/templates/model/default', // template name => path to template
+                ]
+            ],
+            'crud' => [ // generator name
+                'class' => 'yii\gii\generators\crud\Generator', // generator class
+                'templates' => [ //setting for out templates
+                    'anivia' => '@app/templates/crud/default', // template name => path to template
                 ]
             ]
         ],

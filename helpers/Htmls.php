@@ -8,6 +8,8 @@
 namespace app\helpers;
 
 use Yii;
+use app\models\ActionRoles;
+use app\models\Controllers;
 
 class Htmls{
     
@@ -49,6 +51,22 @@ class Htmls{
                 'label' => $name,
                 'url' => $url->createUrl(["user/default/{$action}"]),
             ];
+        }
+        if(Checks::isAdmin()){
+            
+            $mController = new Controllers();
+            $mActionRole = new ActionRoles();
+            $aCA         = (Checks::isRoot()) ? 
+                            $mController->getAllCA() :
+                            $mActionRole->getArrayAccess(Yii::$app->user->identity->role);
+            foreach ($aCA as $key => $value) {
+                $controller_id  = substr($key, 0, -10);
+                $formatedCtl    = preg_replace('/\B([A-Z])/', '-$1', $controller_id);
+                $ret[] = [
+                    'label' => $controller_id,
+                    'url' => $url->createUrl(['admin/'.strtolower($formatedCtl).'/index']),
+                ];
+            }
         }
         return $ret;
     }
