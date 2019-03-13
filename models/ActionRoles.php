@@ -13,6 +13,7 @@
 namespace app\models;
 
 use app\helpers\Constants;
+use app\helpers\Htmls;
 use Yii;
 
 /**
@@ -98,6 +99,39 @@ class ActionRoles extends BaseModel
             $aAction        = explode(',', $value->actions);
             $cName          = isset($value->rController['controller_name']) ? $value->rController->controller_name : '';
             $ret[$cName]    = array_map('trim', $aAction);
+        }
+        return $ret;
+    }
+    
+    /**
+     * @todo get array menu for role
+     */
+    public function getArrayMenu($role){
+        $ret    = [];
+        $url    = \Yii::$app->getUrlManager();
+        if(empty($role)) return [];
+        if($role == Constants::ROOT){ // Root admin
+            $models = Controllers::find()->all();
+            foreach ($models as $value) {
+                $controllerId = Htmls::handleControllerName($value->controller_name);
+                $ret[] = [
+                    'label' => $value->display_name,
+                    'url'   => $url->createUrl(['admin/'.$controllerId.'/index']),
+                ];
+            }
+        } else {
+            $models = ActionRoles::find()
+                            ->alias('ar')
+                            ->joinWith('rController', 'rController.id = controller.id')
+                            ->where(['ar.role_id' => $role])
+                            ->all();
+            foreach ($models as $value) {
+                $controllerId = Htmls::handleControllerName($value->rController->controller_name);
+                $ret[] = [
+                    'label' => $value->rController->display_name,
+                    'url'   => $url->createUrl(['admin/'.$controllerId.'/index']),
+                ];
+            }
         }
         return $ret;
     }

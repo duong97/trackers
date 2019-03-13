@@ -113,6 +113,9 @@ class LoginForm extends Model
             $mActionRole = new ActionRoles();
             $aCA         = $mActionRole->getArrayAccess($model->role);
             $session->set('listAccessAction', $aCA);
+            
+            $aMenu       = $mActionRole->getArrayMenu($model->role);
+            $session->set('listMenu', $aMenu);
         
             $model->last_access = date('Y-m-d H:i:s');
             $model->update();

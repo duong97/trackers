@@ -52,25 +52,28 @@ class Htmls{
                 'url' => $url->createUrl(["user/default/{$action}"]),
             ];
         }
-        if(Checks::isAdmin()){
-            
-            $mController = new Controllers();
-            $mActionRole = new ActionRoles();
-            $aCA         = (Checks::isRoot()) ? 
-                            $mController->getAllCA() :
-                            $mActionRole->getArrayAccess(Yii::$app->user->identity->role);
-            foreach ($aCA as $key => $value) {
-                $controller_id  = substr($key, 0, -10);
-                $formatedCtl    = preg_replace('/\B([A-Z])/', '-$1', $controller_id);
-                $ret[] = [
-                    'label' => $controller_id,
-                    'url' => $url->createUrl(['admin/'.strtolower($formatedCtl).'/index']),
-                ];
+        if(Checks::isAdmin()){ // Menu for admin
+            $session     = Yii::$app->session;
+            $aCA         = $session->get('listMenu');
+            foreach ($aCA as $value) {
+                $ret[]   = [
+                            'label' => $value['label'],
+                            'url' => $value['url'],
+                        ];
             }
         }
         return $ret;
     }
     
+    /*
+     * @todo convert controller name to controller id
+     * SomeThingController -> some-thing
+     */
+    public static function handleControllerName($name){
+        $controller_id  = substr($name, 0, -10);
+        $formatedCtl    = preg_replace('/\B([A-Z])/', '-$1', $controller_id);
+        return strtolower($formatedCtl);
+    }
 
 }
 
