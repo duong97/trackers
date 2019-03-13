@@ -8,8 +8,8 @@
 namespace app\helpers;
 
 use Yii;
-use app\models\ActionRoles;
-use app\models\Controllers;
+use app\models\Users;
+use app\models\LoginForm;
 
 class Htmls{
     
@@ -55,6 +55,12 @@ class Htmls{
         if(Checks::isAdmin()){ // Menu for admin
             $session     = Yii::$app->session;
             $aCA         = $session->get('listMenu');
+            if(empty($aCA)){ // Login by cookie
+                $mLoginForm     = new LoginForm();
+                $model          = Users::findOne(Yii::$app->user->id);
+                $mLoginForm->initSessionBeforeLogin($model);
+                $aCA            = $session->get('listMenu');
+            }
             foreach ($aCA as $value) {
                 $ret[]   = [
                             'label' => $value['label'],
