@@ -126,7 +126,8 @@ class <?= $controllerClass ?> extends BaseController
     {
         try {
             $model = new <?= $modelClass ?>();
-
+            $model->scenario = Yii::$app->params['SCENARIO_CREATE'];
+            
             if ($model->load(Yii::$app->request->post()) && $model->save()) {
                 return $this->redirect(['view', <?= $urlParams ?>]);
             }
@@ -150,7 +151,8 @@ class <?= $controllerClass ?> extends BaseController
     {
         try {
             $model = $this->findModel(<?= $actionParams ?>);
-
+            $model->scenario = Yii::$app->params['SCENARIO_UPDATE'];
+            
             if ($model->load(Yii::$app->request->post()) && $model->save()) {
                 return $this->redirect(['view', <?= $urlParams ?>]);
             }

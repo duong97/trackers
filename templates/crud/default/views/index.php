@@ -13,6 +13,7 @@ echo "<?php\n";
 ?>
 
 use yii\helpers\Html;
+use app\helpers\MyFormat;
 use <?= $generator->indexWidgetType === 'grid' ? "yii\\grid\\GridView" : "yii\\widgets\\ListView" ?>;
 <?= $generator->enablePjax ? 'use yii\widgets\Pjax;' : '' ?>
 
@@ -38,6 +39,13 @@ $this->params['breadcrumbs'][] = $this->title;
 <?php if ($generator->indexWidgetType === 'grid'): ?>
     <?= "<?= " ?>GridView::widget([
         'dataProvider' => $dataProvider,
+        'filterModel' => $searchModel,
+        'layout' => "{summary}\n<div class='full-width text-center'>{pager}</div>\n{items}\n<div class='full-width text-center'>{pager}</div>",
+        'pager' => [
+            'options' => [
+                'class' => 'pagination'
+            ],
+        ],
         <?= !empty($generator->searchModelClass) ? "'filterModel' => \$searchModel,\n        'columns' => [\n" : "'columns' => [\n"; ?>
             ['class' => 'yii\grid\SerialColumn'],
 
@@ -46,7 +54,13 @@ $count = 0;
 if (($tableSchema = $generator->getTableSchema()) === false) {
     foreach ($generator->getColumnNames() as $name) {
         if (++$count < 6) {
-            echo "            '" . $name . "',\n";
+//            echo "            '" . $name . "',\n";
+            echo '            [
+                \'attribute\' => \''.$name.'\',
+                \'value\' => function($model){
+                    return $model->'.$name.';
+                }
+            ]'.",\n";
         } else {
             echo "            //'" . $name . "',\n";
         }
@@ -55,7 +69,13 @@ if (($tableSchema = $generator->getTableSchema()) === false) {
     foreach ($tableSchema->columns as $column) {
         $format = $generator->generateColumnFormat($column);
         if (++$count < 6) {
-            echo "            '" . $column->name . ($format === 'text' ? "" : ":" . $format) . "',\n";
+//            echo "            '" . $column->name . ($format === 'text' ? "" : ":" . $format) . "',\n";
+            echo '            [
+                \'attribute\' => \''.$column->name.'\',
+                \'value\' => function($model){
+                    return $model->'.$column->name.';
+                }
+            ]'.",\n";
         } else {
             echo "            //'" . $column->name . ($format === 'text' ? "" : ":" . $format) . "',\n";
         }
@@ -63,12 +83,7 @@ if (($tableSchema = $generator->getTableSchema()) === false) {
 }
 ?>
 
-//            [
-//                'attribute' => 'type',
-//                'value' => function($model){
-//                    return $model->type];
-//                }
-//            ],
+
             [
                 'class' => 'yii\grid\ActionColumn',
                 'visibleButtons' => [

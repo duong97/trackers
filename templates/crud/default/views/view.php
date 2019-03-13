@@ -13,6 +13,7 @@ echo "<?php\n";
 
 use yii\helpers\Html;
 use yii\widgets\DetailView;
+use app\helpers\MyFormat;
 
 /* @var $this yii\web\View */
 /* @var $model <?= ltrim($generator->modelClass, '\\') ?> */
@@ -43,12 +44,24 @@ $this->params['breadcrumbs'][] = $this->title;
 <?php
 if (($tableSchema = $generator->getTableSchema()) === false) {
     foreach ($generator->getColumnNames() as $name) {
-        echo "            '" . $name . "',\n";
+//        echo "            '" . $name . "',\n";
+        echo '            [
+                \'attribute\' => \''.$name.'\',
+                \'value\' => function($model){
+                    return $model->'.$name.';
+                }
+            ]'.",\n";
     }
 } else {
     foreach ($generator->getTableSchema()->columns as $column) {
-        $format = $generator->generateColumnFormat($column);
-        echo "            '" . $column->name . ($format === 'text' ? "" : ":" . $format) . "',\n";
+//        $format = $generator->generateColumnFormat($column);
+//        echo "            '" . $column->name . ($format === 'text' ? "" : ":" . $format) . "',\n";
+        echo '            [
+                \'attribute\' => \''.$column->name.'\',
+                \'value\' => function($model){
+                    return $model->'.$column->name.';
+                }
+            ]'.",\n";
     }
 }
 ?>

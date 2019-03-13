@@ -30,6 +30,7 @@ echo "<?php\n";
 namespace <?= $generator->ns ?>;
 
 use Yii;
+use yii\data\ActiveDataProvider;
 
 /**
  * This is the model class for table "<?= $generator->generateTableName($tableName) ?>".
@@ -107,4 +108,27 @@ class <?= $className ?> extends BaseModel
         return new <?= $queryClassFullName ?>(get_called_class());
     }
 <?php endif; ?>
+    
+    public function search($params)
+    {
+        $dataProvider = new ActiveDataProvider([
+            'query' => <?= $className ?>::find(),
+//            'sort' => [
+//                'defaultOrder' => [
+//                    'created_date' => SORT_DESC,
+//                ]
+            ],
+            'pagination' => [ 
+                'pageSize'=> isset(Yii::$app->params['defaultPageSize']) ? Yii::$app->params['defaultPageSize'] : 10,
+            ],
+        ]);
+        // No search? Then return data Provider
+        if (!($this->load($params) && $this->validate())) {
+            return $dataProvider;
+        }
+        // We have to do some search... Lets do some magic
+        $query->andFilterWhere(['like', 'name', $this->name]);
+//        ->andFilterWhere([]);
+        return $dataProvider;
+    }
 }
