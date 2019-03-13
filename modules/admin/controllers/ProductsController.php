@@ -4,7 +4,6 @@ namespace app\modules\admin\controllers;
 
 use Yii;
 use app\models\Products;
-use yii\data\ActiveDataProvider;
 use app\controllers\BaseController;
 use app\helpers\Checks;
 use yii\web\NotFoundHttpException;
@@ -37,20 +36,14 @@ class ProductsController extends BaseController
     public function actionIndex()
     {
         try {
-            $searchModel = new Products();
-//            $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-            $dataProvider = new ActiveDataProvider([
-                'query' => Products::find(),
-                'pagination' => [ 
-                    'pageSize'=> isset(Yii::$app->params['defaultPageSize']) ? Yii::$app->params['defaultPageSize'] : 10,
-                ],
-            ]);
+            $searchModel  = new Products();
+            $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
             return $this->render('index', [
-                'searchModel' => $searchModel,
+                'searchModel'  => $searchModel,
                 'dataProvider' => $dataProvider,
             ]);
-		} catch (Exception $exc) {
+        } catch (Exception $exc) {
             Checks::catchAllExeption($exc);
         }
     }

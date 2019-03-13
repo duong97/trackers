@@ -15,6 +15,7 @@ namespace app\models;
 use Yii;
 use app\helpers\Constants;
 use app\helpers\MyFormat;
+use yii\data\ActiveDataProvider;
 
 /**
  * This is the model class for table "products".
@@ -60,6 +61,30 @@ class Products extends BaseModel
             'image' => Yii::t('app', 'Images'),
             'created_date' => Yii::t('app', 'Created Date'),
         ];
+    }
+    
+    public function search($params)
+    {
+        $query = Products::find();
+        $dataProvider = new ActiveDataProvider([
+            'query' => $query,
+            'sort' => [
+                'defaultOrder' => [
+                    'created_date' => SORT_DESC,
+                ]
+            ],
+            'pagination' => [ 
+                'pageSize'=> isset(Yii::$app->params['defaultPageSize']) ? Yii::$app->params['defaultPageSize'] : 10,
+            ],
+        ]);
+        // No search? Then return data Provider
+        if (!($this->load($params) && $this->validate())) {
+            return $dataProvider;
+        }
+        // We have to do some search... Lets do some magic
+        $query->andFilterWhere(['like', 'name', $this->name])
+        ->andFilterWhere(['like', 'price', $this->price]);
+        return $dataProvider;
     }
     
     public function beforeSave($insert) {
