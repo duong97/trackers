@@ -1,6 +1,7 @@
 <?php
 
 use yii\helpers\Html;
+use app\helpers\MyFormat;
 use yii\widgets\DetailView;
 
 /* @var $this yii\web\View */
@@ -31,11 +32,45 @@ $this->params['breadcrumbs'][] = $this->title;
         'attributes' => [
             'id',
             'name',
-            'url:ntext',
-            'price',
-            'image:ntext',
-            'slug',
-            'created_date',
+            [
+                'attribute' => 'url',
+                'format' => 'raw',
+                'value' => function($model){
+                    return Html::a($model->url, $model->url, ["target"=>'_blank']);
+                }
+            ],
+            [
+                'attribute' => 'url_redirect',
+                'format' => 'raw',
+                'value' => function($model){
+                    return Html::a($model->url_redirect, $model->url_redirect, ["target"=>'_blank']);
+                }
+            ],
+            [
+                'attribute' => 'price',
+                'value' => function($model){
+                    return MyFormat::formatCurrency($model->price);
+                }
+            ],
+            [
+                'attribute' => 'slug',
+                'value' => function($model){
+                    return $model->slug;
+                }
+            ],
+            [
+                'attribute' => 'created_date',
+                'value' => function($model){
+                    return MyFormat::formatDatetime($model->created_date);
+                }
+            ],
+            [
+                'attribute' => 'image',
+                'format' => 'html',
+                'value' => function($model){
+                    return Html::img($model->image);
+                }
+            ],
         ],
     ]) ?>
 

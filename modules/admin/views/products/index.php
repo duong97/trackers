@@ -2,6 +2,7 @@
 
 use yii\helpers\Html;
 use yii\grid\GridView;
+use app\helpers\MyFormat;
 
 /* @var $this yii\web\View */
 /* @var $searchModel app\models\Loggers */
@@ -22,22 +23,37 @@ $this->params['breadcrumbs'][] = $this->title;
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
+        'layout' => "{summary}\n<div class='full-width text-center'>{pager}</div>\n{items}\n<div class='full-width text-center'>{pager}</div>",
+        'pager' => [
+            'options' => [
+                'class' => 'pagination'
+            ],
+        ],
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
+            [
+                'attribute' => 'image',
+                'format' => 'html',
+                'value' => function($model){
+                    return Html::img($model->image, ['style'=>'width:70px;']);
+                }
+            ],
 
             'name',
 //            'url:ntext',
-            'price',
-//            'image:ntext',
+            [
+                'attribute' => 'price',
+                'value' => function($model){
+                    return MyFormat::formatCurrency($model->price);
+                }
+            ],
             //'slug',
-            //'created_date',
-
-//            [
-//                'attribute' => 'type',
-//                'value' => function($model){
-//                    return $model->type];
-//                }
-//            ],
+            [
+                'attribute' => 'created_date',
+                'value' => function($model){
+                    return MyFormat::formatDatetime($model->created_date);
+                }
+            ],
             [
                 'class' => 'yii\grid\ActionColumn',
                 'visibleButtons' => [

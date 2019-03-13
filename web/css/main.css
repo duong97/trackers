@@ -363,3 +363,9 @@ hr.hr-style:before {
     border-color: black transparent transparent transparent;
     border-width: 11px 11px 0 11px;
 }
+.clearfix{
+    clear: both;
+}
+.full-width{
+    width: 100%;
+}

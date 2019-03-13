@@ -41,6 +41,9 @@ class ProductsController extends BaseController
 //            $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
             $dataProvider = new ActiveDataProvider([
                 'query' => Products::find(),
+                'pagination' => [ 
+                    'pageSize'=> isset(Yii::$app->params['defaultPageSize']) ? Yii::$app->params['defaultPageSize'] : 10,
+                ],
             ]);
 
             return $this->render('index', [
@@ -78,6 +81,7 @@ class ProductsController extends BaseController
     {
         try {
             $model = new Products();
+            $model->scenario = Yii::$app->params['SCENARIO_CREATE'];
 
             if ($model->load(Yii::$app->request->post()) && $model->save()) {
                 return $this->redirect(['view', 'id' => $model->id]);
@@ -102,6 +106,7 @@ class ProductsController extends BaseController
     {
         try {
             $model = $this->findModel($id);
+            $model->scenario = Yii::$app->params['SCENARIO_UPDATE'];
 
             if ($model->load(Yii::$app->request->post()) && $model->save()) {
                 return $this->redirect(['view', 'id' => $model->id]);

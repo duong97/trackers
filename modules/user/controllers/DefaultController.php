@@ -94,7 +94,6 @@ class DefaultController extends BaseController
             $product->handleUrl();
             $models               = Products::find()->where(['url' => $product->url])->one();
             if(!$models){ // Save as New product and price log if product doesn't exists
-                $product->slug = MyFormat::slugify($product->name);
                 $product->save();
                 $models = $product; // If model empty
             }
@@ -103,7 +102,7 @@ class DefaultController extends BaseController
                                 'product_id' => $models->id,
                                 'price' => $models->price
                             ])->one();
-            // If product doesn exist, save firt price
+            // If product doesn exist, save first price
             if(!$mLogExists){
                 $pLog             = new PriceLogs();
                 $pLog->product_id = $models->id;

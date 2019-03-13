@@ -14,6 +14,7 @@ namespace app\models;
 
 use Yii;
 use app\helpers\Constants;
+use app\helpers\MyFormat;
 
 /**
  * This is the model class for table "products".
@@ -21,6 +22,7 @@ use app\helpers\Constants;
  * @property string $id
  * @property string $name
  * @property string $url
+ * @property string $url_redirect
  * @property string $price
  * @property string $image
  * @property string $created_date
@@ -41,7 +43,8 @@ class Products extends BaseModel
     public function rules()
     {
         return [
-            [['name', 'url', 'price', 'image'], 'safe']
+            [['name', 'url', 'url_redirect', 'price', 'image'], 'safe'],
+            [['name', 'url', 'url_redirect', 'price', 'image'], 'required', 'on'=>'create']
         ];
     }
     
@@ -57,6 +60,11 @@ class Products extends BaseModel
             'image' => Yii::t('app', 'Images'),
             'created_date' => Yii::t('app', 'Created Date'),
         ];
+    }
+    
+    public function beforeSave($insert) {
+        $this->slug = MyFormat::slugify($this->name);
+        return parent::beforeSave($insert);
     }
     
     /*
