@@ -4,8 +4,12 @@ namespace app\modules\admin\controllers;
 
 use Yii;
 use app\models\Controllers;
+use app\models\Users;
+
 use app\helpers\Checks;
+
 use app\controllers\BaseController;
+
 use yii\data\ActiveDataProvider;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -85,6 +89,8 @@ class ControllersController extends BaseController
             if ($model->load(Yii::$app->request->post())) {
                 $model->actions = $_POST['Controllers']['actions'];
                 $model->save();
+                $mUser = Users::find()->where(['id' => Yii::$app->user->id])->one();
+                $mUser->initSessionBeforeLogin();
                 return $this->redirect(['view', 'id' => $model->id]);
             }
             return $this->render('create', [
@@ -126,6 +132,8 @@ class ControllersController extends BaseController
                 return ActiveForm::validate($model);
             }
             if ($model->load(Yii::$app->request->post()) && $model->save()) {
+                $mUser = Users::find()->where(['id' => Yii::$app->user->id])->one();
+                $mUser->initSessionBeforeLogin();
                 return $this->redirect(['view', 'id' => $model->id]);
             }
             return $this->render('update', [

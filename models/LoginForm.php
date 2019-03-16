@@ -104,24 +104,8 @@ class LoginForm extends Model
     public function beforeLogin(){
         $model                  = Users::find()->where(['id' => $this->_user->id])->one();
         if($model){
-            $this->initSessionBeforeLogin($model);
+            $model->initSessionBeforeLogin();
         }
     }
-    
-    /**
-     * @todo init session before login (by form or cookie)
-     * @param type $model model Users
-     */
-    public function initSessionBeforeLogin($model){
-        $session     = Yii::$app->session;
-        $mActionRole = new ActionRoles();
-        $aCA         = $mActionRole->getArrayAccess($model->role);
-        $session->set('listAccessAction', $aCA);
 
-        $aMenu       = $mActionRole->getArrayMenu($model->role);
-        $session->set('listMenu', $aMenu);
-
-        $model->last_access = date('Y-m-d H:i:s');
-        $model->update();
-    }
 }

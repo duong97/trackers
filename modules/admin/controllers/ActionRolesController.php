@@ -2,12 +2,16 @@
 
 namespace app\modules\admin\controllers;
 
-use Yii;
 use app\models\ActionRoles;
 use app\models\Controllers;
-use yii\data\ActiveDataProvider;
+use app\models\Users;
+
 use app\controllers\BaseController;
+
 use app\helpers\Checks;
+
+use Yii;
+use yii\data\ActiveDataProvider;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
@@ -79,6 +83,8 @@ class ActionRolesController extends BaseController
             $model = new ActionRoles();
 
             if ($model->load(Yii::$app->request->post()) && $model->save()) {
+                $mUser = Users::find()->where(['id' => Yii::$app->user->id])->one();
+                $mUser->initSessionBeforeLogin();
                 return $this->redirect(['view', 'id' => $model->id]);
             }
 
@@ -117,6 +123,8 @@ class ActionRolesController extends BaseController
             $model = $this->findModel($id);
 
             if ($model->load(Yii::$app->request->post()) && $model->save()) {
+                $mUser = Users::find()->where(['id' => Yii::$app->user->id])->one();
+                $mUser->initSessionBeforeLogin();
                 return $this->redirect(['view', 'id' => $model->id]);
             }
 

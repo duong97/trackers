@@ -111,13 +111,14 @@ class <?= $className ?> extends BaseModel
     
     public function search($params)
     {
+        $query = <?= $className ?>::find();
         $dataProvider = new ActiveDataProvider([
-            'query' => <?= $className ?>::find(),
+            'query' => $query,
 //            'sort' => [
 //                'defaultOrder' => [
 //                    'created_date' => SORT_DESC,
 //                ]
-            ],
+//            ],
             'pagination' => [ 
                 'pageSize'=> isset(Yii::$app->params['defaultPageSize']) ? Yii::$app->params['defaultPageSize'] : 10,
             ],

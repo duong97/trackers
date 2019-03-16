@@ -1,6 +1,7 @@
 <?php 
 use yii\grid\GridView;
 use yii\helpers\Html;
+use app\models\SupportedWebsites;
 
 $this->title = Yii::t('app', 'List of supported websites');
 $this->params['breadcrumbs'][] = $this->title;
@@ -23,9 +24,11 @@ $this->params['breadcrumbs'][] = $this->title;
         ],
         [
             'attribute' => 'status',
-            'value' => function ($model){
-                return $model->getStatus();
-            }
+            'format'=>'raw',
+            'value' => function($model){
+                $value = isset(SupportedWebsites::$aStatus[$model->status]) ? SupportedWebsites::$aStatus[$model->status] : '';
+                return Html::label($value, null, ['class' => SupportedWebsites::$aStatusCss[$model->status]]);
+            },
         ],
         [
             'attribute' => 'check_time',

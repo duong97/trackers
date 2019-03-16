@@ -87,11 +87,11 @@ class <?= $controllerClass ?> extends BaseController
                 'dataProvider' => $dataProvider,
             ]);
 	<?php else: ?>
-        $dataProvider = new ActiveDataProvider([
-                'query' => <?= $modelClass ?>::find(),
-            ]);
+            $searchModel = new <?= $modelClass ?>();
+            $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
             return $this->render('index', [
+                'searchModel' => $searchModel,
                 'dataProvider' => $dataProvider,
             ]);
 	<?php endif; ?>
