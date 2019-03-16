@@ -4,7 +4,9 @@ namespace app\models;
 
 use Yii;
 use yii\helpers\Url;
+use yii\data\ActiveDataProvider;
 
+use app\helpers\Checks;
 /**
  * This is the model class for table "users".
  *
@@ -43,6 +45,19 @@ class Users extends BaseModel
             self::notify_both     => Yii::t('app', 'Both'),
         ];
     }
+    
+    /*
+     * get array status of user
+     */
+    public static $aStatus = [
+        self::STT_VERIFYING => 'Verifying',
+        self::STT_ACTIVE => 'Active',
+    ];
+    
+    public static $aStatusCss = [
+        self::STT_VERIFYING => 'label label-warning',
+        self::STT_ACTIVE => 'label label-success',
+    ];
 
         /**
      * {@inheritdoc}
@@ -58,7 +73,8 @@ class Users extends BaseModel
     public function rules()
     {
         return [
-            [['email', 'password', 'salt', 'first_name', 'last_name', 'status', 'last_access', 'created_date'], 'safe'],
+            [['email', 'password', 'salt', 'first_name', 'last_name', 'status', 'role', 'last_access', 'created_date'], 'safe'],
+            [['email', 'password', 'first_name', 'last_name'], 'required', 'on' => [Yii::$app->params['SCENARIO_UPDATE'], Yii::$app->params['SCENARIO_CREATE']]],
             [['is_notify_fb', 'is_notify_email', 'notify_type'], 'safe'],
             [['first_name', 'last_name'], 'required', 'on' => 'editProfile'],
             ['cnewPassword', 'compare', 'compareAttribute' => 'newPassword'],
@@ -70,7 +86,9 @@ class Users extends BaseModel
             }, 'whenClient' => "function (attribute, value) {
                 return $('#users-newpassword').val() != '';
             }"],
-            [['newPassword', 'cnewPassword'], 'safe']
+            [['newPassword', 'cnewPassword'], 'safe'],
+            ['email', 'unique'],
+            [['email'], 'email'],
         ];
     }
 
@@ -121,6 +139,17 @@ class Users extends BaseModel
         return $this->first_name . " " . $this->last_name;
     }
     
+    public function createUser(){
+        $this->status       = Checks::isAdmin() ? Users::STT_ACTIVE : Users::STT_VERIFYING;
+        $this->role         = Checks::isRoot() ? $this->role : Constants::USER;
+        $this->created_date = date('Y-m-d H:i:s');
+        $this->last_access  = date('Y-m-d H:i:s');
+        $this->salt         = md5($this->created_date);
+        $this->ip           = Yii::$app->request->userIP;
+        $this->generatePassword($this->password);
+        $this->save();
+    }
+    
     /**
      * @todo init session before login (by form or cookie)
      * @param type $model model Users
@@ -136,5 +165,30 @@ class Users extends BaseModel
 
         $this->last_access = date('Y-m-d H:i:s');
         $this->update();
+    }
+    
+    public function search($params)
+    {
+        $query = Users::find();
+        $dataProvider = new ActiveDataProvider([
+            'query' => $query,
+//            'sort' => [
+//                'defaultOrder' => [
+//                    'created_date' => SORT_DESC,
+//                ]
+//            ],
+            'pagination' => [ 
+                'pageSize'=> isset(Yii::$app->params['defaultPageSize']) ? Yii::$app->params['defaultPageSize'] : 10,
+            ],
+        ]);
+        // No search? Then return data Provider
+        if (!($this->load($params) && $this->validate())) {
+            return $dataProvider;
+        }
+        // We have to do some search... Lets do some magic
+        $query->andFilterWhere(['like', 'first_name', $this->first_name])
+        ->andFilterWhere(['like', 'last_name', $this->last_name])
+        ->andFilterWhere(['like', 'email', $this->email]);
+        return $dataProvider;
     }
 }

@@ -33,7 +33,7 @@ class Constants{
     
     public static $aRole = [
         self::GUEST     => 'Guest',
-        self::USER      => 'Loggin User',
+        self::USER      => 'Login User',
         self::ADMIN     => 'Admin',
         self::ROOT      => 'Root Admin',
     ];
