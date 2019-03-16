@@ -133,6 +133,7 @@ class GetData extends BaseModel
      */
     public function getShopee($url){
         $aUrlParams = explode("-i.", $url);
+        if( empty($aUrlParams[1]) ) return [];
         $aId        = explode(".", $aUrlParams[1]);
         $api        = "https://shopee.vn/api/v2/item/get?itemid={$aId[1]}&shopid={$aId[0]}";
         $result     = file_get_contents($api);
@@ -184,7 +185,7 @@ class GetData extends BaseModel
             'price' => $price,
             'image' => isset($aImage[0]) ? $aImage[0] : ""
         ];
-        return $ret;
+        return empty($ret['name']) ? [] : $ret;
     }
     
     /*
@@ -197,6 +198,7 @@ class GetData extends BaseModel
 //        $aImg       = $aData = []; 
 //        $title      = "";
         // Crawl data from <script> tag
+        if(empty($script)) return [];
         $json = htmlspecialchars_decode($script->innertext);
         $aJsonData = json_decode($json, true);
 //        print_r($json);
@@ -277,7 +279,7 @@ class GetData extends BaseModel
 //            ];
 //        }
         $aData['image'] = isset($aImgTemp[0]) ? $aImgTemp[0] : "";
-        return $aData;
+        return empty($aData['name']) ? [] : $aData;
     }
     
     /* //fixing
