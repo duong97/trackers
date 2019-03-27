@@ -3,6 +3,8 @@
 return [
     'class' => 'yii\db\Connection',
     'dsn' => 'mysql:host=localhost;dbname=trackers',
+//    'username' => 'duongnv',
+//    'password' => 'XHYZr4lp47MV4B66',
     'username' => 'root',
     'password' => '123',
     'charset' => 'utf8',

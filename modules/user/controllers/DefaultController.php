@@ -35,6 +35,9 @@ class DefaultController extends BaseController
      */
     public function actionIndex()
     {
+        if(Yii::$app->user->isGuest){
+            return $this->requireLogin();
+        }
         Checks::notFoundExc();
 //        return $this->render('index');
     }
@@ -44,7 +47,9 @@ class DefaultController extends BaseController
      */
     public function actionProfile(){
         try {
-            Checks::requireLogin();
+            if(Yii::$app->user->isGuest){
+                return $this->requireLogin();
+            }
             $model      = Users::find()->where(['id' => Yii::$app->user->id])->one();
             $model->scenario = 'editProfile';
             $request    = Yii::$app->request;
@@ -69,7 +74,9 @@ class DefaultController extends BaseController
      */
     public function actionTrackingItems(){
         try {
-            Checks::requireLogin();
+            if(Yii::$app->user->isGuest){
+                return $this->requireLogin();
+            }
             $query = UserTracking::find()
                 ->where([
                     'user_id' => Yii::$app->user->id, 
@@ -88,7 +95,9 @@ class DefaultController extends BaseController
      */
     public function actionStartTracking(){
         try {
-            Checks::requireLogin();
+            if(Yii::$app->user->isGuest){
+                return $this->requireLogin();
+            }
             $product              = new Products();
             $product->attributes  = \Yii::$app->request->post('Products');
             $product->handleUrl();
@@ -142,7 +151,9 @@ class DefaultController extends BaseController
      */
     public function actionStopTracking($id){
         try {
-            Checks::requireLogin();
+            if(Yii::$app->user->isGuest){
+                return $this->requireLogin();
+            }
             if(isset($id)){
                 $mUserTracking              = new UserTracking();
                 $mUserTracking->product_id  = $id;
@@ -164,7 +175,9 @@ class DefaultController extends BaseController
      */
     public function actionSettings(){
         try {
-            Checks::requireLogin();
+            if(Yii::$app->user->isGuest){
+                return $this->requireLogin();
+            }
             $user = Users::find()
                 ->where([
                     'id' => Yii::$app->user->id, 

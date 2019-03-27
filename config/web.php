@@ -14,6 +14,18 @@ $config = [
     'vendorPath' => '../../yii2-framework/vendor',
     'language'=>'en', // Default language
     'components' => [
+        'authClientCollection' => [
+            'class' => 'yii\authclient\Collection',
+            'clients' => [
+                'facebook' => [
+                    'class' => 'yii\authclient\clients\Facebook',
+                    'authUrl' => 'https://www.facebook.com/dialog/oauth?display=popup',
+                    'clientId' => '813820762285163',
+                    'clientSecret' => 'd7d3116ab1aa1d5ab6b58ba45b78b544',
+                    'attributeNames' => ['name', 'email', 'first_name', 'last_name'],
+                ],
+            ],
+        ],
         // Translation
         'i18n' => [
 //            'class' => 'app\components\NewI18N',

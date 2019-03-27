@@ -8,7 +8,7 @@
 namespace app\helpers;
 
 class Constants{
-    const website_name = "Ding";
+    const website_name = "ChartCost";
     
     const GUEST         = 1;
     const USER          = 2;

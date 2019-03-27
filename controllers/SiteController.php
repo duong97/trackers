@@ -13,6 +13,7 @@ use app\models\ContactForm;
 use app\models\Users;
 use app\models\SupportedWebsites;
 
+use app\helpers\Constants;
 use app\helpers\Mailer;
 use yii\helpers\Url;
 use yii\data\ActiveDataProvider;
@@ -59,6 +60,10 @@ class SiteController extends BaseController
                 'class' => 'yii\captcha\CaptchaAction',
                 'fixedVerifyCode' => YII_ENV_TEST ? 'testme' : null,
             ],
+            'auth' => [
+                'class' => 'yii\authclient\AuthAction',
+                'successCallback' => [$this, 'oAuthSuccess'],
+            ],
         ];
     }
 
@@ -85,10 +90,14 @@ class SiteController extends BaseController
         
         $model = new LoginForm();
         if ($model->load(Yii::$app->request->post()) && $model->login()) {
-            return $this->goBack();
+            if(Yii::$app->user->returnUrl != '/'){
+                return $this->redirect(Yii::$app->user->returnUrl);
+            }else{
+                return $this->goBack();
+            }
         }
-        Yii::$app->user->returnUrl = Yii::$app->request->referrer;
-
+        Yii::$app->user->returnUrl = (Yii::$app->user->returnUrl == '/') ? Yii::$app->request->referrer : Yii::$app->user->returnUrl;
+        
         $model->password = '';
         return $this->render('login', [
             'model' => $model,
@@ -148,8 +157,8 @@ class SiteController extends BaseController
     public function actionLogout()
     {
         Yii::$app->user->logout();
-//        return $this->goBack(Yii::$app->request->referrer);
-        return $this->goHome();
+        return $this->goBack(Yii::$app->request->referrer);
+//        return $this->goHome();
     }
 
     /**
@@ -230,4 +239,66 @@ class SiteController extends BaseController
         }
     }
     
+    /**
+     * @todo login with facebook
+     */
+    public function actionFbLogin(){
+        $post = Yii::$app->request->post('userData');
+        if(!empty($post)){
+            $data               = json_decode($post);
+            $aPlatForm          = Users::$aPlatform;
+            $platform           = array_search(Yii::$app->request->post('oauth_provider'), $aPlatForm);
+            if($platform === FALSE) $platform = null;
+            $models = Users::find()->where([
+                                    'social_id' => $data->id,
+                                    'platform' => $platform
+                                ])->all();
+            if(!$models){
+                $user               = new Users();
+                $user->social_id    = $data->id;
+                $user->first_name   = $data->first_name;
+                $user->last_name    = $data->last_name;
+                $user->email        = $data->email;
+                $user->platform     = $platform;
+                $user->role         = Constants::USER;
+                $user->status       = Users::STT_ACTIVE;
+                $user->last_access  = date('Y-m-d H:i:s');
+                $user->ip           = Yii::$app->request->userIP;
+                $user->save();
+            }
+            $mLoginForm = new LoginForm();
+            $mLoginForm->email = $data->email;
+            return Yii::$app->user->login($mLoginForm->getUser(), 0);
+        }
+    }
+    
+        public function beforeAction($action) 
+    { 
+        $this->enableCsrfValidation = false; 
+        return parent::beforeAction($action); 
+    }
+    
+    /**
+     * @todo logout with facebook
+     */
+    public function actionFbLogout(){
+        $post = Yii::$app->request->post('confirm');
+        if(!empty($post)){
+            
+        }
+    }
+//    
+//    public function actions()
+//    {
+//        return [
+//            'auth' => [
+//                'class' => 'yii\authclient\AuthAction',
+//                'successCallback' => [$this, 'oAuthSuccess'],
+//            ],
+//        ];
+//    }
+    
+    public function oAuthSuccess($client) {
+        $userAttributes = $client->getUserAttributes();
+    }
 }

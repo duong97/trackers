@@ -1,8 +1,8 @@
 {
-    "name": "yiisoft/yii2-app-basic",
-    "description": "Yii 2 Basic Project Template",
-    "keywords": ["yii2", "framework", "basic", "project template"],
-    "homepage": "http://www.yiiframework.com/",
+    "name": "ChartCost",
+    "description": "A price trackers tool",
+    "keywords": ["chartcost", "price", "tracker"],
+    "homepage": "http://www.chartcost.com/",
     "type": "project",
     "license": "BSD-3-Clause",
     "support": {
@@ -17,7 +17,8 @@
         "php": ">=5.4.0",
         "yiisoft/yii2": "~2.0.14",
         "yiisoft/yii2-bootstrap": "~2.0.0",
-        "yiisoft/yii2-swiftmailer": "~2.0.0"
+        "yiisoft/yii2-swiftmailer": "~2.0.0",
+        "yiisoft/yii2-authclient": "~2.1.0"
     },
     "require-dev": {
         "yiisoft/yii2-debug": "~2.0.0",
@@ -29,7 +30,7 @@
         "codeception/specify": "~0.4.3"
     },
     "config": {
-	"vendor-dir":"/var/www/html/yii2-framework",
+	"vendor-dir":"/var/www/html/yii2-framework/vendor",
         "process-timeout": 1800,
         "fxp-asset": {
             "enabled": false
@@ -65,12 +66,5 @@
             "type": "composer",
             "url": "https://asset-packagist.org"
         }
-    ],
-    "replace": {
-        "bower-asset/jquery": ">=1.11.0",
-        "bower-asset/inputmask": ">=3.2.0",
-        "bower-asset/punycode": ">=1.3.0",
-        "bower-asset/yii2-pjax": ">=2.0.0"
-    }
+    ]
 }
-

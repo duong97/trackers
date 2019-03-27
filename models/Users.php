@@ -17,7 +17,7 @@ use app\helpers\Checks;
  * @property string $first_name
  * @property string $last_name
  * @property string $email
- * @property string $phone
+ * @property string $social_id
  * @property int $role
  * @property string $ip
  * @property int $status
@@ -33,7 +33,13 @@ class Users extends BaseModel
     const notify_decrease       = 2;
     const notify_both           = 3;
     
+    const plf_facebook = 1;
+    
     public $newPassword, $cnewPassword;
+    
+    public static $aPlatform = [
+        self::plf_facebook => 'facebook'
+    ];
     
     /*
      * get array notify type

@@ -14,6 +14,7 @@ namespace app\controllers;
 use yii\web\Controller;
 use Yii;
 use app\helpers\Checks;
+use yii\helpers\Url;
 
 class BaseController extends Controller
 {
@@ -64,5 +65,12 @@ class BaseController extends Controller
             }
         }
         return false;
+    }
+    
+    public function requireLogin(){
+        $urlManager                 = Yii::$app->getUrlManager();
+        $url                        = $urlManager->createUrl(['site/login']);
+        Yii::$app->user->returnUrl  = Yii::$app->request->getUrl();
+        return $this->redirect($url);
     }
 }
