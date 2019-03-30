@@ -240,7 +240,7 @@ class SiteController extends BaseController
     }
     
     /**
-     * @todo login with facebook
+     * @todo login with facebook (using fb sdk)
      */
     public function actionFbLogin(){
         $post = Yii::$app->request->post('userData');
@@ -272,14 +272,17 @@ class SiteController extends BaseController
         }
     }
     
-        public function beforeAction($action) 
-    { 
-        $this->enableCsrfValidation = false; 
-        return parent::beforeAction($action); 
-    }
+    /*
+     * uncomment this when using login with fb using fb sdk (if errors)
+     */
+//    public function beforeAction($action) 
+//    { 
+//        $this->enableCsrfValidation = false; 
+//        return parent::beforeAction($action); 
+//    }
     
     /**
-     * @todo logout with facebook
+     * @todo logout with facebook (using fb sdk)
      */
     public function actionFbLogout(){
         $post = Yii::$app->request->post('confirm');
@@ -287,18 +290,31 @@ class SiteController extends BaseController
             
         }
     }
-//    
-//    public function actions()
-//    {
-//        return [
-//            'auth' => [
-//                'class' => 'yii\authclient\AuthAction',
-//                'successCallback' => [$this, 'oAuthSuccess'],
-//            ],
-//        ];
-//    }
     
+    /**
+     * @todo login with fb (using AuthClient Yii2)
+     */
     public function oAuthSuccess($client) {
-        $userAttributes = $client->getUserAttributes();
+        $userData = $client->getUserAttributes();
+        $platform = Users::plf_facebook;
+        $models   = Users::find()->where([
+                                'email' => $userData['email'],
+                            ])->one();
+        if(!$models){
+            $user               = new Users();
+            $user->social_id    = $userData['id'];
+            $user->first_name   = $userData['first_name'];
+            $user->last_name    = $userData['last_name'];
+            $user->email        = $userData['email'];
+            $user->platform     = $platform;
+            $user->role         = Constants::USER;
+            $user->status       = Users::STT_ACTIVE;
+            $user->last_access  = date('Y-m-d H:i:s');
+            $user->ip           = Yii::$app->request->userIP;
+            $user->save();
+        }
+        $mLoginForm             = new LoginForm();
+        $mLoginForm->email      = $userData['email'];
+        return Yii::$app->user->login($mLoginForm->getUser(), 0);
     }
 }

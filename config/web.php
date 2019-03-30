@@ -66,11 +66,14 @@ $config = [
             'useFileTransport' => false,
             'transport' => [
                 'class' => 'Swift_SmtpTransport',
-                'host' => 'smtp.gmail.com',  
+//                'host' => 'smtp.gmail.com',  
+                'host' => 'pro43.emailserver.vn',  
                 'username' => $params['verifyEmail'],
                 'password' => $params['verifyEmailPassword'],
-                'port' => '25', 
-                'encryption' => 'tls', 
+//                'port' => '25', 
+//                'encryption' => 'tls', 
+                'port' => '465', 
+                'encryption' => 'ssl', 
             ],
         ],
         'log' => [

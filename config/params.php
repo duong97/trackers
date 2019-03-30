@@ -1,8 +1,8 @@
 <?php
 
 return [
-    'verifyEmail' => 'nvduong1211@gmail.com',
-    'verifyEmailPassword' => 'cuchuoi258',
+    'verifyEmail' => 'admin@chartcost.com',
+    'verifyEmailPassword' => 'K_p]aGJ*@sOi',
     'defaultPageSize' => '10',
     'SCENARIO_CREATE' => 'create',
     'SCENARIO_UPDATE' => 'update',
