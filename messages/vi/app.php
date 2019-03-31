@@ -96,5 +96,9 @@ return [
     'Currency'              => 'Đơn vị tiền tệ',
     'Status'                => 'Trạng thái',
     'List of supported websites' => 'Danh sách những website hỗ trợ',
-    'Supported websites' => 'Những website hỗ trợ',
+    'Supported websites'    => 'Những website hỗ trợ',
+    'Email has been resent.'=>'Email đã được gửi lại.',
+    'Resend email.'         =>'Gửi lại email.',
+    'Email is under verifying!' =>'Email đang được xác minh!',
+    'Incorrect email or password.' =>'Sai email hoặc mật khẩu.',
 ];

@@ -12,10 +12,11 @@ use app\models\RegisterForm;
 use app\models\ContactForm;
 use app\models\Users;
 use app\models\SupportedWebsites;
+use app\models\Mailer;
 
 use app\helpers\Constants;
-use app\helpers\Mailer;
 use yii\helpers\Url;
+use yii\helpers\Html;
 use yii\data\ActiveDataProvider;
 
 
@@ -125,7 +126,10 @@ class SiteController extends BaseController
                     $model->createNewUser();
                     $mailer = new Mailer();
                     $mailer->verifyRegistration($model->email);
-                    Yii::$app->session->setFlash('success', Yii::t('app', 'An email has been sent to')." $model->email, ".Yii::t('app', 'please check your inbox and complete your registration')."!");
+                    $urlManager = \Yii::$app->getUrlManager();
+                    $urlResend = $urlManager->createUrl(['user/mail/resend-registration', 'email' => $model->email]);
+                    $linkResend = Html::a('Resend email.', $urlResend);
+                    Yii::$app->session->setFlash('success', Yii::t('app', 'An email has been sent to')." $model->email, ".Yii::t('app', 'please check your inbox and complete your registration')."! ".$linkResend);
                 } else {
                     Yii::$app->session->setFlash('error', $message);
                 }

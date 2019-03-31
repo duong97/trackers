@@ -8,9 +8,14 @@ div.main-container{
     margin: 0!important;
     padding: 0;
 }
+div.navbar-default .navbar-brand:hover{
+    color: white;
+}
 ");
 ?>
-
+<?php 
+$this->title = Yii::t('app', Constants::website_name);
+?>
 <div class="home-background">
     <div class="banner-container">
         <h1><?= 'welcome to ' ?> <span style="font-family: arial;"><?= strtoupper(Constants::website_name) ?></span></h1>

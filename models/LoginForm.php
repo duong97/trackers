@@ -63,7 +63,9 @@ class LoginForm extends Model
         if (!$this->hasErrors()) {
             $user = $this->getUser();
 
-            if (!$user || !$user->validatePassword($this->password)) {
+            if($user->status == Users::STT_VERIFYING){
+                $this->addError($attribute, Yii::t('app', 'Email is under verifying!'));
+            } else if (!$user || !$user->validatePassword($this->password)) {
                 $this->addError($attribute, Yii::t('app', 'Incorrect email or password.'));
             }
         }

@@ -40,7 +40,8 @@ class User extends \yii\base\BaseObject implements \yii\web\IdentityInterface
      */
     public static function findByEmail($email)
     {
-        $user = Users::find()->where(['email' => $email, 'status'=>Users::STT_ACTIVE])->one();
+//        $user = Users::find()->where(['email' => $email, 'status'=>Users::STT_ACTIVE])->one();
+        $user = Users::find()->where(['email' => $email])->one();
         return empty($user) ? null : new static($user);
     }
 

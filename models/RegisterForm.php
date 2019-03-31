@@ -65,7 +65,7 @@ class RegisterForm extends Model
         $model = Users::find()->where(['email' => $this->email])->one();
         
         if(!empty($model)){
-            $message = Yii::t('app', 'Email already exists!');
+            $message = ($model->status == Users::STT_ACTIVE) ? Yii::t('app', 'Email already exists!') : Yii::t('app', 'Email is under verifying!');
             return false;
         }
         return true;
