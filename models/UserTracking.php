@@ -22,13 +22,9 @@ use Yii;
  * @property int $product_id
  * @property string $start_date
  * @property string $end_date
- * @property int $status
  */
 class UserTracking extends BaseModel
 {
-    const stt_active        = 1;
-    const stt_inactive      = 2;
-    
     /*
      * get array tracking time
      */
@@ -57,7 +53,7 @@ class UserTracking extends BaseModel
     public function rules()
     {
         return [
-            [['start_date', 'end_date', 'user_id', 'product_id', 'status'], 'safe'],
+            [['start_date', 'end_date', 'user_id', 'product_id'], 'safe'],
             [['rUser', 'rProduct'], 'safe'],
         ];
     }
@@ -95,10 +91,14 @@ class UserTracking extends BaseModel
      * @params: $this->user_id
      */
     public function getUserTrackingItems(){
+        $now    = date('Y-m-d H:i:s');
         $models = UserTracking::find()
                 ->where([
                     'user_id' => Yii::$app->user->id, 
-                    'status' => self::stt_active])
+//                    'status' => self::stt_active
+                ])
+                ->andWhere(['<=', 'start_date', $now])
+                ->andWhere(['>=', 'end_date', $now])
                 ->all();
         $ret    = [];
         if($models){
@@ -114,11 +114,13 @@ class UserTracking extends BaseModel
      * @params: $this->product_id
      */
     public function isTracked(){
+        $now    = date('Y-m-d H:i:s');
         $models = UserTracking::find()
                 ->where([
                     'user_id' => Yii::$app->user->id, 
-                    'product_id' => $this->product_id,
-                    'status' => self::stt_active])
+                    'product_id' => $this->product_id])
+                ->andWhere(['<=', 'start_date', $now])
+                ->andWhere(['>=', 'end_date', $now])
                 ->one();
         return $models ? true : false;
     }
@@ -132,7 +134,8 @@ class UserTracking extends BaseModel
                 ->where([
                     'user_id' => Yii::$app->user->id, 
                     'product_id' => $this->product_id,
-                    'status' => self::stt_inactive])
+//                    'status' => self::stt_inactive
+                    ])
                 ->one();
         return $models ? $models : false;
     }
@@ -142,7 +145,8 @@ class UserTracking extends BaseModel
                 ->where([
                     'user_id' => Yii::$app->user->id, 
                     'product_id' => $this->product_id,
-                    'status' => self::stt_active])
+//                    'status' => self::stt_active
+                ])
                 ->one();
     }
     
@@ -150,9 +154,11 @@ class UserTracking extends BaseModel
      * @todo get list active product id
      */
     public function getArrayActive(){
+        $now = date('Y-m-d H:i:s');
         $aModels  = UserTracking::find()
                         ->select('DISTINCT(product_id)')
-                        ->where(['status' => UserTracking::stt_active])
+                        ->where(['<=', 'start_date', $now])
+                        ->andWhere(['>=', 'end_date', $now])
                         ->all();
         $ret      = [];
         foreach ($aModels as $value) {

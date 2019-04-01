@@ -77,10 +77,13 @@ class DefaultController extends BaseController
             if(Yii::$app->user->isGuest){
                 return $this->requireLogin();
             }
+            $now   = date('Y-m-d H:i:s');
             $query = UserTracking::find()
                 ->where([
                     'user_id' => Yii::$app->user->id, 
-                    'status' => UserTracking::stt_active]);
+                ])
+                ->andWhere(['<=', 'start_date', $now])
+                ->andWhere(['>=', 'end_date', $now]);
             $provider = new ActiveDataProvider([
                 'query' => $query,
             ]);
@@ -131,11 +134,11 @@ class DefaultController extends BaseController
                     $mTrackingBefore = $userTracking->isTrackedBefore();
                     if($mTrackingBefore){ // if tracking before => update 
                         $mTrackingBefore->end_date = $endDate;
-                        $mTrackingBefore->status   = UserTracking::stt_active;
+//                        $mTrackingBefore->status   = UserTracking::stt_active;
                         $mTrackingBefore->update();
                     } else { // if dosen tracking before => save new
                         $userTracking->end_date   = $endDate;
-                        $userTracking->status     = UserTracking::stt_active;
+//                        $userTracking->status     = UserTracking::stt_active;
                         $userTracking->save();
                     }
                 }
@@ -159,8 +162,8 @@ class DefaultController extends BaseController
                 $mUserTracking->product_id  = $id;
                 $model                      = $mUserTracking->findByProductId();
                 if($model){
-                    $model->status      = UserTracking::stt_inactive;
-                    $model->end_date    = date('Y-m-d H:i:s');
+//                    $model->status      = UserTracking::stt_inactive;
+                    $model->end_date    = date('Y-m-d H:i:00');
                     $model->update();
                 }
             }

@@ -17,6 +17,6 @@ $mPriceLogs = new PriceLogs;
 $mUserTracking = new UserTracking;
 $mC = new app\models\ActionRoles;
 echo '<pre>';
-print_r($mC->getArrayAccess(3));
+print_r($mUserTracking->getArrayActive());
 echo '</pre>';
 die;

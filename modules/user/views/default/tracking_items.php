@@ -22,7 +22,12 @@ $this->params['breadcrumbs'][] = $this->title;
         ],
         [
             'attribute' => 'rProduct.name',
-            'value' => 'rProduct.name'
+            'format' => 'raw',
+            'value' => function($model){
+                $urlManager = \Yii::$app->getUrlManager();
+                $url        = $urlManager->createUrl(['product/action/detail', 'url'=>$model->rProduct->url]);
+                return Html::a($model->rProduct->name, $url);
+            },
         ],
         [
             'class' => 'yii\grid\ActionColumn',

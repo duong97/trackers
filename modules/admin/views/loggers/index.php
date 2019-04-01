@@ -3,6 +3,7 @@
 use yii\helpers\Html;
 use yii\grid\GridView;
 use app\models\Loggers;
+use app\helpers\MyFormat;
 
 /* @var $this yii\web\View */
 /* @var $dataProvider yii\data\ActiveDataProvider */
@@ -34,7 +35,7 @@ $this->params['breadcrumbs'][] = $this->title;
             [
                 'attribute' => 'created_date',
                 'value' => function($model){
-                    return Yii::$app->formatter->asDate($model->created_date, 'php:d/m/Y H:i:s');
+                    return MyFormat::formatDatetime($model->created_date);
                 }
             ],
 

@@ -75,7 +75,7 @@ class TrackingController extends Controller
             Loggers::WriteLog('Cron report | last '.($timeEnd-$timeStart).'(s) | total: '.count($aProducts)." | change: $numProduct\n", Loggers::type_cron);
             return ExitCode::OK;
         } catch (Exception $exc) {
-            
+            Loggers::WriteLog("Cron errors: ".date('d/m/Y H:i:s'), Loggers::type_cron);
         }
     }
 }
