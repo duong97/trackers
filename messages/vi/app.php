@@ -101,4 +101,8 @@ return [
     'Resend email.'         =>'Gửi lại email.',
     'Email is under verifying!' =>'Email đang được xác minh!',
     'Incorrect email or password.' =>'Sai email hoặc mật khẩu.',
+    'Notification'          =>'Thông báo',
+    'The price of the product you are tracking has been changed' =>'Giá của sản phảm mà bạn theo dõi có sự thay đổi',
+    'Detail'                =>'Chi tiết',
+    'Go to shop'            =>'Đến nơi bán',
 ];

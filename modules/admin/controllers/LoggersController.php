@@ -39,6 +39,7 @@ class LoggersController extends BaseController
 	try {
             $dataProvider = new ActiveDataProvider([
                 'query' => Loggers::find(),
+                'sort'=> ['defaultOrder' => ['id'=>SORT_DESC]]
             ]);
 
             return $this->render('index', [

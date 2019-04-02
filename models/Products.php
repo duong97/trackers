@@ -127,6 +127,18 @@ class Products extends BaseModel
         return $url;
     }
     
-    
+    /**
+     * @todo get array product by array id
+     * @param array $aProductId array product id
+     * @return [product_id => model_products]
+     */
+    public function getListProductById($aProductId){
+        $models = Products::find()->where(['in', 'id', $aProductId])->all();
+        $ret    = [];
+        foreach ($models as $value) {
+            $ret[$value->id] = $value;
+        }
+        return $ret;
+    }
     
 }

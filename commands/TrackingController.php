@@ -14,6 +14,7 @@ use app\models\PriceLogs;
 use app\models\GetData;
 use app\models\Products;
 use app\models\Loggers;
+use app\models\Mailer;
 
 /**
  * This command echoes the first argument that you have entered.
@@ -52,6 +53,7 @@ class TrackingController extends Controller
             $aLastPrice     = $plog->getArrayLastPrice($aProductId);
             $aProducts      = Products::findAll($aProductId);
             $numProduct     = 0;
+            $aProductChange = [];
             foreach ($aProducts as $p) {
                 $aData      = GetData::instance()->searchNewUrl($p->url);
                 if(!empty($aData['price'])){
@@ -63,11 +65,16 @@ class TrackingController extends Controller
                         $pLog->updated_date = date('Y-m-d H:i:s');
                         $pLog->save();
                         $numProduct++;
+                        $aProductChange[]   = $p->id;
 //                        echo "Cron price | product_id:$p->id, new price:{$aData['price']}\n";
                         Loggers::WriteLog("Cron price | product_id: $p->id, new price: {$aData['price']}", Loggers::type_cron);
                     }
                 }
             }
+            // Notify User by email
+            $mailer = new Mailer();
+            $mailer->notifyPriceChanged($aProductChange);
+            
             $timeEnd = microtime(true);
 //            echo "Cron end at: ".date('d/m/Y H:i:s')."\n";
 //            echo "Cron report | last ".($timeEnd-$timeStart).'(s) | total: '.count($aProducts)." | change: $numProduct\n";

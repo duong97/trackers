@@ -166,4 +166,23 @@ class UserTracking extends BaseModel
         }
         return $ret;
     }
+    
+    /**
+     * @todo get list user to notify when price is changed
+     * @params $aProductId array of product id has price changed
+     */
+    public function getListNotifyUser($aProductId){
+        $now    = date('Y-m-d H:i:s');
+        $models = UserTracking::find()
+                        ->where(['<=', 'start_date', $now])
+                        ->andWhere(['>=', 'end_date', $now])
+                        ->andWhere(['IN', 'product_id', $aProductId])
+                        ->all();
+        $ret    = [];
+        foreach ($models as $value) {
+            $ret[$value->user_id][] = $value->product_id;
+        }
+        return $ret;
+    }
+    
 }

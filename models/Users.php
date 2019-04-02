@@ -197,4 +197,18 @@ class Users extends BaseModel
         ->andFilterWhere(['like', 'email', $this->email]);
         return $dataProvider;
     }
+    
+    /**
+     * @todo get array user by array id
+     * @param array $aUserId array user id
+     * @return [user_id => model_users]
+     */
+    public function getListUserById($aUserId){
+        $models = Users::find()->where(['in', 'id', $aUserId])->all();
+        $ret    = [];
+        foreach ($models as $value) {
+            $ret[$value->id] = $value;
+        }
+        return $ret;
+    }
 }

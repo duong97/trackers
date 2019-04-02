@@ -3,6 +3,7 @@ namespace app\modules\user\controllers;
 
 use app\controllers\BaseController;
 use Yii;
+use app\helpers\Checks;
 
 class TestController extends BaseController
 {
@@ -12,11 +13,17 @@ class TestController extends BaseController
      */
     public function actionIndex()
     {
+        if(!Checks::isRoot()){
+            Checks::notFoundExc();
+        }
         return $this->render('index');
     }
     
     public function actionStep($step)
     {
+        if(!Checks::isRoot()){
+            Checks::notFoundExc();
+        }
         $maxStep = 3;
         $minStep = 1;
         if($step < 1){
