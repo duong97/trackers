@@ -2,6 +2,7 @@
 use yii\bootstrap\ActiveForm;
 use app\models\Users;
 use yii\helpers\Html;
+use yii\helpers\Url;
 
 $this->title = Yii::t('app', 'Settings');
 $this->params['breadcrumbs'][] = $this->title;
@@ -17,6 +18,16 @@ $this->params['breadcrumbs'][] = $this->title;
         
         <ul class="list-group">
             <label><?= Yii::t('app', 'Notification settings') ?></label>
+            <li class="list-group-item">
+                <label class="switch">
+                    <?= Html::activeCheckbox($user, 'is_notify_browser',['label'=>false]) ?>
+                    <span class="slider round"></span>
+                </label>
+                <div>
+                    <p><b><?= Yii::t('app', 'Notify via browser') ?></b></p>
+                    <p><?= Yii::t('app', 'Receive notifications via browser (Chrome, Firefox,...)') . "." ?></p>
+                </div>
+            </li>
             <li class="list-group-item">
                 <label class="switch">
                     <?= Html::activeCheckbox($user, 'is_notify_fb',['label'=>false]) ?>
@@ -50,3 +61,10 @@ $this->params['breadcrumbs'][] = $this->title;
     </div>
 </div>
 <?php ActiveForm::end() ?>
+
+<script src="http://localhost/trackers/web/js/notifications.js"></script>
+<script>
+    var elm = $('#users-is_notify_browser');
+    var url = '<?= Url::to(['/user/notification/register']); ?>';
+    bindNotifications(elm, 'change', url);
+</script>

@@ -12,7 +12,7 @@ class User extends \yii\base\BaseObject implements \yii\web\IdentityInterface
     public $salt;
     public $auth_key;
     public $first_name, $last_name;
-    public $platform, $social_id, $is_notify_fb, $is_notify_email, $notify_type;
+    public $platform, $social_id, $is_notify_browser, $is_notify_fb, $is_notify_email, $subscription, $notify_type;
     public $role, $status, $ip, $last_access, $created_date;
     
     /**

@@ -1,6 +1,6 @@
 $(function() {
     bindSearchOnPasteNav();
-    bindNotification();
+//    bindNotification();
 });
 
 function bindSearchOnPasteNav(){
@@ -20,7 +20,7 @@ function bindConfirm(message){
 
 function bindNotification(){
     if (!Notification) {
-        alert('Desktop notifications not available in your browser. Try Chromium.'); 
+        console.log('Desktop notifications not available in your browser. Try Chromium.'); 
         return;
     }
     if (Notification.permission !== "granted"){
@@ -33,7 +33,7 @@ function bindNotification(){
 function notifyMe() {
     // Let's check if the browser supports notifications
     if (!("Notification" in window)) {
-        alert("This browser does not support system notifications");
+        console.log("This browser does not support system notifications");
     }
 
     // Let's check whether notification permissions have already been granted

@@ -67,6 +67,8 @@ return [
     'Name'                  => 'Tên',
     'Images'                => 'Hình ảnh',
     'Are you sure'          => 'Bạn có chắc',
+    'Notify via browser'    => 'Thông báo qua trình duyệt',
+    'Receive notifications via browser (Chrome, Firefox,...)' => 'Nhận thông báo qua trình duyệt (Chrome, Firefox,...)',
     'Notify via message'    => 'Thông báo qua tin nhắn',
     'Receive notifications via Facebook Messenger, require login with Facebook' => 'Nhận thông báo qua tin nhắn Facebook, yêu cầu đăng nhập bằng Facebook',
     'Notify via email'      => 'Thông báo qua email',

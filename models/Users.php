@@ -81,7 +81,7 @@ class Users extends BaseModel
         return [
             [['email', 'password', 'salt', 'first_name', 'last_name', 'status', 'role', 'last_access', 'created_date'], 'safe'],
             [['email', 'password', 'first_name', 'last_name'], 'required', 'on' => [Yii::$app->params['SCENARIO_UPDATE'], Yii::$app->params['SCENARIO_CREATE']]],
-            [['is_notify_fb', 'is_notify_email', 'notify_type'], 'safe'],
+            [['is_notify_browser', 'is_notify_fb', 'is_notify_email', 'subscription', 'notify_type'], 'safe'],
             [['first_name', 'last_name'], 'required', 'on' => 'editProfile'],
             ['cnewPassword', 'compare', 'compareAttribute' => 'newPassword'],
             ['newPassword', 'string', 'length' => [6,25], 
