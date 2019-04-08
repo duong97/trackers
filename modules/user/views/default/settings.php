@@ -62,7 +62,7 @@ $this->params['breadcrumbs'][] = $this->title;
 </div>
 <?php ActiveForm::end() ?>
 
-<script src="http://localhost/trackers/web/js/notifications.js"></script>
+<script src="<?= Yii::getAlias('@web').'/js/notifications.js' ?>"></script>
 <script>
     var elm         = $('#users-is_notify_browser');
     var urlHandle   = '<?= Url::to(['/user/notification/register']); ?>';

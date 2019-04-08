@@ -31,7 +31,8 @@ class HelloController extends Controller
     {
         try {
             $mNotification = new Notifications();
-            $aProductId = [23, 27, 28];
+//            $aProductId = [23, 27, 28];
+            $aProductId = [28];
             $mNotification->notifyPriceChanged($aProductId);
         } catch (Exception $exc) {
             Loggers::WriteLog("Cron errors: hello | ".date('d/m/Y H:i:s'), Loggers::type_cron);
