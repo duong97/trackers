@@ -1,8 +1,8 @@
 {
-    "name": "ChartCost",
+    "name": "duong97/chart-cost",
     "description": "A price trackers tool",
     "keywords": ["chartcost", "price", "tracker"],
-    "homepage": "http://www.chartcost.com/",
+    "homepage": "https://www.chartcost.com/",
     "type": "project",
     "license": "BSD-3-Clause",
     "support": {

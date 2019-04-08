@@ -27,7 +27,8 @@ class GetData extends BaseModel
      * Search for url
      */
     public function searchUrl($url){
-        return empty($this->searchExistsUrl($url)) ? $this->searchNewUrl($url) : $this->searchExistsUrl($url);
+        $ret = empty($this->searchExistsUrl($url)) ? $this->searchNewUrl($url) : $this->searchExistsUrl($url);
+        return $ret;
     }
     
     /*
@@ -47,7 +48,7 @@ class GetData extends BaseModel
         $parse          = parse_url($url);
         $domain         = str_replace("www.", "", $parse['host']);
         $aWebsiteDomain = Constants::$aWebsiteDomain;
-        $ret            = "";
+        $ret            = [];
         switch ($domain) {
             case $aWebsiteDomain[Constants::LAZADA]:
                 $ret = $this->getLazada($url);
@@ -69,7 +70,7 @@ class GetData extends BaseModel
                 break;
 
             default:
-                $ret = "Not found";
+                $ret = [];
                 break;
         }
         if(gettype($ret) === 'integer'){

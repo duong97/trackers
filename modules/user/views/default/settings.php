@@ -64,7 +64,9 @@ $this->params['breadcrumbs'][] = $this->title;
 
 <script src="http://localhost/trackers/web/js/notifications.js"></script>
 <script>
-    var elm = $('#users-is_notify_browser');
-    var url = '<?= Url::to(['/user/notification/register']); ?>';
-    bindNotifications(elm, 'change', url);
+    var elm         = $('#users-is_notify_browser');
+    var urlHandle   = '<?= Url::to(['/user/notification/register']); ?>';
+    var urlSwJs     = '<?= Yii::getAlias('@web').'/js/sw.js' ?>';
+//    console.log(urlSwJs);
+    bindNotifications(elm, 'change', urlHandle, urlSwJs);
 </script>

@@ -39,6 +39,23 @@ $config = [
             ],
         ],
         'db' => $db,
+        // Rewrite URL
+        'urlManager' => [
+            'class' => 'yii\web\UrlManager',
+            'scriptUrl' => 'https://www.chartcost.com', // Setup your domain
+            'baseUrl' => 'https://www.chartcost.com', // Setup your domain
+            'enablePrettyUrl' => true,
+            'showScriptName' => false,
+            'rules' => [
+                '' => 'site/index',
+//                '' => 'user/default',
+                '<module:\w+>/<controller:\w+>/<action:\w+>' => '<module>/<controller>/<action>',
+//                '<controller:\w+>/<id:\d+>' => '<controller>/view',
+//                '<controller:\w+>/<action:\w+>/<id:\d+>' => '<controller>/<action>',
+//                '<controller:\w+>/<action:\w+>' => '<controller>/<action>',
+                '<module:\w+>/<controller:\w+>' => '<module>/<controller>',
+            ],
+        ],
     ],
     'params' => $params,
     /*

@@ -17,7 +17,11 @@ defined('YII_ENV') or define('YII_ENV', 'dev');
 require __DIR__ . '/../yii2-framework/vendor/autoload.php';
 require __DIR__ . '/../yii2-framework/vendor/yiisoft/yii2/Yii.php';
 
-$config = require __DIR__ . '/config/console.php';
+//$config = require __DIR__ . '/config/console.php';
+$config = yii\helpers\ArrayHelper::merge(
+    require __DIR__ . '/config/console.php',
+    require __DIR__ . '/config/bootstrap.php'
+);
 
 $application = new yii\console\Application($config);
 $exitCode = $application->run();

@@ -59,6 +59,9 @@ class ActionController extends BaseController
     public function actionDetail($url){
         try {
             $aData      = GetData::instance()->searchUrl($url);
+            if( empty($aData) ){
+                Checks::notFoundExc();
+            }
             $aPriceLog  = PriceLogs::instance()->getByUrl($url);
             return $this->render('detail', [
                 'aData'     => $aData,

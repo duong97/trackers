@@ -9,6 +9,7 @@ namespace app\commands;
 
 use yii\console\Controller;
 use yii\console\ExitCode;
+use app\models\Notifications;
 
 /**
  * This command echoes the first argument that you have entered.
@@ -26,10 +27,14 @@ class HelloController extends Controller
      * @return int Exit code
      *  to run: /usr/bin/php /var/www/html/trackers/yii hello
      */
-    public function actionIndex($message = 'hello world')
+    public function actionIndex()
     {
-        echo $message . "\n";
-
-        return ExitCode::OK;
+        try {
+            $mNotification = new Notifications();
+            $aProductId = [23, 27, 28];
+            $mNotification->notifyPriceChanged($aProductId);
+        } catch (Exception $exc) {
+            Loggers::WriteLog("Cron errors: hello | ".date('d/m/Y H:i:s'), Loggers::type_cron);
+        }
     }
 }

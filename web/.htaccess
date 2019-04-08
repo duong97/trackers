@@ -2,5 +2,12 @@ RewriteEngine on
 # If a directory or a file exists, use it directly
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
+
+# redirect www to non-wwww
+#RewriteBase /
+#RewriteCond %{HTTP_HOST} ^www\.(.*)$ [NC]
+#RewriteRule ^(.*)$ http://%1/$1 [R=301,L]
+#end
+
 # Otherwise forward it to index.php
 RewriteRule . index.php 

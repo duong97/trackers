@@ -73,4 +73,18 @@ class BaseController extends Controller
         Yii::$app->user->returnUrl  = Yii::$app->request->getUrl();
         return $this->redirect($url);
     }
+    
+    /**
+     * {@inheritdoc}
+     */
+    public function actions()
+    {
+        return [
+            'error' => [
+                'class' => 'yii\web\ErrorAction',
+            ]
+        ];
+    }
+    
+    
 }

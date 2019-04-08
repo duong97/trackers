@@ -25,6 +25,9 @@ class Mailer{
                 ->send();
     }
     
+    /**
+     * @todo notify for user when price is changed via email
+     */
     public function notifyPriceChanged($aProductId){
         $mUserTracking  = new UserTracking();
         $aUserNotify    = $mUserTracking->getListNotifyUser($aProductId);
@@ -33,6 +36,8 @@ class Mailer{
         $aModelUser     = $mUser->getListUserById(array_keys($aUserNotify));
         $aModelProduct  = $mProduct->getListProductById($aProductId);
         foreach ($aUserNotify as $user_id => $aProduct) {
+            if( !$aModelUser[$user_id]->is_notify_email ) continue;
+            
             $aProductOfUser = [];
             foreach ($aProduct as $product_id) {
                 $aProductOfUser[$product_id] = isset($aModelProduct[$product_id]) ? $aModelProduct[$product_id] : [];

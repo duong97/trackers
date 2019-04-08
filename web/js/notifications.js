@@ -21,7 +21,8 @@
 
 'use strict';
 
-const applicationServerPublicKey    = 'BIqS3-JFcnphDyK9-Moc1zYua_JSDDFNAw0B2N3r6SIGtw1AA-Yw9Nuba-Zqc-xB27jF9dNn_NcMJ9tNu6oEAxg';
+const applicationServerPublicKey    = 'BMLB5XX7UU0TrXOviBR6ujT44cDp2s9wBlRoZyEm8jKXUuBQ4-9KhTbNVwT85Ah3V-N_pqDgPKJz9ZCy1J2E5Ys'; // remote
+//const applicationServerPublicKey    = 'BIqS3-JFcnphDyK9-Moc1zYua_JSDDFNAw0B2N3r6SIGtw1AA-Yw9Nuba-Zqc-xB27jF9dNn_NcMJ9tNu6oEAxg'; // local
 
 let isSubscribed                    = false;
 let swRegistration                  = null;
@@ -43,13 +44,13 @@ function urlB64ToUint8Array(base64String) {
 }
 
 /* Check if Service Worker is supported */
-function bindNotifications(elm, eventName, urlHandle){
+function bindNotifications(elm, eventName, urlHandle, urlSwJs){
     if ('serviceWorker' in navigator && 'PushManager' in window) {
-        console.log('Service Worker and Push is supported');
+//        console.log('Service Worker and Push is supported');
 
-        navigator.serviceWorker.register('http://localhost/trackers/web/js/sw.js')
+        navigator.serviceWorker.register(urlSwJs)
                 .then(function (swReg) {
-                    console.log('Service Worker is registered', swReg);
+//                    console.log('Service Worker is registered', swReg);
 
                     swRegistration          = swReg;
                     urlHandleSubscription   = urlHandle;
@@ -79,7 +80,7 @@ function initializeUI(elm, eventName) {
                 isSubscribed = !(subscription === null);
 
                 if (isSubscribed) {
-                    console.log('User IS subscribed.');
+                    console.log('User is subscribed.');
                 } else {
                     console.log('User is NOT subscribed.');
                 }
@@ -96,7 +97,7 @@ function subscribeUser() {
         applicationServerKey: applicationServerKey
     })
             .then(function (subscription) {
-                console.log('User is subscribed.');
+                console.log('Subscribed successful.');
 //                console.log('Subscription info:');
 //                console.log(subscription);
                 updateSubscriptionOnServer(subscription);
@@ -125,7 +126,7 @@ function unsubscribeUser() {
             .then(function () {
                 updateSubscriptionOnServer(null);
 
-                console.log('User is unsubscribed.');
+                console.log('Subscribed successful.');
                 isSubscribed = false;
 
                 updateBtn();

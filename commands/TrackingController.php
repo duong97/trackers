@@ -15,6 +15,7 @@ use app\models\GetData;
 use app\models\Products;
 use app\models\Loggers;
 use app\models\Mailer;
+use app\models\Notifications;
 
 /**
  * This command echoes the first argument that you have entered.
@@ -30,7 +31,7 @@ class TrackingController extends Controller
      * This command echoes what you have entered as the message.
      * @param string $message the message to be echoed.
      * @return int Exit code
-     *  to run: /usr/bin/php /var/www/html/trackers/yii hello
+     *  to run: /usr/bin/php /var/www/html/trackers/yii tracking
      */
     public function actionIndex()
     {
@@ -75,6 +76,10 @@ class TrackingController extends Controller
             $mailer = new Mailer();
             $mailer->notifyPriceChanged($aProductChange);
             
+            // Notify User via browser
+            $mNotification = new Notifications();
+            $mNotification->notifyPriceChanged($aProductChange);
+            
             $timeEnd = microtime(true);
 //            echo "Cron end at: ".date('d/m/Y H:i:s')."\n";
 //            echo "Cron report | last ".($timeEnd-$timeStart).'(s) | total: '.count($aProducts)." | change: $numProduct\n";
@@ -82,7 +87,7 @@ class TrackingController extends Controller
             Loggers::WriteLog('Cron report | last '.($timeEnd-$timeStart).'(s) | total: '.count($aProducts)." | change: $numProduct\n", Loggers::type_cron);
             return ExitCode::OK;
         } catch (Exception $exc) {
-            Loggers::WriteLog("Cron errors: ".date('d/m/Y H:i:s'), Loggers::type_cron);
+            Loggers::WriteLog("Cron errors: tracking/track-hourly | ".date('d/m/Y H:i:s'), Loggers::type_cron);
         }
     }
 }

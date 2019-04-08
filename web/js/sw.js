@@ -27,7 +27,7 @@ self.addEventListener('push', function (event) {
 //    console.log('[Service Worker] Push had this data: "${event.data.text()}"');
     var data = JSON.parse(event.data.text());
     const title = data.title;
-    console.log(data.onclick);
+//    console.log(data.onclick);
     const options = {
         body: data.msg,
         icon: data.icon,

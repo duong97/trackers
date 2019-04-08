@@ -107,4 +107,6 @@ return [
     'The price of the product you are tracking has been changed' =>'Giá của sản phảm mà bạn theo dõi có sự thay đổi',
     'Detail'                =>'Chi tiết',
     'Go to shop'            =>'Đến nơi bán',
+    'You have successfully registered to receive browser notifications!'=>'Bạn đã đăng ký nhận thông báo qua trình duyệt thành công!',
+    'Notification'          =>'Thông báo',
 ];
