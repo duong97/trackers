@@ -16,6 +16,8 @@ use app\controllers\BaseController;
 use app\models\Users;
 use app\models\Notifications;
 
+use app\helpers\Checks;
+
 use Yii;
 
 /**
@@ -34,11 +36,20 @@ class NotificationController extends BaseController
             if(isset($_GET['subscription'])){
                 $jsonSubscription   = $_GET['subscription'];
                 $subscription       = json_decode($jsonSubscription, true);
-                $notification       = new Notifications();
-                $notification->notify($subscription);
                 $mUser              = Users::findOne(Yii::$app->user->id);
                 if($mUser){
-                    $mUser->subscription= $jsonSubscription;
+                    if(empty($mUser->subscription)){
+                        $aSub = [
+                            Checks::getDevice() => $jsonSubscription
+                        ];
+                        $mUser->subscription    = json_encode($aSub);
+                        $notification           = new Notifications();
+                        $notification->notify($subscription); // First notify
+                    } else {
+                        $aCurSub                        = json_decode($mUser->subscription, true);
+                        $aCurSub[Checks::getDevice()]   = $jsonSubscription;
+                        $mUser->subscription            = json_encode($aCurSub);
+                    }
                     $mUser->update();
                 }
             } else {

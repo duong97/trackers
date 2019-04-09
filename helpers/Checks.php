@@ -11,6 +11,7 @@ use yii\web\NotFoundHttpException;
 use yii\web\UnauthorizedHttpException;
 use Yii;
 use app\models\Loggers;
+use app\models\Users;
 
 class Checks{
     
@@ -63,5 +64,28 @@ class Checks{
         if(!Checks::isRoot()){
             Checks::notFoundExc();
         }
+    }
+    
+    public static function isMobileDevice(){
+        $aMobileUA = array(
+            '/iphone/i'     => 'iPhone', 
+            '/ipod/i'       => 'iPod', 
+            '/ipad/i'       => 'iPad', 
+            '/android/i'    => 'Android', 
+            '/blackberry/i' => 'BlackBerry', 
+            '/webos/i'      => 'Mobile'
+        );
+        //Return true if Mobile User Agent is detected
+        foreach($aMobileUA as $sMobileKey => $sMobileOS){
+            if(preg_match($sMobileKey, Yii::$app->request->getUserAgent())){
+                return true;
+            }
+        }
+        //Otherwise return false..  
+        return false;
+    }
+    
+    public static function getDevice(){
+        return self::isMobileDevice() ? Users::DEVICE_MOBILE : Users::DEVICE_DESKTOP;
     }
 }

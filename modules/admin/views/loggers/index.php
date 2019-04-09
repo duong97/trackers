@@ -21,6 +21,21 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
+        'rowOptions'=>function($model){
+            switch ($model->type) {
+                case Loggers::type_debug:
+                    return ['class' => 'warning'];
+                case Loggers::type_cron:
+                    return ['class' => 'success'];
+                case Loggers::type_app:
+                    return ['class' => 'danger'];
+                case Loggers::type_info:
+                    return ['class' => 'info'];
+
+                default:
+                    break;
+            }
+        },
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
 

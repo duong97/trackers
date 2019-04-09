@@ -35,10 +35,18 @@ class Users extends BaseModel
     
     const plf_facebook = 1;
     
+    const DEVICE_DESKTOP        = 1;
+    const DEVICE_MOBILE         = 2;
+    
     public $newPassword, $cnewPassword;
     
     public static $aPlatform = [
         self::plf_facebook => 'facebook'
+    ];
+    
+    public static $aDevice = [
+        self::DEVICE_DESKTOP => 'Desktop',
+        self::DEVICE_MOBILE  => 'Mobile',
     ];
     
     /*

@@ -26,6 +26,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 <div>
                     <p><b><?= Yii::t('app', 'Notify via browser') ?></b></p>
                     <p><?= Yii::t('app', 'Receive notifications via browser (Chrome, Firefox,...)') . "." ?></p>
+                    <i><?= Yii::t('app', "To receive notifications via your phone's browser, access this page on your phone, then turn it off and on again") . "." ?></i>
                 </div>
             </li>
             <li class="list-group-item">

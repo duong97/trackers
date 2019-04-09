@@ -109,4 +109,5 @@ return [
     'Go to shop'            =>'Đến nơi bán',
     'You have successfully registered to receive browser notifications!'=>'Bạn đã đăng ký nhận thông báo qua trình duyệt thành công!',
     'Notification'          =>'Thông báo',
+    "To receive notifications via your phone's browser, access this page on your phone, then turn it off and on again"=>'Để nhận thông báo qua trình duyệt trên điện thoại, truy cập trang này trên điện thoại, sau đó tắt và bật lại tính năng này',
 ];

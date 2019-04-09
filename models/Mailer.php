@@ -48,6 +48,7 @@ class Mailer{
                     ->setTo($mail)
                     ->setSubject(Yii::t('app', 'Notification'))
                     ->send();
+            Loggers::WriteLog('Notify via email | User ID: '.$user_id.' - '.$mail.' | '.date('d/m/Y'), Loggers::type_info);
         }
     }
 
