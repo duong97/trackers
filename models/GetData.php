@@ -5,6 +5,7 @@ namespace app\models;
 use Yii;
 //use yii\helpers\Url;
 use app\models\simple_html_dom;
+use app\models\UserTracking;
 use app\helpers\Constants;
 use app\helpers\MyFormat;
 
@@ -83,9 +84,27 @@ class GetData extends BaseModel
      * Search for keyword
      */
     public function searchKeyword($keyword){
-        $slugKeyword = MyFormat::slugify($keyword);
-        $aProduct = Products::find()->where("slug like '%{$slugKeyword}%'")->all();
-        return $aProduct;
+        $slugKeyword    = MyFormat::slugify($keyword);
+        $aProduct       = Products::find()->where("slug like '%{$slugKeyword}%'")->all();
+        $ret            = [];
+        $aProductId     = [];
+        foreach ($aProduct as $p) {
+            $aProductId[$p->id] = $p->id;
+        }
+        $aTracking = UserTracking::find()
+                        ->select(['count(id) as id', 'product_id'])
+                        ->where(['in', 'product_id', $aProductId])
+                        ->groupBy(['product_id'])
+                        ->all();
+        $aTrackingInfo  = [];
+        foreach ($aTracking as $t) {
+            $aTrackingInfo[$t->product_id] = $t->id;
+        }
+        foreach ($aProduct as $p) {
+            $p->numberTracking  = isset($aTrackingInfo[$p->id]) ? $aTrackingInfo[$p->id] : 0;
+            $ret[$p->id]        = $p;
+        }
+        return $ret;
     }
 
     /*

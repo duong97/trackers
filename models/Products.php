@@ -30,6 +30,9 @@ use yii\data\ActiveDataProvider;
  */
 class Products extends BaseModel
 {
+    
+    public $numberTracking; // Number of people are currently tracking this product
+    
     /**
      * {@inheritdoc}
      */

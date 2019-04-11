@@ -16,6 +16,19 @@ use app\helpers\MyFormat;
 use app\helpers\Constants;
 
 
-$m = new Notifications;
-$aProductId = [23];
-$m->notifyPriceChanged($aProductId);
+//$m = new Notifications;
+//$aProductId = [23];
+//$m->notifyPriceChanged($aProductId);
+$aProductId = [20, 22, 23];
+$aTracking = UserTracking::find()
+                ->select(['count(id) as id', 'product_id'])
+                ->where(['in', 'product_id', $aProductId])
+                ->groupBy(['product_id'])
+                ->all();
+
+        foreach ($aTracking as $value) {
+            echo '<pre>';
+            print_r($value->attributes);
+            echo '</pre>';
+    
+}

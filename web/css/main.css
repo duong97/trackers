@@ -13,10 +13,16 @@ and open the template in the editor.
     font-weight: 500;
     font-size: 19px;
 }
+.prd-cover{
+    padding: 0;
+    margin: 0;
+}
 .prd-container{
     position: relative;
     padding: 5px;
-    height: 275px;
+    margin: 10px;
+    height: 250px;
+    background: #f7f7f7;
 }
 .prd-container .prd-image{
     padding: 3px;
@@ -30,8 +36,8 @@ and open the template in the editor.
     right: 3px;
 }
 .prd-info{
-    position: absolute;
-    bottom: 0;
+    position: relative;
+    top: 5px;
 }
 .thumb{
     width: 100px;
@@ -365,4 +371,11 @@ hr.hr-style:before {
 }
 .full-width{
     width: 100%;
+}
+.card{
+    box-shadow: none;
+    transition: 0.3s;
+}
+.card:hover {
+    box-shadow: 0px 0px 6px 4px rgba(58, 58, 58, 0.33);
 }

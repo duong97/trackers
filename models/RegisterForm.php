@@ -4,7 +4,8 @@ namespace app\models;
 
 use Yii;
 use yii\base\Model;
-use \app\helpers\Constants;
+use app\helpers\Constants;
+use app\models\Users;
 
 /**
  * LoginForm is the model behind the login form.
@@ -84,6 +85,9 @@ class RegisterForm extends Model
         $user->role             = Constants::USER;
         $user->status           = Users::STT_VERIFYING;
         $user->ip               = Yii::$app->request->userIP;
+        $user->is_notify_fb     = 1;
+        $user->is_notify_email  = 1;
+        $user->notify_type      = Users::notify_both;
         $user->save();
     }
 }
