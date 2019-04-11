@@ -108,10 +108,10 @@ AppAsset::register($this);
                 </div>
                 <div class="col-xs-6 col-md-3 footer-col">
                     <span><?= Yii::t('app', 'Contact') ?></span>
-                    <p>123 Điện Biên Phủ, P.8</p>
+                    <p>Điện Biên Phủ, P.16</p>
                     <p>Q.Bình Thạnh, TP.HCM, Vietnam</p>
-                    <p>test@test.vn</p>
-                    <p>0912 378 123</p>
+                    <p>admin@chartcost.com</p>
+                    <p>0935 714 733</p>
                 </div>
                 <div class="col-xs-6 col-md-3 footer-col">
                     <span><?= Yii::t('app', 'Follow') ?></span>

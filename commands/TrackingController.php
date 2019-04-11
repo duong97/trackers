@@ -57,7 +57,10 @@ class TrackingController extends Controller
             $aProductChange = [];
             foreach ($aProducts as $p) {
                 $aData      = GetData::instance()->searchNewUrl($p->url);
-                if(!empty($aData['price'])){
+                if( empty($aData['price']) ){
+                    // Warning when cron error
+                    Loggers::WriteLog("Cron error: zero price | product_id: $p->id | url: $p->url", Loggers::type_app);
+                } else {
                     // If prices are change -> save to PriceLogs
                     if($aData['price'] != $aLastPrice[$p->id]){
                         $pLog               = new PriceLogs();

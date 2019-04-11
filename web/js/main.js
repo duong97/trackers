@@ -1,11 +1,20 @@
 $(function() {
     bindSearchOnPasteNav();
+    beforeSearchButtonClick();
 //    bindNotification();
 });
 
 function bindSearchOnPasteNav(){
-    $('#nav-search-product').on('paste', function(){
-        $('#search-product-btn').click();
+    $(document).on('paste', '#nav-search-product', function(){
+        $('#search-form').submit();
+    });
+}
+
+function beforeSearchButtonClick(){
+    $(document).on('click', '#search-product-btn', function(event){
+        if( $('#nav-search-product').val() == '' ){
+            event.preventDefault();
+        }
     });
 }
 
