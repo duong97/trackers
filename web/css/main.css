@@ -8,6 +8,11 @@ and open the template in the editor.
     Author     : duong
 */
 /*This css use for all page, include in every head tag of app*/
+.ui-autocomplete.atcl-container{
+    padding: 5px;
+    padding-top: 15px;
+    border-radius: 0 0 33px 33px;
+}
 .price{
     color: #ff3425;
     font-weight: 500;
@@ -61,6 +66,9 @@ and open the template in the editor.
 }
 #nav-search-product{
     border-radius: 33px 0 0 33px;
+    z-index: 1000;
+    box-shadow: none;
+    border-color: #ccc;
 }
 #search-product-btn{
     border-radius: 0 33px 33px 0;

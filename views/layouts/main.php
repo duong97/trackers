@@ -48,7 +48,7 @@ AppAsset::register($this);
             'items' => [
                 ['label' => Yii::t('app', 'Home'), 'url' => Yii::$app->homeUrl],
                 ['label' => Yii::t('app', 'Supported websites'), 'url' => ['/site/supported-websites']],
-    //            ['label' => Yii::t('app', 'About'), 'url' => ['/site/about']],
+                ['label' => Yii::t('app', 'About'), 'url' => ['/site/about']],
     //            ['label' => Yii::t('app', 'Contact'), 'url' => ['/site/contact']],
                 Yii::$app->user->isGuest ? (
                     ['label' => Yii::t('app', 'Login'), 'url' => ['/site/login']]
@@ -98,13 +98,10 @@ AppAsset::register($this);
     <div class="footer-info">
         <div class="container">
             <div class="row">
-                <?php 
-                $urlManager = \Yii::$app->getUrlManager();
-                ?>
                 <div class="col-xs-6 col-md-3 footer-col">
                     <span><?= Yii::t('app', 'Explode') ?></span>
                     <?= Html::a(Yii::t('app', 'Home'), Yii::$app->homeUrl, ['class' => 'footer-link']) ?>
-                    <?= Html::a(Yii::t('app', 'About'), $urlManager->createUrl(['site/about']), ['class' => 'footer-link']) ?>
+                    <?= Html::a(Yii::t('app', 'About'), ['/site/about'], ['class' => 'footer-link']) ?>
                 </div>
                 <div class="col-xs-6 col-md-3 footer-col">
                     <span><?= Yii::t('app', 'Contact') ?></span>
@@ -121,8 +118,8 @@ AppAsset::register($this);
                 </div>
                 <div class="col-xs-6 col-md-3 footer-col">
                     <span><?= Yii::t('app', 'Legal') ?></span>
-                    <?= Html::a(Yii::t('app', 'Terms'), $urlManager->createUrl(['site/terms']), ['class' => 'footer-link']) ?>
-                    <?= Html::a(Yii::t('app', 'Privacy'), $urlManager->createUrl(['site/privacy']), ['class' => 'footer-link']) ?>
+                    <?= Html::a(Yii::t('app', 'Terms'), ['/site/terms'], ['class' => 'footer-link']) ?>
+                    <?= Html::a(Yii::t('app', 'Privacy'), ['/site/privacy'], ['class' => 'footer-link']) ?>
                 </div>
             </div>
         </div>

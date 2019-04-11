@@ -1,6 +1,7 @@
 $(function() {
     bindSearchOnPasteNav();
     beforeSearchButtonClick();
+    bindAutocompleteSearchNav();
 //    bindNotification();
 });
 
@@ -15,6 +16,12 @@ function beforeSearchButtonClick(){
         if( $('#nav-search-product').val() == '' ){
             event.preventDefault();
         }
+    });
+}
+
+function bindAutocompleteSearchNav(){
+    $("#nav-search-product").bind('focus', function(){ 
+        $(this).autocomplete("search"); 
     });
 }
 
