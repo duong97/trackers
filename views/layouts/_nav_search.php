@@ -1,13 +1,15 @@
 <?php 
 use yii\widgets\ActiveForm;
 use yii\jui\AutoComplete;
-$data = ['Duong', 'hihi', 'do ngoc', 'dadalkadsf'];
+use yii\web\JsExpression;
+
+$data = ['Giày', 'Đồng hồ', 'Áo khoác', 'Túi xách'];
 ?>
 <!--Search bar-->
 <div class="">
     <?php 
     $form = ActiveForm::begin([
-        'id'        => 'search-form',
+        'id'        => 'nav-search-form',
         'options'   => ['class' => 'form-horizontal'],
         'method'    => 'get',
         'action'    => ['/product/action/search']
@@ -15,12 +17,6 @@ $data = ['Duong', 'hihi', 'do ngoc', 'dadalkadsf'];
         <div class="nav-search-menu">
             <!--<div class="col-sm-3"></div>-->
             <div class="input-group col-sm-8" style="margin: 0 auto;">
-<!--                <input type="text" name="search-value" 
-                       class="form-control" 
-                       placeholder="<?= Yii::t('app', 'Search') ?>" 
-                       id="nav-search-product" 
-                       value="<?= isset($_GET['search-value']) ? $_GET['search-value'] : '' ?>" 
-                       autocomplete="off"/>-->
                         <?= 
                         AutoComplete::widget([
                             'name'      => 'search-value',
@@ -40,11 +36,14 @@ $data = ['Duong', 'hihi', 'do ngoc', 'dadalkadsf'];
                                     "ui-autocomplete"=> "atcl-container"
                                 ],
                                 'position' => [
-                                    'my' => 'center top-10%',
+//                                    'my' => 'center top-10%',
+                                    'my' => 'center top',
                                     'at' => 'center bottom'
                                 ],
-                                'autoFocus' =>true,
-//                                'select'    => ""
+                                'autoFocus' => true,
+                                'select'    => new JsExpression("function( event, ui ) {
+                                                bindSearchNav();
+                                            }")
                                 ],
                          ]);
                         ?>

@@ -32,7 +32,7 @@
         "codeception/specify": "~0.4.3"
     },
     "config": {
-	"vendor-dir":"/var/www/html/yii2-framework/vendor",
+	"vendor-dir":"../yii2-framework/vendor",
         "process-timeout": 1800,
         "fxp-asset": {
             "enabled": false

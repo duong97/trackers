@@ -10,8 +10,12 @@ and open the template in the editor.
 /*This css use for all page, include in every head tag of app*/
 .ui-autocomplete.atcl-container{
     padding: 5px;
-    padding-top: 15px;
-    border-radius: 0 0 33px 33px;
+    /*padding-top: 15px;*/
+    /*border-radius: 0 0 33px 33px;*/
+    border-radius: 0 0 4px 4px;
+}
+li.ui-menu-item>div.ui-menu-item-wrapper.ui-state-active{
+    background: #f3f3f3;
 }
 .price{
     color: #ff3425;
@@ -69,8 +73,13 @@ and open the template in the editor.
     z-index: 1000;
     box-shadow: none;
     border-color: #ccc;
+    transition: .3s;
+}
+#nav-search-product:focus{
+    border-radius: 4px 0 0 0;
 }
 #search-product-btn{
+    transition: .3s;
     border-radius: 0 33px 33px 0;
 }
 /*NAV TRANSPARENT*/

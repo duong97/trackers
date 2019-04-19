@@ -2,13 +2,31 @@ $(function() {
     bindSearchOnPasteNav();
     beforeSearchButtonClick();
     bindAutocompleteSearchNav();
+    bindSomeEffect();
 //    bindNotification();
 });
 
+function bindSomeEffect(){
+    searchEffect();
+}
+
+function searchEffect(){
+    $('#nav-search-product').on('focus', function(){
+        $('#search-product-btn').css('border-radius','0 4px 4px 0');
+    });
+    $('#nav-search-product').on('focusout', function(){
+        $('#search-product-btn').css('border-radius','0 33px 33px 0');
+    });
+}
+
 function bindSearchOnPasteNav(){
     $(document).on('paste', '#nav-search-product', function(){
-        $('#search-form').submit();
+        bindSearchNav();
     });
+}
+
+function bindSearchNav(){
+    $('#nav-search-form').submit();
 }
 
 function beforeSearchButtonClick(){
