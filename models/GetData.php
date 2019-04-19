@@ -6,6 +6,7 @@ use Yii;
 //use yii\helpers\Url;
 use app\models\simple_html_dom;
 use app\models\UserTracking;
+use app\models\UserData;
 use app\helpers\Constants;
 use app\helpers\MyFormat;
 
@@ -84,6 +85,10 @@ class GetData extends BaseModel
      * Search for keyword
      */
     public function searchKeyword($keyword){
+        if (!Yii::$app->user->isGuest) {
+            $mUserData = new UserData();
+            $mUserData->handleUserKeyword($keyword);
+        }
         $slugKeyword    = MyFormat::slugify($keyword);
         $aProduct       = Products::find()->where("slug like '%{$slugKeyword}%'")->all();
         $ret            = [];

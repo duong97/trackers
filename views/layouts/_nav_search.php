@@ -2,8 +2,9 @@
 use yii\widgets\ActiveForm;
 use yii\jui\AutoComplete;
 use yii\web\JsExpression;
+use app\models\UserData;
 
-$data = ['Giày', 'Đồng hồ', 'Áo khoác', 'Túi xách'];
+$mUserData = new UserData();
 ?>
 <!--Search bar-->
 <div class="">
@@ -28,7 +29,7 @@ $data = ['Giày', 'Đồng hồ', 'Áo khoác', 'Túi xách'];
                                 'value'         => isset($_GET['search-value']) ? $_GET['search-value'] : ''
                             ],
                             'clientOptions' => [
-                                'source'    => $data,
+                                'source'    => $mUserData->getKeywordNav(),
                                 'appendTo'  => '#atcl-list-container',
                                 'autoFill'  => true,
                                 'minLength' => '0',
@@ -36,7 +37,6 @@ $data = ['Giày', 'Đồng hồ', 'Áo khoác', 'Túi xách'];
                                     "ui-autocomplete"=> "atcl-container"
                                 ],
                                 'position' => [
-//                                    'my' => 'center top-10%',
                                     'my' => 'center top',
                                     'at' => 'center bottom'
                                 ],

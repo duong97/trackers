@@ -116,4 +116,5 @@ return [
     'Terms'                 =>'Điều khoản',
     'Privacy'               =>'Quyền riêng tư',
     'About'                 =>'Về chúng tôi',
+    'Search History'        =>'Lịch sử tìm kiếm',
 ];
