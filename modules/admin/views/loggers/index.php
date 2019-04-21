@@ -21,6 +21,12 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
+        'layout' => "{summary}\n<div class='full-width text-center'>{pager}</div>\n{items}\n<div class='full-width text-center'>{pager}</div>",
+        'pager' => [
+            'options' => [
+                'class' => 'pagination'
+            ],
+        ],
         'rowOptions'=>function($model){
             switch ($model->type) {
                 case Loggers::type_debug:
@@ -40,7 +46,14 @@ $this->params['breadcrumbs'][] = $this->title;
             ['class' => 'yii\grid\SerialColumn'],
 
             'message:ntext',
-            'ip',
+//            'ip',
+            [
+                'attribute' => 'url',
+                'format'=>'raw',
+                'value' => function($model){
+                    return empty($model->url) ? '' : Html::a('click', $model->url, ['target'=>'_blank']);
+                }
+            ],
             [
                 'attribute' => 'type',
                 'value' => function($model){

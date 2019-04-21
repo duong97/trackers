@@ -72,10 +72,11 @@ class Loggers extends BaseModel
         ];
     }
     
-    public static function WriteLog($message, $type=self::type_debug) {
+    public static function WriteLog($message, $type=self::type_debug, $url = '') {
         $model          = new Loggers();
         $model->message = $message;
         $model->type    = $type;
+        $model->url     = $url;
         $model->ip      = ($type == self::type_debug) ? Yii::$app->request->userIP : '';
         $model->save();
     }

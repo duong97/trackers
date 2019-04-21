@@ -16,6 +16,7 @@ use Yii;
 use app\helpers\Constants;
 use app\helpers\MyFormat;
 use yii\data\ActiveDataProvider;
+use yii\helpers\Url;
 
 /**
  * This is the model class for table "products".
@@ -142,6 +143,10 @@ class Products extends BaseModel
             $ret[$value->id] = $value;
         }
         return $ret;
+    }
+    
+    public function getDetailUrl(){
+        return Url::to(['/product/action/detail', 'url'=> $this->url]);
     }
     
 }

@@ -45,7 +45,7 @@ class TrackingController extends Controller
     public function actionTrackHourly()
     {
         try {
-            Loggers::WriteLog("Cron start at: ".date('d/m/Y H:i:s'), Loggers::type_cron);
+//            Loggers::WriteLog("Cron start at: ".date('d/m/Y H:i:s'), Loggers::type_cron);
 //            echo "Cron start at: ".date('d/m/Y H:i:s')."\n";
             $timeStart = microtime(true);
             $mUserTracking  = new UserTracking();
@@ -71,7 +71,7 @@ class TrackingController extends Controller
                         $numProduct++;
                         $aProductChange[]   = $p->id;
 //                        echo "Cron price | product_id:$p->id, new price:{$aData['price']}\n";
-                        Loggers::WriteLog("Cron price | product_id: $p->id, new price: {$aData['price']}", Loggers::type_cron);
+                        Loggers::WriteLog("Cron price changed | name: $p->name | id: $p->id", Loggers::type_cron, $p->getDetailUrl());
                     }
                 }
             }
@@ -89,8 +89,8 @@ class TrackingController extends Controller
             $timeEnd = microtime(true);
 //            echo "Cron end at: ".date('d/m/Y H:i:s')."\n";
 //            echo "Cron report | last ".($timeEnd-$timeStart).'(s) | total: '.count($aProducts)." | change: $numProduct\n";
-            Loggers::WriteLog("Cron end at: ".date('d/m/Y H:i:s'), Loggers::type_cron);
-            Loggers::WriteLog('Cron report | last '.($timeEnd-$timeStart).'(s) | total: '.count($aProducts)." | change: $numProduct\n", Loggers::type_cron);
+//            Loggers::WriteLog("Cron end at: ".date('d/m/Y H:i:s'), Loggers::type_cron);
+            Loggers::WriteLog('Cron price report | last '.($timeEnd-$timeStart).'(s) | total: '.count($aProducts)." | change: $numProduct\n", Loggers::type_cron);
             return ExitCode::OK;
         } catch (Exception $exc) {
             Loggers::WriteLog("Cron errors: tracking/track-hourly | ".date('d/m/Y H:i:s'), Loggers::type_cron);
