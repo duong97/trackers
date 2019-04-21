@@ -27,7 +27,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     return ['class' => 'warning'];
                 case Loggers::type_cron:
                     return ['class' => 'success'];
-                case Loggers::type_app:
+                case Loggers::type_app_error:
                     return ['class' => 'danger'];
                 case Loggers::type_info:
                     return ['class' => 'info'];

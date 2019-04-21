@@ -86,9 +86,9 @@ $this->params['breadcrumbs'][] = $this->title;
                 }
             ],
             [
-                'attribute' => 'social_id',
+                'attribute' => 'fb_id',
                 'value' => function($model){
-                    return $model->social_id;
+                    return $model->fb_id;
                 },
                 'visible' => Checks::isRoot()
             ],

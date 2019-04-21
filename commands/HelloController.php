@@ -30,10 +30,9 @@ class HelloController extends Controller
     public function actionIndex()
     {
         try {
-            $mNotification = new Notifications();
-//            $aProductId = [23, 27, 28];
-            $aProductId = [28];
-            $mNotification->notifyPriceChanged($aProductId);
+            $mNotification = new \app\models\Notifications();
+            $aProductChange = [20, 21, 22, 23];
+            $mNotification->notifyPriceChangedViaZalo($aProductChange);
         } catch (Exception $exc) {
             Loggers::WriteLog("Cron errors: hello | ".date('d/m/Y H:i:s'), Loggers::type_cron);
         }

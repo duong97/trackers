@@ -59,7 +59,7 @@ class TrackingController extends Controller
                 $aData      = GetData::instance()->searchNewUrl($p->url);
                 if( empty($aData['price']) ){
                     // Warning when cron error
-                    Loggers::WriteLog("Cron error: zero price | product_id: $p->id | url: $p->url", Loggers::type_app);
+                    Loggers::WriteLog("Cron error: zero price | product_id: $p->id | url: $p->url", Loggers::type_app_error);
                 } else {
                     // If prices are change -> save to PriceLogs
                     if($aData['price'] != $aLastPrice[$p->id]){
@@ -82,6 +82,9 @@ class TrackingController extends Controller
             // Notify User via browser
             $mNotification = new Notifications();
             $mNotification->notifyPriceChanged($aProductChange);
+            
+            // Notify User via zalo
+            $mNotification->notifyPriceChangedViaZalo($aProductChange);
             
             $timeEnd = microtime(true);
 //            echo "Cron end at: ".date('d/m/Y H:i:s')."\n";

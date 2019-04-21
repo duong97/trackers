@@ -17,7 +17,15 @@ use app\helpers\Checks;
  * @property string $first_name
  * @property string $last_name
  * @property string $email
- * @property string $social_id
+ * @property string $fb_id
+ * @property string $zalo_id
+ * @property string $is_notify_browser
+ * @property string $is_notify_fb
+ * @property string $is_notify_zalo
+ * @property string $is_notify_email
+ * @property string $subscription
+ * @property string $zalo_access_token
+ * @property string $notify_type
  * @property int $role
  * @property string $ip
  * @property int $status
@@ -89,7 +97,8 @@ class Users extends BaseModel
         return [
             [['email', 'password', 'salt', 'first_name', 'last_name', 'status', 'role', 'last_access', 'created_date'], 'safe'],
             [['email', 'password', 'first_name', 'last_name'], 'required', 'on' => [Yii::$app->params['SCENARIO_UPDATE'], Yii::$app->params['SCENARIO_CREATE']]],
-            [['is_notify_browser', 'is_notify_fb', 'is_notify_email', 'subscription', 'notify_type'], 'safe'],
+            [['is_notify_browser', 'is_notify_fb', 'is_notify_zalo', 'is_notify_email', 'subscription', 'zalo_access_token', 'notify_type'], 'safe'],
+            [['fb_id', 'zalo_id'], 'safe'],
             [['first_name', 'last_name'], 'required', 'on' => 'editProfile'],
             ['cnewPassword', 'compare', 'compareAttribute' => 'newPassword'],
             ['newPassword', 'string', 'length' => [6,25], 
@@ -219,4 +228,23 @@ class Users extends BaseModel
         }
         return $ret;
     }
+    
+    /**
+     * @todo get model current user
+     */
+    public function getCurrentUser(){
+        if (!Yii::$app->user->isGuest) {
+            return Users::findOne(Yii::$app->user->id);
+        }
+        return null;
+    }
+    
+    /**
+     * @todo is link to a zalo account
+     */
+    public function isLinkToZalo(){
+        return !empty($this->zalo_id);
+    }
+    
+    
 }

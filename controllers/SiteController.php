@@ -254,12 +254,12 @@ class SiteController extends BaseController
             $platform           = array_search(Yii::$app->request->post('oauth_provider'), $aPlatForm);
             if($platform === FALSE) $platform = null;
             $models = Users::find()->where([
-                                    'social_id' => $data->id,
+                                    'fb_id' => $data->id,
                                     'platform' => $platform
                                 ])->all();
             if(!$models){
                 $user               = new Users();
-                $user->social_id    = $data->id;
+                $user->fb_id        = $data->id;
                 $user->first_name   = $data->first_name;
                 $user->last_name    = $data->last_name;
                 $user->email        = $data->email;
@@ -306,7 +306,7 @@ class SiteController extends BaseController
                             ])->one();
         if(!$models){
             $user               = new Users();
-            $user->social_id    = $userData['id'];
+            $user->fb_id        = $userData['id'];
             $user->first_name   = $userData['first_name'];
             $user->last_name    = $userData['last_name'];
             $user->email        = $userData['email'];
@@ -321,4 +321,35 @@ class SiteController extends BaseController
         $mLoginForm->email      = $userData['email'];
         return Yii::$app->user->login($mLoginForm->getUser(), 0);
     }
+    
+    public function actionZaloLogin(){
+        if(isset($_GET['code'])){
+            $appId          = Yii::$app->params['zalo_app_id'];
+            $appScret       = Yii::$app->params['zalo_app_secret'];
+            $urlGetAT       = "https://oauth.zaloapp.com/v3/access_token?app_id={$appId}&app_secret={$appScret}&code={$_GET['code']}";
+            $jAccessToken   = file_get_contents($urlGetAT);
+            $aAccessToken   = json_decode($jAccessToken, true);
+            $accessToken    = $aAccessToken['access_token'];
+            $urlGetUD       = "https://graph.zalo.me/v2.0/me?access_token=".$accessToken;
+            $jUserData      = file_get_contents($urlGetUD);
+            $aUserData      = json_decode($jUserData, true);
+            $mUser          = new Users();
+            $cUser          = $mUser->getCurrentUser();
+            if($cUser){
+                $cUser->zalo_access_token   = $accessToken;
+                $cUser->zalo_id             = $aUserData['id'];
+                $cUser->is_notify_zalo      = 1;
+                $cUser->update();
+            }
+        }
+        return $this->redirect(['/user/default/settings']);
+    }
+    
+    // test
+//    public function actionTest(){
+//        $mNotification = new \app\models\Notifications();
+//        $aProductChange = [20, 21, 22];
+//        $mNotification->notifyPriceChangedViaZalo($aProductChange);
+//    }
+    
 }

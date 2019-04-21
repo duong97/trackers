@@ -83,7 +83,7 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
             //'first_name',
             //'last_name',
-            //'social_id',
+            //'fb_id',
             //'is_notify_fb',
             //'is_notify_email:email',
             //'notify_type',

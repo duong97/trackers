@@ -23,7 +23,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
  Display user profile data 
 <div id="userData"></div>-->
-
+	
 <div class="container-fluid">
     <div class="row">
         <div class="col-sm-12 col-md-8 col-md-offset-2 col-lg-6 col-lg-offset-3 text-center">
@@ -76,11 +76,22 @@ $this->params['breadcrumbs'][] = $this->title;
         <div class="col-sm-6 col-md-4 col-lg-3">
             <div class="login-social-container">
                 <?php
-                echo yii\authclient\widgets\AuthChoice::widget([
+                echo AuthChoice::widget([
                     'baseAuthUrl' => ['site/auth'],
                     'popupMode' => true,
                 ]); 
                 ?>
+                
+<!--                <div>
+                    <ul class="auth-clients">
+                        <li>
+                            <a href="" title="Zalo">
+                                <img src="<?= Url::to('@web/images/logo/zalo-icon.png') ?>"
+                                     style="width: 32px">
+                            </a>
+                        </li>
+                    </ul>
+                </div>-->
 <!--                
                 <a href="#" class="google login-social">
                     <i class="fab fa-google"></i>   <?= Yii::t('app', 'Login with Google+') ?>

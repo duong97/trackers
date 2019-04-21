@@ -36,7 +36,7 @@ class Checks{
     public static function catchAllExeption($exc) {
         $cUid       = isset(Yii::$app->user) ? Yii::$app->user->id : "_";
         $ResultRun  = "Uid: $cUid Exception ".  $exc->getMessage();
-        Loggers::WriteLog($ResultRun, Loggers::type_app);
+        Loggers::WriteLog($ResultRun, Loggers::type_app_error);
         Checks::notFoundExc();
     }
     

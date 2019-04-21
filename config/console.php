@@ -12,6 +12,7 @@ $config = [
     'aliases' => [
         '@bower' => '@vendor/bower-asset',
         '@npm'   => '@vendor/npm-asset',
+        '@root'  => __DIR__
     ],
     'vendorPath' => '../../yii2-framework/vendor', // add
     'components' => [
