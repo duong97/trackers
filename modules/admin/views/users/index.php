@@ -37,8 +37,9 @@ $this->params['breadcrumbs'][] = $this->title;
 
             [
                 'attribute' => 'email',
+                'format' => 'raw',
                 'value' => function($model){
-                    return $model->email;
+                    return $model->getEmailWithLabel();
                 }
             ],
             [

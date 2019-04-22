@@ -17,6 +17,7 @@ use app\helpers\Constants;
 use app\helpers\MyFormat;
 use yii\data\ActiveDataProvider;
 use yii\helpers\Url;
+use yii\helpers\Html;
 
 /**
  * This is the model class for table "products".
@@ -149,4 +150,7 @@ class Products extends BaseModel
         return Url::to(['/product/action/detail', 'url'=> $this->url]);
     }
     
+    public function getProductNameWithLink(){
+        return Html::a($this->name, $this->getDetailUrl());
+    }
 }

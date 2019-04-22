@@ -31,7 +31,13 @@ $this->params['breadcrumbs'][] = $this->title;
         'model' => $model,
         'attributes' => [
             'id',
-            'name',
+            [
+                'attribute' => 'name',
+                'format' => 'raw',
+                'value' => function($model){
+                    return $model->getProductNameWithLink();
+                }
+            ],
             [
                 'attribute' => 'url',
                 'format' => 'raw',

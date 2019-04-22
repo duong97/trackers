@@ -161,8 +161,8 @@ class SiteController extends BaseController
     public function actionLogout()
     {
         Yii::$app->user->logout();
-        return $this->goBack(Yii::$app->request->referrer);
-//        return $this->goHome();
+//        return $this->goBack(Yii::$app->request->referrer);
+        return $this->goHome();
     }
 
     /**

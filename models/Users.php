@@ -7,6 +7,7 @@ use yii\helpers\Url;
 use yii\data\ActiveDataProvider;
 
 use app\helpers\Checks;
+use app\helpers\Constants;
 /**
  * This is the model class for table "users".
  *
@@ -192,7 +193,7 @@ class Users extends BaseModel
     
     public function search($params)
     {
-        $query = Users::find();
+        $query = Checks::isRoot() ? Users::find() : Users::find()->where(['role'=> Constants::USER]);
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
 //            'sort' => [
@@ -244,6 +245,33 @@ class Users extends BaseModel
      */
     public function isLinkToZalo(){
         return !empty($this->zalo_id);
+    }
+    
+    /**
+     * @todo check if user is root
+     */
+    public function isRoot(){
+        return ($this->role == Constants::ROOT);
+    }
+    
+    /**
+     * @todo check if user is admin
+     */
+    public function isAdmin(){
+        return ($this->role == Constants::ADMIN);
+    }
+    
+    /**
+     * @todo 
+     */
+    public function getEmailWithLabel(){
+        $ret = $this->email;
+        if( $this->isRoot() ){
+            $ret .= ' <label class="label label-primary">Root</label>';
+        } elseif( $this->isAdmin() ){
+            $ret .= ' <label class="label label-info">Admin</label>';
+        }
+        return $ret;
     }
     
     

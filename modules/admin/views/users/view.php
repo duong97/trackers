@@ -11,6 +11,11 @@ use app\models\Users;
 /* @var $this yii\web\View */
 /* @var $model app\models\Users */
 
+// Admin cannot view list admin or root
+if(Checks::isAdmin()){
+    if($model->isAdmin() || $model->isRoot()) Checks::notFoundExc ();
+}
+
 $this->title = $model->id;
 $this->params['breadcrumbs'][] = ['label' => 'Users', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
@@ -42,8 +47,9 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
             [
                 'attribute' => 'email',
+                'format' => 'raw',
                 'value' => function($model){
-                    return $model->email;
+                    return $model->getEmailWithLabel();
                 }
             ],
             [
