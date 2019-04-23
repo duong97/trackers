@@ -97,10 +97,13 @@ class UserTracking extends BaseModel
         $models = UserTracking::find()
                 ->where([
                     'user_id' => Yii::$app->user->id, 
-//                    'status' => self::stt_active
                 ])
                 ->andWhere(['<=', 'start_date', $now])
-                ->andWhere(['>=', 'end_date', $now])
+                ->andWhere([
+                    'or',
+                    ['is', 'end_date', null],
+                    ['>=', 'end_date', $now],
+                ])
                 ->all();
         $ret    = [];
         if($models){
@@ -122,7 +125,11 @@ class UserTracking extends BaseModel
                     'user_id' => Yii::$app->user->id, 
                     'product_id' => $this->product_id])
                 ->andWhere(['<=', 'start_date', $now])
-                ->andWhere(['>=', 'end_date', $now])
+                ->andWhere([
+                    'or',
+                    ['is', 'end_date', null],
+                    ['>=', 'end_date', $now],
+                ])
                 ->one();
         return $models ? true : false;
     }
@@ -160,7 +167,11 @@ class UserTracking extends BaseModel
         $aModels  = UserTracking::find()
                         ->select('DISTINCT(product_id)')
                         ->where(['<=', 'start_date', $now])
-                        ->andWhere(['>=', 'end_date', $now])
+                        ->andWhere([
+                            'or',
+                            ['is', 'end_date', null],
+                            ['>=', 'end_date', $now],
+                        ])
                         ->all();
         $ret      = [];
         foreach ($aModels as $value) {
@@ -177,7 +188,11 @@ class UserTracking extends BaseModel
         $now    = date('Y-m-d H:i:s');
         $models = UserTracking::find()
                         ->where(['<=', 'start_date', $now])
-                        ->andWhere(['>=', 'end_date', $now])
+                        ->andWhere([
+                            'or',
+                            ['is', 'end_date', null],
+                            ['>=', 'end_date', $now],
+                        ])
                         ->andWhere(['IN', 'product_id', $aProductId])
                         ->all();
         $ret    = [];

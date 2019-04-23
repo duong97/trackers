@@ -1,6 +1,7 @@
 <?php 
 use app\helpers\MyFormat;
 use yii\helpers\Html;
+use yii\helpers\Url;
 use yii\bootstrap\ActiveForm;
 use app\models\UserTracking;
 
@@ -55,8 +56,7 @@ $urlManager     = \Yii::$app->getUrlManager();
                         <?= Html::submitButton(Yii::t('app', 'Start tracking'), ['class' => 'btn btn-primary', Yii::$app->user->isGuest ? 'disabled' : null]) ?>
                         <?php if(Yii::$app->user->isGuest): ?>
                             <?php 
-                                $urlManager = \Yii::$app->getUrlManager();
-                                $urlLogin = $urlManager->createUrl(['site/login']);
+                                $urlLogin = Url::to(['/site/login']);
                             ?>
                             <p><?= "* " . Yii::t('app', 'You need to ') . Html::a(Yii::t('app', 'login'), $urlLogin) . Yii::t('app', ' to track product prices') . "!" ?></p>
                         <?php endif; ?>
