@@ -1,10 +1,25 @@
 <?php 
 use yii\grid\GridView;
 use yii\helpers\Html;
+use yii\helpers\Url;
+use app\helpers\Checks;
 
 $this->title = Yii::t('app', 'Tracking items');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
+
+<?php 
+// FOR ROOT ADMIN
+if(Checks::isRoot()){ ?>
+    <div style="margin: 15px 0">
+        <a href="<?= Url::to(['/admin/root-admin/tracking-all']) ?>" class="btn btn-primary">
+            Theo dõi tất cả
+        </a>
+        <a href="<?= Url::to(['/admin/root-admin/stop-tracking-all']) ?>" class="btn btn-primary">
+            Hủy theo dõi tất cả
+        </a>
+    </div>
+<?php } ?>
 
 <?= GridView::widget([
     'dataProvider' => $dataProvider,

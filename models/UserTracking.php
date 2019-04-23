@@ -13,6 +13,8 @@
 namespace app\models;
 
 use Yii;
+use app\models\Products;
+use app\helpers\Constants;
 
 /**
  * This is the model class for table "user_tracking".
@@ -183,6 +185,60 @@ class UserTracking extends BaseModel
             $ret[$value->user_id][] = $value->product_id;
         }
         return $ret;
+    }
+    
+    /**
+     * @todo tracking all product for root admin
+     */
+    public function trackingAll(){
+        $models             = Products::find()->all(); // Get all product
+        $rootId             = (Yii::$app->user->identity->role == Constants::ROOT) ? Yii::$app->user->id : '';
+        if(empty($rootId)) return;
+        $aTrackedModel      = UserTracking::findAll(['user_id'=>$rootId]); // Get product where root is tracking
+        $aTrackedProduct    = [];
+        $aInsert            = [];
+        $startDate          = date('Y-m-d h:i:s');
+        foreach ($aTrackedModel as $value) {
+            $aTrackedProduct[$value->product_id] = $value->product_id;
+        }
+        $tableName          = UserTracking::tableName();
+        $connection         = Yii::$app->getDb();
+        // Set end_date = null for array tracked product
+        $connection->createCommand()
+                ->update(
+                    $tableName, 
+                    ['end_date' => null], 
+                    ['user_id' => $rootId])
+                ->execute();
+        foreach ($models as $value) {
+            if(in_array($value->id, $aTrackedProduct)) continue;
+            $aInsert[] = [$rootId, $value->id, $startDate];
+        }
+        // Insert untracked product
+        $connection->createCommand()
+                ->batchInsert(
+                    $tableName, 
+                    ['user_id', 'product_id', 'start_date'], 
+                    $aInsert
+                )
+                ->execute();
+    }
+    
+    /**
+     * @todo stop tracking all product for root admin
+     */
+    public function stopTrackingAll(){
+        $rootId             = (Yii::$app->user->identity->role == Constants::ROOT) ? Yii::$app->user->id : '';
+        if(empty($rootId)) return;
+        $endDate            = date('Y-m-d h:i:00');
+        $tableName          = UserTracking::tableName();
+        $connection         = Yii::$app->getDb();
+        $connection->createCommand()
+                ->update(
+                    $tableName, 
+                    ['end_date' => $endDate], 
+                    ['user_id' => $rootId])
+                ->execute();
     }
     
 }

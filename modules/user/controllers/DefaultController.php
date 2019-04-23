@@ -83,7 +83,11 @@ class DefaultController extends BaseController
                     'user_id' => Yii::$app->user->id, 
                 ])
                 ->andWhere(['<=', 'start_date', $now])
-                ->andWhere(['>=', 'end_date', $now]);
+                ->andWhere([
+                    'or',
+                    ['is', 'end_date', null],
+                    ['>=', 'end_date', $now],
+                ]);
             $provider = new ActiveDataProvider([
                 'query' => $query,
             ]);
