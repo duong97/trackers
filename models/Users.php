@@ -42,6 +42,11 @@ class Users extends BaseModel
     const notify_decrease       = 2;
     const notify_both           = 3;
     
+    const NOTIFY_BROWSER        = 1;
+    const NOTIFY_FB             = 2;
+    const NOTIFY_ZALO           = 3;
+    const NOTIFY_EMAIL          = 4;
+    
     const plf_facebook = 1;
     
     const DEVICE_DESKTOP        = 1;
@@ -56,6 +61,13 @@ class Users extends BaseModel
     public static $aDevice = [
         self::DEVICE_DESKTOP => 'Desktop',
         self::DEVICE_MOBILE  => 'Mobile',
+    ];
+    
+    public static $aNotifyPlatformType = [
+        self::NOTIFY_BROWSER        => 'Notify Browser',
+        self::NOTIFY_FB             => 'Notify Facebook',
+        self::NOTIFY_ZALO           => 'Notify Zalo',
+        self::NOTIFY_EMAIL          => 'Notify Email'
     ];
     
     /*
@@ -274,5 +286,61 @@ class Users extends BaseModel
         return $ret;
     }
     
+    /**
+     * @todo get list user notify by browser, fb, zalo, email...
+     */
+    public function getListUserByNotifyType($notifyType = ''){
+        $aCond      = [];
+        switch ($notifyType) {
+            case self::NOTIFY_BROWSER:
+                $aCond = [
+                    'and',
+                    ['is_notify_browser' => 1],
+                    ['is not', 'subscription', null]
+                ];
+                break;
+            case self::NOTIFY_ZALO:
+                $aCond = [
+                    'and',
+                    ['is_notify_zalo' => 1],
+                    ['is not', 'zalo_id', null]
+                ];
+                break;
+            case self::NOTIFY_EMAIL:
+                $aCond = ['is_notify_email' => 1];
+                break;
+
+            default:
+                $aCond = [
+                    'or',
+                    [
+                        'and',
+                        ['is_notify_browser' => 1],
+                        ['is not', 'subscription', null]
+                    ],
+                    [
+                        'and',
+                        ['is_notify_zalo' => 1],
+                        ['is not', 'zalo_id', null]
+                    ],
+                    ['is_notify_email' => 1],
+                ];
+                break;
+        }
+        $models = Users::find()->where($aCond)->all();
+        $result = [];
+        foreach ($models as $value) {
+            if($value->is_notify_browser && !empty($value->subscription)){
+                $result[self::NOTIFY_BROWSER][$value->id] = $value;
+            } 
+            if($value->is_notify_zalo && !empty ($value->zalo_id)){
+                $result[self::NOTIFY_ZALO][$value->id] = $value;
+            }
+            if($value->is_notify_email){
+                $result[self::NOTIFY_EMAIL][$value->id] = $value;
+            }
+        }
+        return $result;
+    }
     
 }

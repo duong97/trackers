@@ -20,7 +20,7 @@ class Notifications{
     /**
      * @todo notify for user when price is changed via browser
      */
-    public function notifyPriceChanged($aProductId){
+    public function notifyPriceChangedViaBrowser($aProductId){
         $mUserTracking  = new UserTracking();
         $aUserNotify    = $mUserTracking->getListNotifyUser($aProductId);
         $mUser          = new Users();
@@ -44,7 +44,7 @@ class Notifications{
                                 'url' => $urlDetail
                             ]
                         ];
-                        $this->notify(json_decode($sub, true), $payload);
+                        $this->notifyBrowser(json_decode($sub, true), $payload);
                         Loggers::WriteLog('Notify via browser | User ID: '.$user_id.' - '.Users::$aDevice[$device].' | '.date('d/m/Y'), Loggers::type_info);
                     }
                 }
@@ -57,10 +57,10 @@ class Notifications{
      * @todo notify for user via browser, each user have one $subscription
      * @param type $subscription array subsription
      */
-    public function notify($subscription, $payload = []){
+    public function notifyBrowser($subscription, $payload = []){
         if(empty($subscription)) return;
         $notifications          = Subscription::create($subscription);
-
+        
         $auth = array(
             'VAPID' => array(
                 'subject'       => Constants::website_name,
@@ -160,6 +160,7 @@ class Notifications{
      * @ref https://developers.zalo.me/docs/api/official-account-api/api/gui-tin-nhan-post-2343
      */
     public function notifyZalo($zaloId, $message){
+        if(empty($zaloId) || empty($message)) return;
         $accessToken    = Yii::$app->params['zalo_oa_access_token'];
         $ch             = curl_init('https://openapi.zalo.me/v2.0/oa/message?access_token='.$accessToken);
         curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'POST');
@@ -182,6 +183,6 @@ class Notifications{
         }
         curl_close($ch);
     }
-
+    
 }
 

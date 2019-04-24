@@ -44,7 +44,7 @@ class NotificationController extends BaseController
                         ];
                         $mUser->subscription    = json_encode($aSub);
                         $notification           = new Notifications();
-                        $notification->notify($subscription); // First notify
+                        $notification->notifyBrowser($subscription); // First notify
                     } else {
                         $aCurSub                        = json_decode($mUser->subscription, true);
                         $aCurSub[Checks::getDevice()]   = $jsonSubscription;

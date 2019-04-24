@@ -51,6 +51,21 @@ class Mailer{
             Loggers::WriteLog('Notify via email | User ID: '.$user_id.' - '.$mail.' | '.date('d/m/Y'), Loggers::type_info);
         }
     }
+    
+    /**
+     * @todo demo sendmail for root admin
+     */
+    public function demoSendmail($userEmail){
+        if(empty($userEmail)) return;
+        $mProduct           = new Products();
+        $aProductId         = [10,11];
+        $aProductOfUser     = $mProduct->getListProductById($aProductId);
+        $message            = Yii::$app->mailer->compose('notifyPriceChanged',['aProductOfUser'=>$aProductOfUser]);
+        $message->setFrom([Yii::$app->params['verifyEmail'] => 'ChartCost.com'])
+                ->setTo($userEmail)
+                ->setSubject(Yii::t('app', 'Notification'))
+                ->send();
+    }
 
 }
 

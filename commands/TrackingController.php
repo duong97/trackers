@@ -81,7 +81,7 @@ class TrackingController extends Controller
             
             // Notify User via browser
             $mNotification = new Notifications();
-            $mNotification->notifyPriceChanged($aProductChange);
+            $mNotification->notifyPriceChangedViaBrowser($aProductChange);
             
             // Notify User via zalo
             $mNotification->notifyPriceChangedViaZalo($aProductChange);
