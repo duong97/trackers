@@ -28,7 +28,7 @@ use yii\helpers\Url;
                                         width="6.25%" valign="middle"></td>
                                     <td style="border:none;margin:0px;padding:0px;text-align:center;" valign="middle">
                                         <a style="border:none;margin:0px;padding:0px;font-size:44px;font-weight:bold;text-decoration: none;color:#48b748;font-family:Comic Sans MS" 
-                                           href="<?= Url::base(true) ?>" align="center">
+                                           href="<?= Yii::$app->params['homeUrl'] ?>" align="center">
                                             <?= \app\helpers\Constants::website_name ?>
                                         </a>
                                     </td>
@@ -100,7 +100,8 @@ use yii\helpers\Url;
         ?>
         <tr style="<?= $css ?>">
             <?php 
-            $url = Yii::$app->request->serverName.Url::to(["/product/action/detail", 'url'=> $m->url]);
+//            $url = Yii::$app->request->serverName.Url::to(["/product/action/detail", 'url'=> $m->url]);
+            $url = Url::to(["/product/action/detail", 'url'=> $m->url]);
             ?>
             <td style="border: 1px solid #ddd; padding: 8px;">
                 <?= $no++ ?>

@@ -1,7 +1,7 @@
 <?php
 
 return [
-    'homeUrl'               => 'https://chartcost.com',
+    'homeUrl'               => 'https://www.chartcost.com',
     'verifyEmail'           => 'admin@chartcost.com',
     'verifyEmailPassword'   => 'K_p]aGJ*@sOi',
     'defaultPageSize'       => '10',

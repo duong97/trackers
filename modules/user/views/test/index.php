@@ -16,6 +16,7 @@ use app\helpers\Checks;
 use app\helpers\MyFormat;
 use app\helpers\Constants;
 use yii\helpers\Html;
+use yii\helpers\Url;
 
 
 //$m = new Notifications;
@@ -36,21 +37,28 @@ use yii\helpers\Html;
 //}
 
 
+$url = Yii::$app->request->serverName.Url::to(["/product/action/detail", 'url'=> '123']);
+echo '<pre>';
+print_r(Url::to(["/product/action/detail", 'url'=> '123']));
+echo '<br>';
+print_r(Yii::$app->params['homeUrl']);
+echo '</pre>';
+die;
 
-    $data = ['Duong', 'hihi', 'do ngoc', 'dadalkadsf'];
-    echo AutoComplete::widget([
-    'name' => 'Company',
-    'id' => 'ddd',
-    'clientOptions' => [
-        'source' => $data,
-        'autoFill'=>true,
-        'minLength'=>'0',
-        'autoFocus'=>true,
-        'select' => "function( event, ui ) {
-                alert();
-            }"
-        ],
-     ]);
+//    $data = ['Duong', 'hihi', 'do ngoc', 'dadalkadsf'];
+//    echo AutoComplete::widget([
+//    'name' => 'Company',
+//    'id' => 'ddd',
+//    'clientOptions' => [
+//        'source' => $data,
+//        'autoFill'=>true,
+//        'minLength'=>'0',
+//        'autoFocus'=>true,
+//        'select' => "function( event, ui ) {
+//                alert();
+//            }"
+//        ],
+//     ]);
      ?>
 <script>
 $("#ddd").bind('focus', function(){ $(this).autocomplete("search"); } );

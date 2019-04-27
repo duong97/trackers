@@ -10,6 +10,7 @@ namespace app\commands;
 use yii\console\Controller;
 use yii\console\ExitCode;
 use app\models\Notifications;
+use app\models\Mailer;
 
 /**
  * This command echoes the first argument that you have entered.
@@ -26,13 +27,15 @@ class HelloController extends Controller
      * @param string $message the message to be echoed.
      * @return int Exit code
      *  to run: /usr/bin/php /var/www/html/trackers/yii hello
+     * /usr/bin/php /var/www/clients/client0/web1/web/trackers/yii hello
      */
     public function actionIndex()
     {
         try {
             $mNotification = new \app\models\Notifications();
-            $aProductChange = [20, 21, 22, 23];
-            $mNotification->notifyPriceChangedViaZalo($aProductChange);
+            $aProductChange = [23];
+            $mailer = new Mailer();
+            $mailer->notifyPriceChanged($aProductChange);
         } catch (Exception $exc) {
             Loggers::WriteLog("Cron errors: hello | ".date('d/m/Y H:i:s'), Loggers::type_cron);
         }

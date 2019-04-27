@@ -1,10 +1,9 @@
 RewriteEngine on
 # If a directory or a file exists, use it directly
-# Nếu có dòng này thì redirect non www to www sẽ ko hoạt động
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
-#RewriteRule ^(.*)$ index.php?/$1 [QSA]
-RewriteRule . index.php 
+RewriteRule ^(.*)$ index.php?/$1 [QSA]
+#RewriteRule . index.php
 
 # redirect www to non-wwww
 #RewriteBase /
@@ -15,7 +14,7 @@ RewriteRule . index.php
 # khi có www và non www thì session khác nhau, 
 # nên nếu đang login ở non-www thì khi vào www sẽ là chưa đăng nhập
 # Hiện tại google và fb đều redirect sang www hết
-# redirect www to non-wwww
+# redirect non-www to wwww
 RewriteCond %{HTTP_HOST} ^chartcost.com$ [NC]
 RewriteRule (.*) https://www.chartcost.com/$1 [R=301,L] 
 #end
