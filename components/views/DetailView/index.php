@@ -35,8 +35,8 @@ $urlManager     = \Yii::$app->getUrlManager();
             <?php if(!$isTracked){ ?>
                 <?php 
                 $action         = Yii::$app->user->isGuest ?
-                                    $urlManager->createUrl(['site/login']) :
-                                    $urlManager->createUrl(['user/default/start-tracking']);
+                                    Url::to(['/site/login']) :
+                                    Url::to(['/user/default/start-tracking']);
                 $form = ActiveForm::begin([
                     'id'        => 'product-form',
                     'layout'    => 'horizontal',
@@ -79,7 +79,7 @@ $urlManager     = \Yii::$app->getUrlManager();
                     <?= Yii::t('app', 'End date') . ": " . (empty($endDate) ? Yii::t('app', 'Until canceled') : MyFormat::formatDate($endDate)) ?>
                 </p><br><br>
                 
-                    <?php $url = $urlManager->createUrl(['user/default/stop-tracking', 'id' => $aData['id']]); ?>
+                    <?php $url = Url::to(['/user/default/stop-tracking', 'id' => $aData['id']]); ?>
                     <?= Html::a(Yii::t('app', 'Stop tracking'), $url, ['class' => 'btn btn-danger']) ?>
                 <?php 
 //                $form = ActiveForm::begin([
@@ -94,6 +94,7 @@ $urlManager     = \Yii::$app->getUrlManager();
                 </button>-->
                 <?php // ActiveForm::end() ?>
             <?php } ?>
+            <?= Html::a(Yii::t('app', 'Go to shop'), $productUrl, ['class' => 'btn btn-success', 'target'=>'_blank']) ?>
         </div>
         <div class="col-sm-1"></div>
     </div>
