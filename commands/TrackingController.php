@@ -39,8 +39,11 @@ class TrackingController extends Controller
         return ExitCode::OK;
     }
     
-    /*
+    /**
+     * @local
      * /usr/bin/php /var/www/html/trackers/yii tracking/track-hourly
+     * @remote
+     * /usr/bin/php /var/www/clients/client0/web1/web/trackers/yii tracking/track-hourly
      */
     public function actionTrackHourly()
     {
