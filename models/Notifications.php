@@ -140,7 +140,7 @@ class Notifications{
                     $product->image = str_pad($shortImgUrl, strlen($shortImgUrl)+7,'http://',STR_PAD_LEFT);
                 }
                 $bodyMessage = [
-                    "title"             => $product->name,
+                    "title"             => substr($product->name, 0, 96) . '...', // max length 100
                     "subtitle"          => "chi tiết",
                     "image_url"         => $product->image,
                     "default_action"    => [
