@@ -19,14 +19,34 @@ use app\models\ActionRoles;
 	]); ?>
 
     <?php 
-    $mController = new Controllers();
+    $mController    = new Controllers();
+    $aAllowAction   = explode(',', $model->actions);
+    $aCA            = $mController->getAllCA();
+    $aController    = $mController->getAll(true);
+    $controllerName = isset($aController[$model->controller_id]) ? $aController[$model->controller_id] : '';
+    $aAllAction     = isset($aCA[$controllerName]) ? $aCA[$controllerName] : [];
     ?>
     
     <?= $form->field($model, 'role_id')->dropDownList(Constants::$aRoleAdmin) ?>
 
-    <?= $form->field($model, 'controller_id')->dropDownList($mController->getAll(true)) ?>
+    <?php if($model->scenario != Yii::$app->params['SCENARIO_UPDATE']): ?>
+        <?= $form->field($model, 'controller_id')->dropDownList($mController->getAll(true)) ?>
+    <?php endif; ?>
 
-    <?= $form->field($model, 'actions')->textarea(['rows' => 6]) ?>
+    <?php // $form->field($model, 'actions')->textarea(['rows' => 6]) ?>
+    <?= $form->field($model, 'actions')->hiddenInput() ?>
+    <div class="row container actionArea">
+        <?php foreach ($aAllAction as $action): ?>
+            <?php 
+            $isAllow = array_search($action, $aAllowAction);
+            $checked = ($isAllow === false) ? '' : 'checked="checked"'; 
+            ?>
+            <label class="cbcontainer col-sm-3"><?= $action ?>
+                <input type="checkbox" name="ActionRoles[actions][]" value="<?= $action ?>" <?= $checked ?>>
+                <span class="checkmark"></span>
+            </label>
+        <?php endforeach; ?>
+    </div>
 
     <?= $form->field($model, 'can_access')->dropDownList(ActionRoles::$aAccess) ?>
 
@@ -39,7 +59,8 @@ use app\models\ActionRoles;
 </div>
 
 <script>
-    $('#actionroles-actions').on('click', function(){
+//    $('#actionroles-actions').on('click', function(){
+    $('#actionroles-controller_id').on('change', function(){
         getAction();
     });
     
@@ -50,7 +71,18 @@ use app\models\ActionRoles;
             url: url,
             data: {'controller_name': $('#actionroles-controller_id :selected').text()},
             success: function(data){
-                $('#actionroles-actions').val(data);
+//                $('#actionroles-actions').val(data);
+                var listAction = JSON.parse(data);
+                var htmlAdd    = '';
+                listAction.forEach(function(item){
+                    var temp = '<label class="cbcontainer col-sm-3">'+item+
+                                    '<input type="checkbox" name="ActionRoles[actions][]" value="'+item+'">'+
+                                    '<span class="checkmark"></span>'+
+                                '</label>';
+                    htmlAdd += temp;
+                });
+                
+                $('.actionArea').html(htmlAdd);
             },
             error:function(data){
                 alert("Error occured!"); //===Show Error Message====

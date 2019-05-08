@@ -14,6 +14,7 @@ namespace app\models;
 
 use app\helpers\Constants;
 use app\helpers\Htmls;
+use yii\helpers\Url;
 use Yii;
 
 /**
@@ -49,8 +50,9 @@ class ActionRoles extends BaseModel
     public function rules()
     {
         return [
-            [['role_id', 'controller_id', 'can_access'], 'integer'],
+            [['role_id', 'controller_id', 'can_access', 'actions'], 'safe'],
             [['actions'], 'string'],
+            [['role_id'], 'required', 'on' => Yii::$app->params['SCENARIO_UPDATE']],
         ];
     }
     
@@ -93,7 +95,8 @@ class ActionRoles extends BaseModel
         $models = ActionRoles::find()
                 ->alias('ar')
                 ->joinWith('rController', 'rController.id = controller.id')
-                ->where(['ar.role_id' => $role_id])->all();
+                ->where(['ar.role_id' => $role_id, 'can_access'=> self::access_allow])
+                ->all();
         $ret    = [];
         foreach ($models as $value) {
             $aAction        = explode(',', $value->actions);
@@ -108,7 +111,6 @@ class ActionRoles extends BaseModel
      */
     public function getArrayMenu($role){
         $ret    = [];
-        $url    = \Yii::$app->getUrlManager();
         if(empty($role)) return [];
         if($role == Constants::ROOT){ // Root admin
             $models = Controllers::find()->all();
@@ -116,7 +118,7 @@ class ActionRoles extends BaseModel
                 $controllerId = Htmls::handleControllerName($value->controller_name);
                 $ret[] = [
                     'label' => $value->display_name,
-                    'url'   => $url->createUrl(['admin/'.$controllerId.'/index']),
+                    'url'   => Url::to(['/admin/'.$controllerId.'/index']),
                 ];
             }
         } else {
@@ -129,7 +131,7 @@ class ActionRoles extends BaseModel
                 $controllerId = Htmls::handleControllerName($value->rController->controller_name);
                 $ret[] = [
                     'label' => $value->rController->display_name,
-                    'url'   => $url->createUrl(['admin/'.$controllerId.'/index']),
+                    'url'   => Url::to(['/admin/'.$controllerId.'/index']),
                 ];
             }
         }

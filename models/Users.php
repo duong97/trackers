@@ -199,8 +199,8 @@ class Users extends BaseModel
     public function initSessionBeforeLogin(){
         $session     = Yii::$app->session;
         $mActionRole = new ActionRoles();
-        $aCA         = $mActionRole->getArrayAccess($this->role);
-        $session->set('listAccessAction', $aCA);
+//        $aCA         = $mActionRole->getArrayAccess($this->role);
+//        $session->set('listAccessAction', $aCA);
 
         $aMenu       = $mActionRole->getArrayMenu($this->role);
         $session->set('listMenu', $aMenu);

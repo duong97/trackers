@@ -80,11 +80,15 @@ class ActionRolesController extends BaseController
     {
 	try {
             $this->getListAction();
-            $model = new ActionRoles();
+            $model      = new ActionRoles();
+            
+            $post       = Yii::$app->request->post();
+            $listAction = isset($post['ActionRoles']['actions']) ? $post['ActionRoles']['actions'] : '';
+            if( !empty($listAction) ){
+                $post['ActionRoles']['actions'] = implode(',', $listAction);
+            }
 
-            if ($model->load(Yii::$app->request->post()) && $model->save()) {
-                $mUser = Users::find()->where(['id' => Yii::$app->user->id])->one();
-                $mUser->initSessionBeforeLogin();
+            if ($model->load($post) && $model->save()) {
                 return $this->redirect(['view', 'id' => $model->id]);
             }
 
@@ -105,7 +109,7 @@ class ActionRolesController extends BaseController
             $model      = new Controllers();
             $aCA        = $model->getAllCA();
             $aAction    = isset($aCA[$cname]) ? $aCA[$cname] : [];
-            echo implode(', ', $aAction);
+            echo json_encode($aAction);
             die;
         }
     }
@@ -121,10 +125,15 @@ class ActionRolesController extends BaseController
     {
 	try {
             $model = $this->findModel($id);
+            $model->scenario = Yii::$app->params['SCENARIO_UPDATE'];
 
-            if ($model->load(Yii::$app->request->post()) && $model->save()) {
-                $mUser = Users::find()->where(['id' => Yii::$app->user->id])->one();
-                $mUser->initSessionBeforeLogin();
+            $post       = Yii::$app->request->post();
+            $listAction = isset($post['ActionRoles']['actions']) ? $post['ActionRoles']['actions'] : '';
+            if( !empty($listAction) ){
+                $post['ActionRoles']['actions'] = is_array($listAction) ? implode(',', $listAction) : '';
+            }
+            
+            if ($model->load($post) && $model->save()) {
                 return $this->redirect(['view', 'id' => $model->id]);
             }
 

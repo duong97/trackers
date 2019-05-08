@@ -14,6 +14,7 @@ namespace app\controllers;
 use yii\web\Controller;
 use Yii;
 use app\helpers\Checks;
+use app\models\ActionRoles;
 use yii\helpers\Url;
 
 class BaseController extends Controller
@@ -36,8 +37,12 @@ class BaseController extends Controller
         if (parent::beforeAction($action)) {
             if(Checks::isRoot() || $this->id == 'site') return true;
             if($this->module->id == 'admin'){
-                $session        = Yii::$app->session;
-                $aAccessAction  = $session->get('listAccessAction');
+//                $session        = Yii::$app->session;
+//                $aAccessAction  = $session->get('listAccessAction');
+                
+                $mActionRole   = new ActionRoles();
+                $aAccessAction  = $mActionRole->getArrayAccess(Yii::$app->user->identity->role);
+                
                 $refClass       = new \ReflectionClass($this->className());
                 $ctlName        = $refClass->getShortName();
                 if( isset($aAccessAction[$ctlName]) ){

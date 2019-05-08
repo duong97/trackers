@@ -3,6 +3,7 @@
 namespace app\models;
 
 use Yii;
+use app\models\ActionRoles;
 
 /**
  * This is the model class for table "users".
@@ -36,8 +37,10 @@ class BaseModel extends \yii\db\ActiveRecord
     }
     
     public function can($action){
-        $session        = Yii::$app->session;
-        $aAccessAction  = $session->get('listAccessAction');
+//        $session        = Yii::$app->session;
+//        $aAccessAction  = $session->get('listAccessAction');
+        $mActionRole    = new ActionRoles();
+        $aAccessAction  = $mActionRole->getArrayAccess(Yii::$app->user->identity->role);
         $refClass       = new \ReflectionClass($this->className());
         $ctlName        = $refClass->getShortName() . 'Controller';
         if( isset($aAccessAction[$ctlName]) ){
