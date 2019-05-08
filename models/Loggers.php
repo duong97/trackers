@@ -13,6 +13,8 @@
 namespace app\models;
 
 use Yii;
+use yii\data\ActiveDataProvider;
+use app\helpers\MyFormat;
 
 /**
  * This is the model class for table "loggers".
@@ -56,6 +58,31 @@ class Loggers extends BaseModel
             [['created_date'], 'safe'],
             [['ip'], 'string', 'max' => 50],
         ];
+    }
+    
+    public function search($params)
+    {
+        $query = Loggers::find();
+        $dataProvider = new ActiveDataProvider([
+            'query' => $query,
+            'sort' => [
+                'defaultOrder' => [
+                    'created_date' => SORT_DESC,
+                ]
+            ],
+            'pagination' => [ 
+                'pageSize'=> isset(Yii::$app->params['defaultPageSize']) ? Yii::$app->params['defaultPageSize'] : 10,
+            ],
+        ]);
+        // No search? Then return data Provider
+        if (!($this->load($params) && $this->validate())) {
+            return $dataProvider;
+        }
+        // We have to do some search... Lets do some magic
+        $query->andFilterWhere(['like', 'message', $this->message])
+              ->andFilterWhere(['=','DATE(created_date)', MyFormat::formatSqlDate($this->created_date)])
+              ->andFilterWhere(['type' => $this->type]);
+        return $dataProvider;
     }
 
     /**

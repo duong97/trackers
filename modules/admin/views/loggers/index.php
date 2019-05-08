@@ -4,6 +4,7 @@ use yii\helpers\Html;
 use yii\grid\GridView;
 use app\models\Loggers;
 use app\helpers\MyFormat;
+use yii\widgets\Pjax;
 
 /* @var $this yii\web\View */
 /* @var $dataProvider yii\data\ActiveDataProvider */
@@ -19,8 +20,10 @@ $this->params['breadcrumbs'][] = $this->title;
         <?php // echo Html::a('Create Loggers', ['create'], ['class' => 'btn btn-success']) ?>
     </p>
 
+    <?php Pjax::begin(); ?>
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
+        'filterModel' => $searchModel,
         'layout' => "{summary}\n<div class='full-width text-center'>{pager}</div>\n{items}\n<div class='full-width text-center'>{pager}</div>",
         'pager' => [
             'options' => [
@@ -58,13 +61,25 @@ $this->params['breadcrumbs'][] = $this->title;
                 'attribute' => 'type',
                 'value' => function($model){
                     return isset(Loggers::$aLogType[$model->type]) ? Loggers::$aLogType[$model->type] : '';
-                }
+                },
+                'filter'=> Loggers::$aLogType,
             ],
             [
                 'attribute' => 'created_date',
                 'value' => function($model){
                     return MyFormat::formatDatetime($model->created_date);
-                }
+                },
+                'filter' => \yii\jui\DatePicker::widget([
+                    'attribute'     => 'created_date',
+                    'language'      => 'vi', 
+                    'dateFormat'    => 'dd-MM-yyyy',
+                    'model'         => $searchModel,
+                    'options' => [
+                        'class'=>'form-control',
+                        'autocomplete'=>'off'
+                    ]
+                ]),
+                'format' => 'raw',
             ],
 
             [
@@ -83,4 +98,5 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
         ],
     ]); ?>
+    <?php Pjax::end(); ?>
 </div>

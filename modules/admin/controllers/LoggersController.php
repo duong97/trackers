@@ -37,12 +37,16 @@ class LoggersController extends BaseController
     public function actionIndex()
     {
 	try {
-            $dataProvider = new ActiveDataProvider([
-                'query' => Loggers::find(),
-                'sort'=> ['defaultOrder' => ['id'=>SORT_DESC]]
-            ]);
+            $searchModel = new Loggers();
+            $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+            
+//            $dataProvider = new ActiveDataProvider([
+//                'query' => Loggers::find(),
+//                'sort'=> ['defaultOrder' => ['id'=>SORT_DESC]]
+//            ]);
 
             return $this->render('index', [
+                'searchModel' => $searchModel,
                 'dataProvider' => $dataProvider,
             ]);
         } catch (Exception $exc) {

@@ -29,6 +29,20 @@ class MyFormat{
     }
     
     /*
+     * format date to Y-m-d
+     */
+    public static function formatSqlDate($date){
+        return empty($date) ? "" : date('Y-m-d', strtotime($date));
+    }
+    
+    /*
+     * format date to Y-m-d
+     */
+    public static function formatSqlDatetime($date){
+        return empty($date) ? "" : date('Y-m-d H:i:s', strtotime($date));
+    }
+    
+    /*
      * format date time to d/m/Y
      */
     public static function formatDatetime($datetime){
