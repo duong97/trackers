@@ -27,22 +27,32 @@ class Mailer{
     
     /**
      * @todo notify for user when price is changed via email
+     * @param $aProductId [ type(increase or decrease) => [id1, id2, ...] ]
      */
     public function notifyPriceChanged($aProductId){
+        if(empty($aProductId)) return;
+        $listProdId     = array_reduce($aProductId, 'array_merge',[]);
         $mUserTracking  = new UserTracking();
-        $aUserNotify    = $mUserTracking->getListNotifyUser($aProductId);
+        $aUserNotify    = $mUserTracking->getListNotifyUser($listProdId);
         $mUser          = new Users();
         $mProduct       = new Products();
         $aModelUser     = $mUser->getListUserById(array_keys($aUserNotify));
-        $aModelProduct  = $mProduct->getListProductById($aProductId);
+        $aModelProduct  = $mProduct->getListProductById($listProdId);
+        
         foreach ($aUserNotify as $user_id => $aProduct) {
-            if( !$aModelUser[$user_id]->is_notify_email ) continue;
+            $user = $aModelUser[$user_id];
+            if( empty($user) || !$user->is_notify_email ) continue;
             
             $aProductOfUser = [];
             foreach ($aProduct as $product_id) {
+                // Check user notify type
+                if($user->notify_type == Products::TYPE_DECREASE && !in_array($product_id, $aProductId[Products::TYPE_DECREASE])) continue;
+                if($user->notify_type == Products::TYPE_INCREASE && !in_array($product_id, $aProductId[Products::TYPE_INCREASE])) continue;
+                
                 $aProductOfUser[$product_id] = isset($aModelProduct[$product_id]) ? $aModelProduct[$product_id] : [];
             }
-            $mail       = isset($aModelUser[$user_id]) ? $aModelUser[$user_id]->email : '';
+            
+            $mail       = $user->email;
             $message    = Yii::$app->mailer->compose('notifyPriceChanged',['aProductOfUser'=>$aProductOfUser]);
             $message->setFrom([Yii::$app->params['verifyEmail'] => 'ChartCost.com'])
                     ->setTo($mail)

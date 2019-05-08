@@ -21,19 +21,26 @@ class Notifications{
      * @todo notify for user when price is changed via browser
      */
     public function notifyPriceChangedViaBrowser($aProductId){
+        if(empty($aProductId)) return;
+        $listProdId     = array_reduce($aProductId, 'array_merge',[]);
         $mUserTracking  = new UserTracking();
-        $aUserNotify    = $mUserTracking->getListNotifyUser($aProductId);
+        $aUserNotify    = $mUserTracking->getListNotifyUser($listProdId);
         $mUser          = new Users();
         $mProduct       = new Products();
         $aModelUser     = $mUser->getListUserById(array_keys($aUserNotify));
-        $aModelProduct  = $mProduct->getListProductById($aProductId);
+        $aModelProduct  = $mProduct->getListProductById($listProdId);
         foreach ($aUserNotify as $user_id => $aProduct) {
-            if( !$aModelUser[$user_id]->is_notify_browser ) continue;
-            $subscription       = isset($aModelUser[$user_id]) ? $aModelUser[$user_id]->subscription : '';
+            $user       = $aModelUser[$user_id];
+            if( empty($user) || !$user->is_notify_browser ) continue;
+            $subscription       = $user->subscription;
             if($subscription){
                 $aSub           = json_decode($subscription, true); //[device_id => json_subscription]
                 foreach ($aSub as $device => $sub) {
                     foreach ($aProduct as $product_id) {
+                        // Check user notify type
+                        if($user->notify_type == Products::TYPE_DECREASE && !in_array($product_id, $aProductId[Products::TYPE_DECREASE])) continue;
+                        if($user->notify_type == Products::TYPE_INCREASE && !in_array($product_id, $aProductId[Products::TYPE_INCREASE])) continue;
+                
                         $product    = isset($aModelProduct[$product_id]) ? $aModelProduct[$product_id] : [];
                         $urlDetail  = Url::to(['/product/action/detail', 'url'=> $product->url]);
                         $payload    = [
@@ -98,8 +105,10 @@ class Notifications{
      * @todo notify via zalo message
      */
     public function notifyPriceChangedViaZalo($aProductId){
+        if(empty($aProductId)) return;
+        $listProdId     = array_reduce($aProductId, 'array_merge',[]);
         $mUserTracking  = new UserTracking();
-        $aUserNotify    = $mUserTracking->getListNotifyUser($aProductId);
+        $aUserNotify    = $mUserTracking->getListNotifyUser($listProdId);
 //        $aUserNotify = [
 //            25 => [
 ////                20, 21, 22
@@ -108,9 +117,10 @@ class Notifications{
         $mUser          = new Users();
         $mProduct       = new Products();
         $aModelUser     = $mUser->getListUserById(array_keys($aUserNotify));
-        $aModelProduct  = $mProduct->getListProductById($aProductId);
+        $aModelProduct  = $mProduct->getListProductById($listProdId);
         foreach ($aUserNotify as $user_id => $aProduct) {
-            if( !$aModelUser[$user_id]->is_notify_zalo ) continue;
+            $user = $aModelUser[$user_id];
+            if( !$user->is_notify_zalo ) continue;
             $message = [
                     'attachment' => [
                         'type' => 'template',
@@ -119,7 +129,7 @@ class Notifications{
                             'elements' => [
                                 [
                                     "title" => "Thông báo",
-                                    "subtitle" => "Chào ".$aModelUser[$user_id]->first_name.", dưới đây là danh sách những sản phẩm bạn đang theo dõi có sự biến động giá!",
+                                    "subtitle" => "Chào ".$user->first_name.", dưới đây là danh sách những sản phẩm bạn đang theo dõi có sự biến động giá!",
 //                                    "image_url" => Yii::$app->params['homeUrl'] . Url::to(['/images/logo/chartcost.png']), // open when run on web
                                     "image_url" => Url::to(['/images/logo/chartcost.png']), // open when run cron
                                     "default_action" => [
@@ -132,6 +142,10 @@ class Notifications{
                     ]
                 ];
             foreach ($aProduct as $product_id) {
+                // Check user notify type
+                if($user->notify_type == Products::TYPE_DECREASE && !in_array($product_id, $aProductId[Products::TYPE_DECREASE])) continue;
+                if($user->notify_type == Products::TYPE_INCREASE && !in_array($product_id, $aProductId[Products::TYPE_INCREASE])) continue;
+                
                 $product    = isset($aModelProduct[$product_id]) ? $aModelProduct[$product_id] : [];
 //                $urlDetail  = Yii::$app->params['homeUrl'] . Url::to(['/product/action/detail', 'url'=> $product->url]); // open when run on web
                 $urlDetail  = Url::to(['/product/action/detail', 'url'=> $product->url]); // open when run cron
@@ -150,7 +164,7 @@ class Notifications{
                 ];
                 $message['attachment']['payload']['elements'][] = $bodyMessage;
             }
-            $this->notifyZalo($aModelUser[$user_id]->zalo_id, json_encode($message));
+            $this->notifyZalo($user->zalo_id, json_encode($message));
         }
     }
     

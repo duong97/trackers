@@ -41,6 +41,9 @@ class ActionController extends BaseController
                 $searchValue    = $_GET['search-value'];
                 $mGetData       = new GetData();
                 $aData          = $mGetData->getInfo($searchValue);
+                if(empty($aData['name']) && empty($aData['price'])){
+                    Checks::productNotFoundExc();
+                }
                 if(!empty($aData['name'])){
                     return $this->redirect(['action/detail', 'url' => $searchValue]);
                 }

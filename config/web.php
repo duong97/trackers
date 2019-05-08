@@ -5,7 +5,7 @@ $db     = require __DIR__ . '/db.php';
 $config = [
     'id' => 'basic',
     'basePath' => dirname(__DIR__),
-    'bootstrap' => ['log'],
+//    'bootstrap' => ['log'],
     'timeZone' => 'Asia/Ho_Chi_Minh',
     'aliases' => [
         '@bower' => '@vendor/bower-asset',
@@ -57,11 +57,6 @@ $config = [
             'errorAction' => 'site/error',
         ],
         'mailer' => [
-//            'class' => 'yii\swiftmailer\Mailer',
-//            // send all mails to a file by default. You have to set
-//            // 'useFileTransport' to false and configure a transport
-//            // for the mailer to send real emails.
-//            'useFileTransport' => true,
             'class' => 'yii\swiftmailer\Mailer',
             'useFileTransport' => false,
             'transport' => [
@@ -125,7 +120,10 @@ if (YII_ENV_DEV) {
     $config['modules']['debug'] = [
         'class' => 'yii\debug\Module',
         // uncomment the following to add your IP if you are not connecting from localhost.
-        //'allowedIPs' => ['127.0.0.1', '::1'],
+        'allowedIPs' => [
+            '127.0.0.1', '::1', // local
+//            '115.78.14.143' // ktx
+        ],
     ];
 
     $config['bootstrap'][] = 'gii';

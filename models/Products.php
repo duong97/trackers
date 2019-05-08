@@ -35,8 +35,11 @@ class Products extends BaseModel
     
     public $numberTracking; // Number of people are currently tracking this product
     
-    const STT_ACTIVE   = 1;
-    const STT_INACTIVE = 0;
+    const STT_ACTIVE    = 1;
+    const STT_INACTIVE  = 0;
+    
+    const TYPE_INCREASE = Users::notify_increase;
+    const TYPE_DECREASE = Users::notify_decrease;
     
     public static $aStatus = [
         self::STT_ACTIVE   => 'Đang bán',

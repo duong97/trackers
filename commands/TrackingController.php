@@ -77,23 +77,29 @@ class TrackingController extends Controller
                         $pLog->updated_date = date('Y-m-d H:i:s');
                         $pLog->save();
                         $numProduct++;
-                        $aProductChange[]   = $p->id;
+//                        $aProductChange[]   = $p->id;
+                        if($aData['price'] > $aLastPrice[$p->id]){
+                            $aProductChange[Products::TYPE_INCREASE][]   = $p->id;
+                        } else {
+                            $aProductChange[Products::TYPE_DECREASE][]   = $p->id;
+                        }
 //                        echo "Cron price | product_id:$p->id, new price:{$aData['price']}\n";
                         Loggers::WriteLog("Cron price changed | name: $p->name | id: $p->id", Loggers::type_cron, $p->getDetailUrl());
                     }
                 }
-                if($aData['name'] != $p->name){
+                if(isset($aData['name']) && $aData['name'] != $p->name){
                     $aChangeName[$p->id] = $aData['name'];
                 }
             }
             // Set stop trading for product with zero price
             Products::updateAll(['status' => Products::STT_INACTIVE], ['in', 'id', $aStopTrading]);
-
+            
             // Change product name
             foreach ($aChangeName as $key => $name) {
-                Products::update(['name' => $name], ['id' => $key]);
+                Products::updateAll(['name' => $name], ['id' => $key]);
                 Loggers::WriteLog("Cron name changed | new name: $name | id: $key", Loggers::type_app_error);
             }
+            
             
             // Notify User by email
             $mailer = new Mailer();

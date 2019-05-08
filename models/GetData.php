@@ -169,9 +169,6 @@ class GetData extends BaseModel
         $name   = isset($html->find($elm_name, 0)->plaintext) ? $html->find($elm_name, 0)->plaintext : "";
         $img    = $html->find($elm_img);
         $aImage = [];
-        if( empty($price) && empty($name) ){
-            Checks::productNotFoundExc();
-        }
         if(count($img) > 0){
             foreach ($img as $img) {
                 $aImage[] = $img->src;
@@ -213,9 +210,6 @@ class GetData extends BaseModel
             'price' => empty($price) ? Yii::t('app', 'Stop trading') : $price,
             'image' => isset($aImage[0]) ? $aImage[0] : ""
         ];
-        if(empty($ret['name']) && empty($ret['price'])){
-            Checks::productNotFoundExc();
-        }
         return $ret;
     }
     
@@ -245,9 +239,6 @@ class GetData extends BaseModel
             'price' => empty($price) ? Yii::t('app', 'Stop trading') : $price,
             'image' => isset($aImage[0]) ? $aImage[0] : ""
         ];
-        if(empty($ret['name']) && empty($ret['price'])){
-            Checks::productNotFoundExc();
-        }
         return empty($ret['name']) ? [] : $ret;
     }
     
@@ -262,7 +253,6 @@ class GetData extends BaseModel
         
         // Crawl data from <script> tag
         if(empty($script)) {
-            Checks::productNotFoundExc();
             return [];
         }
         $json               = htmlspecialchars_decode($script->innertext);
