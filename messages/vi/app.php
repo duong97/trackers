@@ -116,6 +116,7 @@ return [
     'Notification'          =>'Thông báo',
     "To receive notifications via your phone's browser, access this page on your phone, then turn it off and on again"=>'Để nhận thông báo qua trình duyệt trên điện thoại, truy cập trang này trên điện thoại, sau đó tắt và bật lại tính năng này',
     'tracking'              =>'Đang theo dõi',
+    'Number of people tracking this product'=>'Số người đang theo dõi sản phẩm này',
     'Legal'                 =>'Quy định về',
     'Explode'               =>'Khám phá',
     'Follow'                =>'Theo dõi',
@@ -123,4 +124,6 @@ return [
     'Privacy'               =>'Quyền riêng tư',
     'About'                 =>'Về chúng tôi',
     'Search History'        =>'Lịch sử tìm kiếm',
+    'The product you are looking for does not exist or has stopped trading'=>'Sản phẩm bạn đang tìm kiếm không tồn tại hoặc đã ngừng kinh doanh',
+    'Stop trading'          =>'Ngừng kinh doanh',
 ];

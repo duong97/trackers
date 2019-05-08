@@ -6,17 +6,17 @@ use yii\widgets\DetailView;
 use app\helpers\MyFormat;
 use app\helpers\Constants;
 use app\helpers\Checks;
-
 use app\models\Users;
+
 /* @var $this yii\web\View */
 /* @var $model app\models\Users */
 
 // Admin cannot view list admin or root
-if(Checks::isAdmin()){
+if(Checks::isAdminOnly()){
     if($model->isAdmin() || $model->isRoot()) Checks::notFoundExc ();
 }
 
-$this->title = $model->id;
+$this->title = $model->email;
 $this->params['breadcrumbs'][] = ['label' => 'Users', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 \yii\web\YiiAsset::register($this);
@@ -94,28 +94,35 @@ $this->params['breadcrumbs'][] = $this->title;
             [
                 'attribute' => 'fb_id',
                 'value' => function($model){
-                    return $model->fb_id;
+                    return empty($model->fb_id) ? '' : $model->fb_id;
+                },
+                'visible' => Checks::isRoot()
+            ],
+            [
+                'attribute' => 'zalo_id',
+                'value' => function($model){
+                    return empty($model->zalo_id) ? '' : $model->zalo_id;
                 },
                 'visible' => Checks::isRoot()
             ],
             [
                 'attribute' => 'is_notify_fb',
                 'value' => function($model){
-                    return $model->is_notify_fb;
+                    return empty($model->is_notify_fb) ? 'Không' : 'Có';
                 },
                 'visible' => Checks::isRoot()
             ],
             [
                 'attribute' => 'is_notify_email',
                 'value' => function($model){
-                    return $model->is_notify_email;
+                    return empty($model->is_notify_email) ? 'Không' : 'Có';
                 },
                 'visible' => Checks::isRoot()
             ],
             [
                 'attribute' => 'notify_type',
                 'value' => function($model){
-                    return $model->notify_type;
+                    return isset(Users::aNotifyType()[$model->notify_type]) ? Users::aNotifyType()[$model->notify_type] : '';
                 },
                 'visible' => Checks::isRoot()
             ],

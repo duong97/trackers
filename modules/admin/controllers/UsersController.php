@@ -110,9 +110,9 @@ class UsersController extends BaseController
     public function actionUpdate($id)
     {
         try {
-            Checks::accessExc();
+//            Checks::accessExc();
             $model = $this->findModel($id);
-            $model->scenario = Yii::$app->params['SCENARIO_UPDATE'];
+//            $model->scenario = Yii::$app->params['SCENARIO_UPDATE'];
             
             if ($model->load(Yii::$app->request->post()) && $model->save()) {
                 return $this->redirect(['view', 'id' => $model->id]);

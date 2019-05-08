@@ -51,18 +51,23 @@ class TrackingController extends Controller
 //            Loggers::WriteLog("Cron start at: ".date('d/m/Y H:i:s'), Loggers::type_cron);
 //            echo "Cron start at: ".date('d/m/Y H:i:s')."\n";
             $timeStart = microtime(true);
-            $mUserTracking  = new UserTracking();
+//            $mUserTracking  = new UserTracking();
             $plog           = new PriceLogs();
-            $aProductId     = $mUserTracking->getArrayActive();
+            $prd            = new Products();
+//            $aProductId     = $mUserTracking->getArrayActive(); // tracking only user's product
+            $aProductId     = $prd->getAll(false); // tracking all product
             $aLastPrice     = $plog->getArrayLastPrice($aProductId);
             $aProducts      = Products::findAll($aProductId);
             $numProduct     = 0;
             $aProductChange = [];
+            $aStopTrading   = [];
+            $aChangeName    = [];
             foreach ($aProducts as $p) {
                 $aData      = GetData::instance()->searchNewUrl($p->url);
                 if( empty($aData['price']) ){
                     // Warning when cron error
-                    Loggers::WriteLog("Cron error: zero price | product_id: $p->id | url: $p->url", Loggers::type_app_error);
+                    Loggers::WriteLog("Cron error: zero price | product_id: $p->id | url: $p->url", Loggers::type_app_error, $p->getDetailUrl());
+                    $aStopTrading[$p->id] = $p->id;
                 } else {
                     // If prices are change -> save to PriceLogs
                     if($aData['price'] != $aLastPrice[$p->id]){
@@ -77,7 +82,19 @@ class TrackingController extends Controller
                         Loggers::WriteLog("Cron price changed | name: $p->name | id: $p->id", Loggers::type_cron, $p->getDetailUrl());
                     }
                 }
+                if($aData['name'] != $p->name){
+                    $aChangeName[$p->id] = $aData['name'];
+                }
             }
+            // Set stop trading for product with zero price
+            Products::updateAll(['status' => Products::STT_INACTIVE], ['in', 'id', $aStopTrading]);
+
+            // Change product name
+            foreach ($aChangeName as $key => $name) {
+                Products::update(['name' => $name], ['id' => $key]);
+                Loggers::WriteLog("Cron name changed | new name: $name | id: $key", Loggers::type_app_error);
+            }
+            
             // Notify User by email
             $mailer = new Mailer();
             $mailer->notifyPriceChanged($aProductChange);

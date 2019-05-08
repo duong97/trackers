@@ -19,6 +19,10 @@ class Checks{
         throw new NotFoundHttpException(Yii::t('app', 'The request page does not exists'));
     }
     
+    public static function productNotFoundExc() {
+        throw new NotFoundHttpException(Yii::t('app', 'The product you are looking for does not exist or has stopped trading'));
+    }
+    
     public static function accessExc() {
         throw new UnauthorizedHttpException(Yii::t('app', 'You do not have access to this page!'));
     }
@@ -38,6 +42,13 @@ class Checks{
         $ResultRun  = "Uid: $cUid Exception ".  $exc->getMessage();
         Loggers::WriteLog($ResultRun, Loggers::type_app_error);
         Checks::notFoundExc();
+    }
+    
+    public static function isAdminOnly(){
+        if(isset(Yii::$app->user->identity)){
+            return (Yii::$app->user->identity->role == Constants::ADMIN);
+        }
+        return false;
     }
     
     public static function isAdmin(){

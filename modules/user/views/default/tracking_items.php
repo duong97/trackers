@@ -32,16 +32,20 @@ if(Checks::isRoot()){ ?>
                 'class' => 'text-center'
             ],
             'value' => function($model){
-                return Html::img($model->rProduct->image, ['alt' => $model->rProduct->name, 'class' => 'thumb img-thumbnail']);
+                if(isset($model->rProduct->image))
+                    return Html::img($model->rProduct->image, ['alt' => $model->rProduct->name, 'class' => 'thumb img-thumbnail']);
+                return '';
             },
         ],
         [
             'attribute' => 'rProduct.name',
             'format' => 'raw',
             'value' => function($model){
-                $urlManager = \Yii::$app->getUrlManager();
-                $url        = $urlManager->createUrl(['product/action/detail', 'url'=>$model->rProduct->url]);
-                return Html::a($model->rProduct->name, $url);
+                if(isset($model->rProduct)){
+                    $url        = Url::to(['/product/action/detail', 'url'=>$model->rProduct->url]);
+                    return Html::a($model->rProduct->name, $url);
+                }
+                return '';
             },
         ],
         [
@@ -49,11 +53,13 @@ if(Checks::isRoot()){ ?>
             'template' => '{delete}',
             'buttons' => [
                 'delete' => function ($url, $model) {
-                    $urlManager  = \Yii::$app->getUrlManager();
-                    $url = $urlManager->createUrl(['user/default/stop-tracking', 'id' => $model->rProduct->id]);
-                    return Html::a(Yii::t('app', 'Stop tracking'), $url, [
-                                'class' => 'btn btn-danger need-confirm'
-                    ]);
+                    if(isset($model->rProduct->id)){
+                        $url = Url::to(['user/default/stop-tracking', 'id' => $model->rProduct->id]);
+                        return Html::a(Yii::t('app', 'Stop tracking'), $url, [
+                                    'class' => 'btn btn-danger need-confirm'
+                        ]);
+                    }
+                    return '';
                 }
             ]
         ],

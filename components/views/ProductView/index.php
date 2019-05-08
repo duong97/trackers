@@ -29,11 +29,12 @@ use app\models\UserTracking;
                                 <?= MyFormat::shortenName($p->name) ?>
                             </a>
                             <p>
-                                <?= MyFormat::formatCurrency($p->price) ?>
+                                <b style="color:#419a13;"><?= MyFormat::formatCurrency($p->price) ?></b>
                                 <?php if( !empty($p->numberTracking) ): ?>
                                 /
-                                <i class="label label-info">
-                                    <?= $p->numberTracking.' '.Yii::t('app', 'tracking') ?>
+                                <i class="label label-info" title="<?= Yii::t('app', 'Number of people tracking this product') ?>">
+                                    <i class="fas fa-eye"></i>
+                                    <?= $p->numberTracking ?>
                                 </i>
                                 <?php endif; ?>
                             </p>

@@ -4,6 +4,7 @@ use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\bootstrap\ActiveForm;
 use app\models\UserTracking;
+use app\models\Products;
 
 $this->title = $aData['name'];
 $this->params['breadcrumbs'][] = $this->title;
@@ -17,12 +18,14 @@ $urlManager     = \Yii::$app->getUrlManager();
             <?php 
             $productUrl = isset($_GET['url']) ? $_GET['url'] : "";
             $imgUrl     = isset($aData['image']) ? $aData['image'] : ""; 
+            $status     = isset($aData['status']) ? $aData['status'] : Products::STT_ACTIVE;
+            $cPrice     = ($status == Products::STT_ACTIVE) ? $aData['price'] : Products::$aStatus[$status];
             ?>
             <img src="<?= $imgUrl ?>" style="width: 100%">
         </div>
         <div class="col-sm-6">
             <h3><?= $aData['name'] ?></h3>
-            <p class="price"><?= MyFormat::formatCurrency($aData['price']) ?></p>
+            <p class="price"><?= is_numeric($cPrice) ? MyFormat::formatCurrency($cPrice) : $cPrice ?></p>
             <?php 
             $isTracked          = false;
             if(isset($aData['id'])){
@@ -49,7 +52,7 @@ $urlManager     = \Yii::$app->getUrlManager();
             
                     <input type="hidden" name="Products[name]" value="<?= $aData['name'] ?>">
                     <input type="hidden" name="Products[url]" value="<?= $productUrl ?>">
-                    <input type="hidden" name="Products[price]" value="<?= $aData['price'] ?>">
+                    <input type="hidden" name="Products[price]" value="<?= is_numeric($cPrice) ? $cPrice : 0 ?>">
                     <input type="hidden" name="Products[image]" value="<?= $imgUrl ?>">
 
                     <div class="form-group">
@@ -72,27 +75,16 @@ $urlManager     = \Yii::$app->getUrlManager();
                 <p class="label label-success">
                     <?= Yii::t('app', 'Products are being tracked') ."!" ?>
                 </p><br>
-                <p class="label label-default">
-                    <?= Yii::t('app', 'Start date') . ": " . MyFormat::formatDatetime($startDate) ?>
-                </p><br>
+<!--                <p class="label label-default">
+                    <?php // Yii::t('app', 'Start date') . ": " . MyFormat::formatDatetime($startDate) ?>
+                </p><br>-->
                 <p class="label label-default">
                     <?= Yii::t('app', 'End date') . ": " . (empty($endDate) ? Yii::t('app', 'Until canceled') : MyFormat::formatDate($endDate)) ?>
                 </p><br><br>
                 
                     <?php $url = Url::to(['/user/default/stop-tracking', 'id' => $aData['id']]); ?>
                     <?= Html::a(Yii::t('app', 'Stop tracking'), $url, ['class' => 'btn btn-danger']) ?>
-                <?php 
-//                $form = ActiveForm::begin([
-//                    'id'        => 'product-form',
-//                    'layout'    => 'horizontal',
-//                    'action'    => $urlManager->createUrl(['product/action/stop-tracking']),
-//                ]) ?>
-                
-<!--                <input type="hidden" name="Products[id]" value="//<?= $aData['id'] ?>">
-                <button class="btn btn-danger" type="submit">
-                    <?= Yii::t('app', 'Stop tracking') ?>
-                </button>-->
-                <?php // ActiveForm::end() ?>
+
             <?php } ?>
             <?= Html::a(Yii::t('app', 'Go to shop'), $productUrl, ['class' => 'btn btn-success', 'target'=>'_blank']) ?>
         </div>
@@ -100,9 +92,16 @@ $urlManager     = \Yii::$app->getUrlManager();
     </div>
     
     <?php if(!empty($aPriceLog)): ?>
+        <?php 
+        $hPrice = reset($aPriceLog); 
+        $lPrice = reset($aPriceLog);
+        foreach ($aPriceLog as $log){
+            $hPrice = ($log->price > $hPrice->price) ? $log : $hPrice;
+            $lPrice = ($log->price < $lPrice->price) ? $log : $lPrice;
+        }
+        ?>
     <div class="row">
-        <div class="col-sm-1"></div>
-        <div class="col-sm-7">
+        <div class="col-sm-8">
             <table class="table table-striped table-hover">
                 <thead>
                     <tr>
@@ -112,22 +111,22 @@ $urlManager     = \Yii::$app->getUrlManager();
                     </tr>
                 </thead>
                 <tbody>
-                    <?php $no = 1; $hPrice = reset($aPriceLog); $lPrice = reset($aPriceLog); ?>
+                    <?php $no = 1; ?>
                     <?php foreach ($aPriceLog as $log): ?>
-                    <tr class="text-center">
-                            <?php 
-                            $hPrice = ($log->price > $hPrice->price) ? $log : $hPrice;
-                            $lPrice = ($log->price < $lPrice->price) ? $log : $lPrice;
-                            ?>
-                        <td><?= $no++; ?></td>
-                        <td><?= MyFormat::formatCurrency($log->price) ?></td>
-                        <td><?= MyFormat::formatDatetime($log->updated_date) ?></td>
-                    </tr>
+                        <?php 
+                        $class = ($log->price == $hPrice->price) ? 'danger' :
+                                (($log->price == $lPrice->price) ? 'success' : 'active');
+                        ?>
+                        <tr class="text-center <?= $class ?>">
+                            <td><?= $no++; ?></td>
+                            <td><?= MyFormat::formatCurrency($log->price) ?></td>
+                            <td><?= MyFormat::formatDatetime($log->updated_date) ?></td>
+                        </tr>
                     <?php endforeach; ?>
                 </tbody>
             </table>
         </div>
-        <div class="col-sm-3">
+        <div class="col-sm-4">
             <table class="table">
                 <thead>
                     <tr>
@@ -137,17 +136,17 @@ $urlManager     = \Yii::$app->getUrlManager();
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
+                    <tr class="active">
                         <td><?= Yii::t('app', 'Current price') ?></td>
-                        <td><?= MyFormat::formatCurrency($aData['price']) ?></td>
+                        <td><?= is_numeric($cPrice) ? MyFormat::formatCurrency($cPrice) : ''; ?></td>
                         <td><?= date('d/m/Y h:i') ?></td>
                     </tr>
-                    <tr>
+                    <tr class="danger">
                         <td><?= Yii::t('app', 'Highest price') ?></td>
                         <td><?= MyFormat::formatCurrency($hPrice->price) ?></td>
                         <td><?= MyFormat::formatDatetime($hPrice->updated_date) ?></td>
                     </tr>
-                    <tr>
+                    <tr class="success">
                         <td><?= Yii::t('app', 'Lowest price') ?></td>
                         <td><?= MyFormat::formatCurrency($lPrice->price) ?></td>
                         <td><?= MyFormat::formatDatetime($lPrice->updated_date) ?></td>
@@ -155,7 +154,6 @@ $urlManager     = \Yii::$app->getUrlManager();
                 </tbody>
             </table>
         </div>
-        <div class="col-sm-1"></div>
     </div>
     <?php count($aPriceLog)>1 ? include('chart.php') : "" ?>
     <?php endif; ?>

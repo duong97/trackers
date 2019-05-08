@@ -109,7 +109,7 @@ class Users extends BaseModel
     {
         return [
             [['email', 'password', 'salt', 'first_name', 'last_name', 'status', 'role', 'last_access', 'created_date'], 'safe'],
-            [['email', 'password', 'first_name', 'last_name'], 'required', 'on' => [Yii::$app->params['SCENARIO_UPDATE'], Yii::$app->params['SCENARIO_CREATE']]],
+            [['email', 'password', 'first_name', 'last_name'], 'required', 'on' => [Yii::$app->params['SCENARIO_CREATE']]],
             [['is_notify_browser', 'is_notify_fb', 'is_notify_zalo', 'is_notify_email', 'subscription', 'zalo_access_token', 'notify_type'], 'safe'],
             [['fb_id', 'zalo_id'], 'safe'],
             [['first_name', 'last_name'], 'required', 'on' => 'editProfile'],
@@ -141,11 +141,17 @@ class Users extends BaseModel
             'email'         => Yii::t('app', 'Email'),
             'phone'         => Yii::t('app', 'Phone'),
             'role'          => Yii::t('app', 'Role'),
-            'ip'            => Yii::t('app', 'Ip'),
+            'ip'            => Yii::t('app', 'IP'),
             'last_access'   => Yii::t('app', 'Last Access'),
             'created_date'  => Yii::t('app', 'Created Date'),
             'newPassword'   => Yii::t('app', 'New password'),
             'cnewPassword'  => Yii::t('app', 'Confirm new password'),
+            'fb_id'         => 'Facebook ID',
+            'zalo_id'       => 'Zalo ID',
+            'is_notify_fb'  => 'Thông báo qua Facebook',
+            'is_notify_zalo'=> 'Thông báo qua Zalo',
+            'is_notify_email'=> 'Thông báo qua Email',
+            'notify_type'   => 'Loại thông báo',
         ];
     }
     

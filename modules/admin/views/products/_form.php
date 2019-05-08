@@ -3,6 +3,7 @@
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use app\helpers\Checks;
+use app\models\Products;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\Products */
@@ -16,6 +17,8 @@ use app\helpers\Checks;
 	]); ?>
     
     <?= $form->field($model, 'url_redirect')->textInput() ?>
+    
+    <?= $form->field($model, 'status')->dropDownList(Products::$aStatus) ?>
 
     <?php if( Checks::isRoot() || $model->scenario == Yii::$app->params['SCENARIO_CREATE']): ?>
     <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>

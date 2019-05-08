@@ -4,6 +4,7 @@ namespace app\modules\admin\controllers;
 
 use Yii;
 use app\models\Products;
+use app\models\UserTracking;
 use app\controllers\BaseController;
 use app\helpers\Checks;
 use yii\web\NotFoundHttpException;
@@ -99,7 +100,7 @@ class ProductsController extends BaseController
     {
         try {
             $model = $this->findModel($id);
-            $model->scenario = Yii::$app->params['SCENARIO_UPDATE'];
+//            $model->scenario = Yii::$app->params['SCENARIO_UPDATE'];
 
             if ($model->load(Yii::$app->request->post()) && $model->save()) {
                 return $this->redirect(['view', 'id' => $model->id]);
@@ -124,7 +125,8 @@ class ProductsController extends BaseController
     {
         try {
             $this->findModel($id)->delete();
-
+            UserTracking::deleteAll(['product_id' => $id]);
+            
             return $this->redirect(['index']);
         } catch (Exception $exc) {
             Checks::catchAllExeption($exc);

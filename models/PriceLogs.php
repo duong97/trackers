@@ -72,6 +72,7 @@ class PriceLogs extends BaseModel
         return PriceLogs::find()
                     ->joinWith('prd')
                     ->where(['products.url' => $prd->url])
+                    ->orderBy(['updated_date'=>SORT_DESC])
                     ->all();
     }
     
@@ -92,20 +93,18 @@ class PriceLogs extends BaseModel
      * @return [ product_id => price ]
      */
     public function getArrayLastPrice($aProductId, $onlyPrice = true){
+        $cond = is_array($aProductId) ? ['IN', 'product_id', $aProductId] : ['product_id'=>$aProductId];
         $aAll = PriceLogs::find()
-                ->where(['IN', 'product_id', $aProductId])
-                ->orderBy('updated_date ASC')
-                ->all();
-        $ret    = [];
-        $aSLogs = [];
-        foreach ($aAll as $l) {
-            $aSLogs[$l->product_id][] = $l;
+                        ->alias('p')
+                        ->where($cond)
+                        ->andWhere('updated_date = (SELECT MAX(updated_date)
+                                                    FROM price_logs
+                                                    WHERE product_id = p.product_id)')
+                        ->all();
+        $ret = [];
+        foreach ($aAll as $value) {
+            $ret[$value->product_id] = $onlyPrice ? $value->price : $value;
         }
-        foreach ($aSLogs as $p_id => $aLogs) {
-//            $lastLogs = array_slice( $aLogs, -1, 1, TRUE );
-            $lastLogs   = end( $aLogs );
-            $ret[$p_id] = $onlyPrice ? $lastLogs->price : $lastLogs;
-        }
-        return $ret;
+        return is_array($aProductId) ? $ret : $ret[$aProductId];
     }
 }

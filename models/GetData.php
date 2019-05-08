@@ -9,10 +9,42 @@ use app\models\UserTracking;
 use app\models\UserData;
 use app\helpers\Constants;
 use app\helpers\MyFormat;
+use app\helpers\Checks;
 
 class GetData extends BaseModel
 {
+    public $str; // String save when crawl
 
+    public function initCurl($url){
+        $curl = curl_init();
+        curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, FALSE);
+        curl_setopt($curl, CURLOPT_HEADER, false);
+        curl_setopt($curl, CURLOPT_FOLLOWLOCATION, true);
+        curl_setopt($curl, CURLOPT_URL, $url);
+        curl_setopt($curl, CURLOPT_REFERER, $url);
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, TRUE);
+        $this->str = curl_exec($curl);
+        curl_close($curl);
+    }
+    
+    /**
+     * @todo get only number from string (remove dot, commas ...)
+     * @param type $price
+     */
+    public function onlyNumber(&$price){
+        preg_match_all('!\d+!', $price, $matches);
+        // Get only number from price string when crawl
+        if(is_array($matches[0])){
+            $price = "";
+            foreach ($matches[0] as $v) {
+                $price .= $v;
+            }
+        } else {
+            $price = $matches[0];
+        }
+        $price = (int)$price;
+    }
+    
     /*
      * @des detect website and choose methode
      */
@@ -30,6 +62,7 @@ class GetData extends BaseModel
      */
     public function searchUrl($url){
         $ret = empty($this->searchExistsUrl($url)) ? $this->searchNewUrl($url) : $this->searchExistsUrl($url);
+//        $ret = $this->searchNewUrl($url);
         return $ret;
     }
     
@@ -37,10 +70,15 @@ class GetData extends BaseModel
      * Search for url in database
      */
     public function searchExistsUrl($url){
-        $product = new Products();
-        $urlShort = $product->handleUrl($url);
-        $mProduct = Products::find()->where(['url' => $urlShort])->one();
-        return empty($mProduct) ? [] : $mProduct->attributes;
+        $product    = new Products();
+        $urlShort   = $product->handleUrl($url);
+        $mProduct   = Products::find()->where(['url' => $urlShort])->one();
+        if($mProduct){
+            $mPriceLog       = new PriceLogs();
+            $mProduct->price = $mPriceLog->getArrayLastPrice($mProduct->id);
+            return $mProduct->attributes;
+        }
+        return [];
     }
     
     /*
@@ -102,11 +140,14 @@ class GetData extends BaseModel
                         ->groupBy(['product_id'])
                         ->all();
         $aTrackingInfo  = [];
+        $mPriceLog      = new PriceLogs();
+        $aLogInfo       = $mPriceLog->getArrayLastPrice($aProductId, true);
         foreach ($aTracking as $t) {
             $aTrackingInfo[$t->product_id] = $t->id;
         }
         foreach ($aProduct as $p) {
             $p->numberTracking  = isset($aTrackingInfo[$p->id]) ? $aTrackingInfo[$p->id] : 0;
+            $p->price           = isset($aLogInfo[$p->id]) ? $aLogInfo[$p->id] : $p->price;
             $ret[$p->id]        = $p;
         }
         return $ret;
@@ -116,8 +157,10 @@ class GetData extends BaseModel
      * @des use crawl to get data, use by other functions
      */
     public function getByCrawl($url, $elm_name, $elm_img, $elm_price, $elm_price_2 = ""){
+        $this->initCurl($url);
         $html    = new simple_html_dom();
-        $html->load_file($url);
+//        $html->load_file($url);
+        $html->load($this->str);
         $pr      = $html->find($elm_price, 0);
         if(empty($pr)){
             $pr  = $html->find($elm_price_2, 0);
@@ -126,6 +169,9 @@ class GetData extends BaseModel
         $name   = isset($html->find($elm_name, 0)->plaintext) ? $html->find($elm_name, 0)->plaintext : "";
         $img    = $html->find($elm_img);
         $aImage = [];
+        if( empty($price) && empty($name) ){
+            Checks::productNotFoundExc();
+        }
         if(count($img) > 0){
             foreach ($img as $img) {
                 $aImage[] = $img->src;
@@ -137,20 +183,6 @@ class GetData extends BaseModel
             'image' => $aImage
         ];
         return $ret;
-    }
-    
-    public function onlyNumber(&$price){
-        preg_match_all('!\d+!', $price, $matches);
-        // Get only number from price string when crawl
-        if(is_array($matches[0])){
-            $price = "";
-            foreach ($matches[0] as $v) {
-                $price .= $v;
-            }
-        } else {
-            $price = $matches[0];
-        }
-        $price = (int)$price;
     }
     
     /*
@@ -178,9 +210,12 @@ class GetData extends BaseModel
         $this->onlyNumber($price);
         $ret        = [
             'name'  => isset($aData['item']['name']) ? $aData['item']['name'] : "",
-            'price' => $price,
+            'price' => empty($price) ? Yii::t('app', 'Stop trading') : $price,
             'image' => isset($aImage[0]) ? $aImage[0] : ""
         ];
+        if(empty($ret['name']) && empty($ret['price'])){
+            Checks::productNotFoundExc();
+        }
         return $ret;
     }
     
@@ -207,9 +242,12 @@ class GetData extends BaseModel
         $price      = isset($aData['result']['data']['final_price']) ? $aData['result']['data']['final_price'] : "";
         $ret        = [
             'name'  => isset($aData['result']['data']['name']) ? $aData['result']['data']['name'] : "",
-            'price' => $price,
+            'price' => empty($price) ? Yii::t('app', 'Stop trading') : $price,
             'image' => isset($aImage[0]) ? $aImage[0] : ""
         ];
+        if(empty($ret['name']) && empty($ret['price'])){
+            Checks::productNotFoundExc();
+        }
         return empty($ret['name']) ? [] : $ret;
     }
     
@@ -217,40 +255,23 @@ class GetData extends BaseModel
      * @des get data from Lazada by crawl
      */
     public function getLazada($url){
+        $this->initCurl($url);
         $html       = new simple_html_dom();
-        $html->load_file($url);
+        $html->load($this->str);
         $script     = $html->find('script[type=application/ld+json]',0);
-//        $aImg       = $aData = []; 
-//        $title      = "";
+        
         // Crawl data from <script> tag
-        if(empty($script)) return [];
-        $json = htmlspecialchars_decode($script->innertext);
-        $aJsonData = json_decode($json, true);
-//        print_r($json);
-//        die;
-//        $regexImg       = "/(https\:\/\/vn-test-11\.slatic\.net\/p\/2\/)[0-9a-zA-Z%._-]{10,200}(.jpg)/";
-//        $regexTitle     = "/(\"pdt\_name\"\:\")([\w\s]+){4,300}(\"\,)/";
-//        $regexPrice     = "/(\"salePrice\"\:\{\"text\"\:\")([0-9.]){4,20}/";
-//        preg_match_all($regexPrice, $txt, $aMatchPrice);
-//        if(!empty($aMatchPrice[0])){
-//            $aData['price'] = array_unique($aMatchPrice[0])[0];
-//        }
-//        preg_match_all($regexTitle, $txt, $aMatchTitle);
-//        if(!empty($aMatchTitle[0])){
-//            $title      = array_unique($aMatchTitle[0])[0];
-//        }
-//        preg_match_all($regexImg, $txt, $aMatchImg);
-//        if(!empty($aMatchImg[0])){
-//            $aImg[]     = array_unique($aMatchImg[0])[0];
-//        }
-            
-//        $aData['image']     = isset($aImg[0]) ? $aImg[0] : "";
-//        $titleTmp           = explode('":"', $title);
-//        $aData['name']      = isset($titleTmp[1]) ? substr($titleTmp[1] , 0, -2) : "";
+        if(empty($script)) {
+            Checks::productNotFoundExc();
+            return [];
+        }
+        $json               = htmlspecialchars_decode($script->innertext);
+        $aJsonData          = json_decode($json, true);
         $aData['image']     = isset($aJsonData['image']) ? $aJsonData['image'] : "";
         $aData['name']      = isset($aJsonData['name']) ? $aJsonData['name'] : "";
-        $aData['price']      = isset($aJsonData['offers']['price']) ? $aJsonData['offers']['price'] : "";
+        $aData['price']     = isset($aJsonData['offers']['price']) ? $aJsonData['offers']['price'] : "";
         $this->onlyNumber($aData['price']);
+        unset($html);
         return $aData;
     }
     
@@ -288,7 +309,11 @@ class GetData extends BaseModel
         $elm_price      = 'span#span-price';
         $elm_price2     = 'span[class=price]';
         $aData          = $this->getByCrawl($url, $elm_name, $elm_img, $elm_price, $elm_price2);
-        $this->onlyNumber($aData['price']);
+        if( empty($aData['price']) ){
+            $aData['price'] = Yii::t('app', 'Stop trading');
+        } else {
+            $this->onlyNumber($aData['price']);
+        }
         $regexImg       = "/(https\:\/\/salt\.tikicdn\.com\/cache\/)[0-9a-zA-Z-_.\/]{30,80}(.jpg)/";
         $aImgTemp       = [];
         foreach ($aData['image'] as $img) {

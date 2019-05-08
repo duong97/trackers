@@ -35,6 +35,14 @@ class Products extends BaseModel
     
     public $numberTracking; // Number of people are currently tracking this product
     
+    const STT_ACTIVE   = 1;
+    const STT_INACTIVE = 0;
+    
+    public static $aStatus = [
+        self::STT_ACTIVE   => 'Đang bán',
+        self::STT_INACTIVE => 'Ngừng kinh doanh',
+    ];
+    
     /**
      * {@inheritdoc}
      */
@@ -49,7 +57,7 @@ class Products extends BaseModel
     public function rules()
     {
         return [
-            [['name', 'url', 'url_redirect', 'price', 'image'], 'safe'],
+            [['name', 'url', 'url_redirect', 'price', 'image', 'status'], 'safe'],
             [['name', 'url', 'url_redirect', 'price', 'image'], 'required', 'on'=>'create']
         ];
     }
@@ -70,6 +78,7 @@ class Products extends BaseModel
     
     public function search($params)
     {
+//        $query = Products::find()->where(['status'=>self::STT_ACTIVE]);
         $query = Products::find();
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
@@ -142,6 +151,15 @@ class Products extends BaseModel
         $ret    = [];
         foreach ($models as $value) {
             $ret[$value->id] = $value;
+        }
+        return $ret;
+    }
+    
+    public function getAll($returnObject = true){
+        $models = Products::find()->where(['status'=>self::STT_ACTIVE])->all();
+        $ret    = [];
+        foreach ($models as $value) {
+            $ret[$value->id] = $returnObject ? $value : $value->id;
         }
         return $ret;
     }
