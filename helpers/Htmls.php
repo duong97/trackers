@@ -60,6 +60,11 @@ class Htmls{
                 $model->initSessionBeforeLogin();
                 $aCA            = $session->get('listMenu');
             }
+            $sep = [
+                '<li class="divider"></li>',
+                '<li class="dropdown-header">Chức năng nâng cao</li>',
+            ];
+            array_push($ret, $sep[0], $sep[1]);
             foreach ($aCA as $value) {
                 $ret[]   = [
                             'label' => $value['label'],

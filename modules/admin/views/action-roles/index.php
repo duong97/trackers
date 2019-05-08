@@ -24,7 +24,7 @@ $this->params['breadcrumbs'][] = $this->title;
             [
             'attribute' => 'controller_id',
                 'value' => function ($model){
-                    return $model->rController->controller_name;
+                    return isset($model->rController->controller_name) ? $model->rController->controller_name : '';
                 }
             ],
             [

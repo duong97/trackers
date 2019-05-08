@@ -128,11 +128,13 @@ class ActionRoles extends BaseModel
                             ->where(['ar.role_id' => $role])
                             ->all();
             foreach ($models as $value) {
-                $controllerId = Htmls::handleControllerName($value->rController->controller_name);
-                $ret[] = [
-                    'label' => $value->rController->display_name,
-                    'url'   => Url::to(['/admin/'.$controllerId.'/index']),
-                ];
+                if( isset($value->rController->controller_name) ){
+                    $controllerId = Htmls::handleControllerName($value->rController->controller_name);
+                    $ret[] = [
+                        'label' => $value->rController->display_name,
+                        'url'   => Url::to(['/admin/'.$controllerId.'/index']),
+                    ];
+                }
             }
         }
         return $ret;
