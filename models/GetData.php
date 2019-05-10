@@ -63,6 +63,9 @@ class GetData extends BaseModel
     public function searchUrl($url){
         $ret = empty($this->searchExistsUrl($url)) ? $this->searchNewUrl($url) : $this->searchExistsUrl($url);
 //        $ret = $this->searchNewUrl($url);
+        if( empty($ret['price']) && empty($ret['name']) ){
+            Checks::productNotFoundExc();
+        }
         return $ret;
     }
     
@@ -101,6 +104,9 @@ class GetData extends BaseModel
                 break;
             case $aWebsiteDomain[Constants::TIKI]:
                 $ret = $this->getTiki($url);
+                break;
+            case $aWebsiteDomain[Constants::TGDD]:
+                $ret = $this->getTgdd($url);
                 break;
             case $aWebsiteDomain[Constants::AMAZON]:
                 $ret = $this->getAmazon($url);
@@ -319,6 +325,24 @@ class GetData extends BaseModel
 //            ];
 //        }
         $aData['image'] = isset($aImgTemp[0]) ? $aImgTemp[0] : "";
+        return empty($aData['name']) ? [] : $aData;
+    }
+    
+    /**
+     * @todo get data form thegioididong
+     */
+    public function getTgdd($url){
+        $elm_name       = '.rowtop h1';
+        $elm_img        = 'aside.picture img';
+        $elm_price      = 'aside.price_sale .area_price strong';
+        $elm_price2     = '.boxshock .boxshockheader div label strong';
+        $aData          = $this->getByCrawl($url, $elm_name, $elm_img, $elm_price, $elm_price2);
+        if( empty($aData['price']) ){
+            $aData['price'] = Yii::t('app', 'Stop trading');
+        } else {
+            $this->onlyNumber($aData['price']);
+        }
+        $aData['image'] = $aData['image'][0];
         return empty($aData['name']) ? [] : $aData;
     }
     

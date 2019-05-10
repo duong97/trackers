@@ -21,12 +21,14 @@ class Constants{
     const SENDO         = 4;
     const AMAZON        = 5;
     const EBAY          = 6;
+    const TGDD          = 7;
     
     public static $aWebsiteDomain = [
         self::TIKI      => 'tiki.vn',
         self::LAZADA    => 'lazada.vn',
         self::SHOPEE    => 'shopee.vn',
         self::SENDO     => 'sendo.vn',
+        self::TGDD      => 'thegioididong.com',
         self::AMAZON    => 'amazon.com',
         self::EBAY      => 'ebay.com',
     ];

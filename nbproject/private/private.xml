@@ -2,15 +2,6 @@
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
-        <group>
-            <file>file:/var/www/html/trackers/modules/admin/views/products/index.php</file>
-            <file>file:/var/www/html/trackers/models/ActionRoles.php</file>
-            <file>file:/var/www/html/trackers/modules/admin/controllers/ProductsController.php</file>
-            <file>file:/var/www/html/trackers/modules/admin/views/action-roles/update.php</file>
-            <file>file:/var/www/html/trackers/models/Users.php</file>
-            <file>file:/var/www/html/trackers/modules/admin/views/action-roles/_form.php</file>
-            <file>file:/var/www/html/trackers/modules/admin/controllers/ActionRolesController.php</file>
-            <file>file:/var/www/html/trackers/controllers/BaseController.php</file>
-        </group>
+        <group/>
     </open-files>
 </project-private>
