@@ -4,11 +4,13 @@ namespace app\modules\admin\controllers;
 
 use Yii;
 use app\models\SupportedWebsites;
-use yii\data\ActiveDataProvider;
+use app\models\UploadForm;
 use app\controllers\BaseController;
 use app\helpers\Checks;
+use app\helpers\MyFormat;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\web\UploadedFile;
 
 /**
  * SupportedWebsitesController implements the CRUD actions for SupportedWebsites model.
@@ -74,10 +76,33 @@ class SupportedWebsitesController extends BaseController
     public function actionCreate()
     {
         try {
-            $model = new SupportedWebsites();
+            $model           = new SupportedWebsites();
             $model->scenario = Yii::$app->params['SCENARIO_CREATE'];
             
-            if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            if ($model->load(Yii::$app->request->post())) {
+                $model->name                        = MyFormat::removeSlash($model->name);
+                $mUpload                            = new UploadForm();
+                $mUpload->imageFile['icon']         = UploadedFile::getInstances($model, 'icon')[0];
+                $mUpload->imageFile['homepageLogo'] = UploadedFile::getInstances($model, 'homepageLogo')[0];
+                $filename['icon']                   = $model->name.'_logo';
+                $filename['homepageLogo']           = $model->name;
+                $model->logo                        = $filename['icon'].'.'.$mUpload->imageFile['icon']->extension;
+                $model->icon                        = $model->logo;
+                $model->homepageLogo                = $filename['homepageLogo'].'.'.$mUpload->imageFile['homepageLogo']->extension;
+                if ( !$mUpload->upload($model->getFullPath(), $filename) ) {
+                    Yii::$app->session->setFlash('error', 'Lỗi upload file.');
+                    return $this->redirect(['create']);
+                }
+                if ( !$model->save() ) {
+                    echo '<pre>';
+                    print_r($model->getErrors());
+                    echo '</pre>';
+                    die;
+                    Yii::$app->session->setFlash('error', 'System error.');
+                    return $this->redirect(['create']);
+                }
+                
+                $model->save();
                 return $this->redirect(['view', 'id' => $model->id]);
             }
 
@@ -102,7 +127,24 @@ class SupportedWebsitesController extends BaseController
             $model = $this->findModel($id);
             $model->scenario = Yii::$app->params['SCENARIO_UPDATE'];
             
-            if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            if ( $model->load(Yii::$app->request->post()) ) {
+                $model->name                        = MyFormat::removeSlash($model->name);
+                $mUpload                            = new UploadForm();
+                $mUpload->imageFile['icon']         = isset(UploadedFile::getInstances($model, 'icon')[0]) ? UploadedFile::getInstances($model, 'icon')[0] : '';
+                $mUpload->imageFile['homepageLogo'] = isset(UploadedFile::getInstances($model, 'homepageLogo')[0]) ? UploadedFile::getInstances($model, 'homepageLogo')[0] : '';
+                $filename['icon']                   = $model->name.'_logo';
+                $filename['homepageLogo']           = $model->name;
+                $model->logo                        = isset($mUpload->imageFile['icon']->extension) ? $filename['icon'].'.'.$mUpload->imageFile['icon']->extension : $model->logo;
+                if ( !$mUpload->upload($model->getFullPath(), $filename) ) {
+                    Yii::$app->session->setFlash('error', 'Lỗi upload file.');
+                    return $this->redirect(['create']);
+                }
+                if ( !$model->save() ) {
+                    Yii::$app->session->setFlash('error', 'System error.');
+                    return $this->redirect(['create']);
+                }
+                
+                $model->save();
                 return $this->redirect(['view', 'id' => $model->id]);
             }
 
@@ -125,7 +167,7 @@ class SupportedWebsitesController extends BaseController
     {
         try {
             $this->findModel($id)->delete();
-
+            
             return $this->redirect(['index']);
         } catch (Exception $exc) {
             Checks::catchAllExeption($exc);

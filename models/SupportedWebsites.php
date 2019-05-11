@@ -35,6 +35,8 @@ class SupportedWebsites extends BaseModel
     const CURRENCY_VN           = 1;
     const CURRENCY_US           = 2;
     
+    public $homepageLogo, $icon;
+    
     public static $aStatus = [
         self::STT_GOOD            => 'Good',
         self::STT_MAINTENANCE     => 'Is maintained',
@@ -67,8 +69,9 @@ class SupportedWebsites extends BaseModel
     public function rules()
     {
         return [
-            [['name', 'url', 'currency', 'check_time', 'status'], 'safe'],
+            [['name', 'url', 'currency', 'check_time', 'status', 'logo', 'homepageLogo', 'icon'], 'safe'],
             [['name', 'url', 'currency', 'check_time', 'status'], 'required', 'on' => [Yii::$app->params['SCENARIO_CREATE'], Yii::$app->params['SCENARIO_UPDATE']]],
+            [['icon', 'homepageLogo'], 'required', 'on' => [Yii::$app->params['SCENARIO_CREATE']]],
         ];
     }
 
@@ -86,6 +89,40 @@ class SupportedWebsites extends BaseModel
             'logo' => Yii::t('app', 'Logo'),
             'status' => Yii::t('app', 'Status'),
         ];
+    }
+    
+    public function beforeDelete()
+    {
+        if (!parent::beforeDelete()) {
+            return false;
+        }
+        $logo           = $this->getFullPath().$this->logo;
+        $homepageLogo   = $this->getFullPath().str_replace('_logo', '', $this->logo);
+        file_exists($logo) ? unlink($logo):'';
+        file_exists($homepageLogo) ? unlink($homepageLogo):'';
+        return true;
+    }
+    
+    /**
+     * @todo get full path /var/www/html/trackers/web/images/support_website
+     */
+    public function getFullPath(){
+        return Yii::getAlias('@root').'/web/images/support_website/';
+    }
+    
+    /**
+     * @todo get relative path for image src /web/images/support_website/tiki_logo.png
+     */
+    public function getRelativePath(){
+        return Yii::getAlias('@web').'/images/support_website/';
+    }
+    
+    public function getLogoUrl(){
+        return $this->getRelativePath() . $this->logo;
+    }
+    
+    public function getHomepageLogoUrl(){
+        return $this->getRelativePath() . str_replace('_logo', '', $this->logo);
     }
     
     public function search($params)

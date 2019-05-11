@@ -36,7 +36,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'attribute' => 'logo',
                 'format' => 'raw',
                 'value' => function($model){
-                    return Html::img($model->logo);
+                    return Html::img($model->getLogoUrl(), ['style'=>'max-width:20px;']);
                 }
             ],
             [

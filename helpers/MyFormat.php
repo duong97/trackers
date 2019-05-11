@@ -89,5 +89,15 @@ class MyFormat{
         return date($format, strtotime($operator.$day_add." ".$amount_of_days));
     }
     
+    /**
+     * @todo remove all '/' and '\' from string
+     * @param type $string string to remove slash
+     */
+    public static function removeSlash($string){
+        $string = str_replace("\\", '', $string);
+        $string = str_replace('/', '', $string);
+        return $string;
+    }
+    
 }
 

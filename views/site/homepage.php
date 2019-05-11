@@ -95,8 +95,7 @@ $this->title = Yii::t('app', Constants::website_name);
     <?php foreach ($aSite as $key => $item) { ?>
         <div class="list-support-item">
             <a href="<?= $item->url ?>" target="_blank">
-            <?php // echo Html::img("@web/images/support_website/".strtolower($item->name).".png", ['class' => 'img-responsive']) ?>
-            <?= Html::img(str_replace('_logo.png', '.png', $item->logo), ['class' => 'img-responsive']) ?>
+            <?= Html::img($item->getHomepageLogoUrl(), ['class' => 'img-responsive']) ?>
             </a>
         </div>
     <?php } ?>
