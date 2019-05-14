@@ -126,4 +126,6 @@ return [
     'Search History'        =>'Lịch sử tìm kiếm',
     'The product you are looking for does not exist or has stopped trading'=>'Sản phẩm bạn đang tìm kiếm không tồn tại hoặc đã ngừng kinh doanh',
     'Stop trading'          =>'Ngừng kinh doanh',
+    'View more'             =>'Xem thêm',
+    'Note'                  =>'Ghi chú',
 ];

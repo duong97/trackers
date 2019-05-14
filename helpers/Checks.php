@@ -12,6 +12,8 @@ use yii\web\UnauthorizedHttpException;
 use Yii;
 use app\models\Loggers;
 use app\models\Users;
+use yii\helpers\Url;
+use yii\helpers\Html;
 
 class Checks{
     
@@ -20,7 +22,11 @@ class Checks{
     }
     
     public static function productNotFoundExc() {
-        throw new NotFoundHttpException(Yii::t('app', 'The product you are looking for does not exist or has stopped trading'));
+        $urlSuppWeb = Url::to(['/site/supported-websites']);
+        $button     = Html::a(Yii::t('app', 'Supported websites'), $urlSuppWeb);
+        $notice     = Yii::t('app', 'The product you are looking for does not exist or has stopped trading');
+        $moreInfo   = Yii::t('app', 'View more');
+        throw new NotFoundHttpException($notice.'. '.$moreInfo.' '. $button);
     }
     
     public static function accessExc() {

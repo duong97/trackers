@@ -23,6 +23,7 @@ use yii\data\ActiveDataProvider;
  * @property string $url
  * @property int $currency
  * @property int $check_time
+ * @property string $note
  * @property string $logo
  * @property int $status
  */
@@ -69,7 +70,7 @@ class SupportedWebsites extends BaseModel
     public function rules()
     {
         return [
-            [['name', 'url', 'currency', 'check_time', 'status', 'logo', 'homepageLogo', 'icon'], 'safe'],
+            [['name', 'url', 'currency', 'check_time', 'status', 'logo', 'note', 'homepageLogo', 'icon'], 'safe'],
             [['name', 'url', 'currency', 'check_time', 'status'], 'required', 'on' => [Yii::$app->params['SCENARIO_CREATE'], Yii::$app->params['SCENARIO_UPDATE']]],
             [['icon', 'homepageLogo'], 'required', 'on' => [Yii::$app->params['SCENARIO_CREATE']]],
         ];
@@ -81,13 +82,14 @@ class SupportedWebsites extends BaseModel
     public function attributeLabels()
     {
         return [
-            'id' => Yii::t('app', 'ID'),
-            'name' => Yii::t('app', 'Name'),
-            'url' => Yii::t('app', 'Url'),
-            'currency' => Yii::t('app', 'Currency'),
-            'check_time' => Yii::t('app', 'Check Time'),
-            'logo' => Yii::t('app', 'Logo'),
-            'status' => Yii::t('app', 'Status'),
+            'id'            => Yii::t('app', 'ID'),
+            'name'          => Yii::t('app', 'Name'),
+            'url'           => Yii::t('app', 'Url'),
+            'currency'      => Yii::t('app', 'Currency'),
+            'check_time'    => Yii::t('app', 'Check Time'),
+            'note'          => Yii::t('app', 'Note'),
+            'logo'          => Yii::t('app', 'Logo'),
+            'status'        => Yii::t('app', 'Status'),
         ];
     }
     

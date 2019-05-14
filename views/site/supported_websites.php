@@ -15,7 +15,7 @@ $this->params['breadcrumbs'][] = $this->title;
             'attribute' => 'logo',
             'format' => 'raw',
             'value' => function ($model){
-                return Html::img($model->logo, ['class'=>'xx']);
+                return Html::img($model->getLogoUrl(), ['style'=>'max-width:20px;']);
             }
         ],
         [
@@ -38,6 +38,12 @@ $this->params['breadcrumbs'][] = $this->title;
             'attribute' => 'currency',
             'value' => function ($model){
                 return $model->getCurrency();
+            }
+        ],
+        [
+            'attribute' => 'note',
+            'value' => function ($model){
+                return empty($model->note) ? '' : $model->note;
             }
         ],
         [

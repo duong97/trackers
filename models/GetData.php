@@ -342,7 +342,7 @@ class GetData extends BaseModel
         } else {
             $this->onlyNumber($aData['price']);
         }
-        $aData['image'] = $aData['image'][0];
+        $aData['image'] = isset($aData['image'][0]) ? $aData['image'][0] : '';
         return empty($aData['name']) ? [] : $aData;
     }
     

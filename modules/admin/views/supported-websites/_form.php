@@ -23,6 +23,8 @@ use app\models\SupportedWebsites;
     <?= $form->field($model, 'currency')->dropDownList(SupportedWebsites::$aCurrency) ?>
 
     <?= $form->field($model, 'check_time')->textInput() ?>
+    
+    <?= $form->field($model, 'note')->textInput() ?>
 
     <?= $form->field($model, 'status')->dropDownList(SupportedWebsites::$aStatus) ?>
 

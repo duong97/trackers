@@ -65,6 +65,12 @@ $this->params['breadcrumbs'][] = $this->title;
                 }
             ],
             [
+                'attribute' => 'note',
+                'value' => function($model){
+                    return empty($model->note) ? '' : $model->note;
+                }
+            ],
+            [
                 'attribute' => 'status',
                 'format'=>'raw',
                 'value' => function($model){
