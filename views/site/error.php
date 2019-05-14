@@ -14,7 +14,7 @@ $this->title = $name;
     <h1><?= Html::encode($this->title) ?></h1>
 
     <div class="alert alert-danger">
-        <?php //nl2br(Html::encode($message)) ?>
+        <?php // echo nl2br(Html::encode($message)) ?>
         <?= nl2br($message) ?>
     </div>
 
