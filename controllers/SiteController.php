@@ -124,10 +124,9 @@ class SiteController extends BaseController
                 $message = '';
                 if ($model->validateNewUser($message)) {
                     $model->createNewUser();
-                    $mailer = new Mailer();
+                    $mailer     = new Mailer();
                     $mailer->verifyRegistration($model->email);
-                    $urlManager = \Yii::$app->getUrlManager();
-                    $urlResend = $urlManager->createUrl(['user/mail/resend-registration', 'email' => $model->email]);
+                    $urlResend  = Url::to(['/user/mail/resend-registration', 'email' => $model->email]);
                     $linkResend = Html::a('Resend email.', $urlResend);
                     Yii::$app->session->setFlash('success', Yii::t('app', 'An email has been sent to')." $model->email, ".Yii::t('app', 'please check your inbox and complete your registration')."! ".$linkResend);
                 } else {

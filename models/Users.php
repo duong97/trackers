@@ -165,7 +165,7 @@ class Users extends BaseModel
     
     public function getUrlConfirm(){
         $q = $this->id ."i". md5($this->email);
-        return Yii::$app->request->serverName.Url::to(["site/registration-result", 'q'=> $q]);
+        return Url::to(["/site/registration-result", 'q'=> $q], true);
     }
     
     public function generatePassword($pw){

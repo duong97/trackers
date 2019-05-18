@@ -33,17 +33,17 @@ $this->title = Yii::t('app', Constants::website_name);
 </div> <!--End Home background-->
 
 <!--Slide show-->
-<div class="">
-    <!--<h2>Carousel Example</h2>-->
+<!--<div class="">
+    <h2>Carousel Example</h2>
     <div id="myCarousel" class="carousel slide" data-ride="carousel">
-        <!-- Indicators -->
+         Indicators 
         <ol class="carousel-indicators">
             <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
             <li data-target="#myCarousel" data-slide-to="1"></li>
             <li data-target="#myCarousel" data-slide-to="2"></li>
         </ol>
 
-        <!-- Wrapper for slides -->
+         Wrapper for slides 
         <div class="carousel-inner">
 
             <div class="item active">
@@ -72,7 +72,7 @@ $this->title = Yii::t('app', Constants::website_name);
 
         </div>
 
-        <!-- Left and right controls -->
+         Left and right controls 
         <a class="left carousel-control" href="#myCarousel" data-slide="prev">
             <span class="glyphicon glyphicon-chevron-left"></span>
             <span class="sr-only">Previous</span>
@@ -82,7 +82,7 @@ $this->title = Yii::t('app', Constants::website_name);
             <span class="sr-only">Next</span>
         </a>
     </div>
-</div> <!--End Slide show-->
+</div> End Slide show-->
 
 <!--List supported website-->
 <div class="list-support-website">
