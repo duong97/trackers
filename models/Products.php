@@ -120,14 +120,24 @@ class Products extends BaseModel
         $aWebsiteDomain = Constants::$aWebsiteDomain;
         switch ($domain) {
             case $aWebsiteDomain[Constants::SHOPEE]:
-                
+                $aUrlParams = explode("-i.", $url);
+                $shopId     = '';
+                $itemId     = '';
+                if( count($aUrlParams) < 2){ // https://shopee.vn/product/82239615/1826571737?smtt=0.0.9&fbclid=IwAR1fl1xYSA_WBFDrxSk8fi4EMY5UTIGti0FyY1EMXrjVK_o5kVZ4iH9Wbjo
+                    $aUrlParams = explode('/', $url);
+                    $shopId     = isset($aUrlParams[4]) ? $aUrlParams[4] : '';
+                    $itemId     = isset(explode('?', $aUrlParams[5])[0]) ? explode('?', $aUrlParams[5])[0] : '';
+                } else {
+                    $aId        = explode(".", $aUrlParams[1]);
+                    $shopId     = isset($aId[0]) ? $aId[0] : '';
+                    $itemId     = isset($aId[1]) ? $aId[1] : '';
+                }
+                $url        = "https://shopee.vn/product/{$shopId}/{$itemId}";
                 break;
             case $aWebsiteDomain[Constants::SENDO]:
-                $this->url = strstr($url, ".html", true) . ".html";
                 $url       = strstr($url, ".html", true) . ".html";
                 break;
             case $aWebsiteDomain[Constants::TIKI]:
-                $this->url = strstr($url, ".html", true) . ".html";
                 $url       = strstr($url, ".html", true) . ".html";
                 break;
             case $aWebsiteDomain[Constants::AMAZON]:
@@ -141,6 +151,7 @@ class Products extends BaseModel
                 
                 break;
         }
+        $this->url = $url;
         return $url;
     }
     

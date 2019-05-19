@@ -24,6 +24,7 @@ use yii\data\ActiveDataProvider;
  */
 class UserData extends BaseModel
 {
+    const MAX_KEYWORD   = 6;
     /**
      * {@inheritdoc}
      */
@@ -96,6 +97,7 @@ class UserData extends BaseModel
         } else {
             array_unshift($aKeyword, $keyword);
         }
+        $aKeyword = array_slice($aKeyword,0 , self::MAX_KEYWORD);
         $mUserData->search_keywords = json_encode($aKeyword);
         $mUserData->isNewRecord ? $mUserData->save() : $mUserData->update();
     }

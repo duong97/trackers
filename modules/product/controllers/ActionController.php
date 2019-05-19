@@ -39,6 +39,8 @@ class ActionController extends BaseController
             $aData              = [];
             if(!empty($_GET['search-value'])){
                 $searchValue    = $_GET['search-value'];
+                $session        = \Yii::$app->session;
+                $session->set('search-nav', urldecode($searchValue));
                 $mGetData       = new GetData();
                 $aData          = $mGetData->getInfo($searchValue);
                 if(!empty($aData['name'])){

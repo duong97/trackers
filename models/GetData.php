@@ -188,14 +188,36 @@ class GetData extends BaseModel
         return $ret;
     }
     
+    /**
+     * get shop id and item id of shopee url
+     */
+    public function getParamsShopee($url){
+        $aUrlParams = explode("-i.", $url);
+        $shopId     = '';
+        $itemId     = '';
+        
+        if( count($aUrlParams) < 2){ // https://shopee.vn/product/82239615/1826571737?smtt=0.0.9&fbclid=IwAR1fl1xYSA_WBFDrxSk8fi4EMY5UTIGti0FyY1EMXrjVK_o5kVZ4iH9Wbjo
+            $aUrlParams = explode('/', $url);
+            $shopId     = isset($aUrlParams[4]) ? $aUrlParams[4] : '';
+            $itemId     = isset(explode('?', $aUrlParams[5])[0]) ? explode('?', $aUrlParams[5])[0] : '';
+        } else { // https://shopee.vn/-KM-TH%C3%81NG-5-Balo-cao-c%E1%BA%A5p-%C4%91%E1%BB%B1ng-Laptop-Nam-phong-c%C3%A1ch-H%C3%A0n-Qu%E1%BB%91c-(%E1%BA%A2nh-SP-th%E1%BA%ADt)-i.82239615.1826571737
+            $aId        = explode(".", $aUrlParams[1]);
+            $shopId     = isset($aId[0]) ? $aId[0] : '';
+            $itemId     = isset($aId[1]) ? $aId[1] : '';
+        }
+        if( empty($shopId) && empty($itemId) ) return [];
+        return [
+            'shop_id' => $shopId,
+            'item_id' => $itemId
+        ];
+    }
+    
     /*
      * @des get data from Shopee by api
      */
     public function getShopee($url){
-        $aUrlParams = explode("-i.", $url);
-        if( empty($aUrlParams[1]) ) return [];
-        $aId        = explode(".", $aUrlParams[1]);
-        $api        = "https://shopee.vn/api/v2/item/get?itemid={$aId[1]}&shopid={$aId[0]}";
+        $aParams    = $this->getParamsShopee($url);
+        $api        = "https://shopee.vn/api/v2/item/get?itemid={$aParams['item_id']}&shopid={$aParams['shop_id']}";
         $result     = file_get_contents($api);
         $aData      = json_decode($result, true);
         $url_img    = "https://cf.shopee.vn/file/";

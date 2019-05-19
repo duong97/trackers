@@ -36,14 +36,20 @@ use yii\helpers\Url;
 //            echo '</pre>'; 
 //}
 
+//$models = Products::find()->where(['like', 'url', 'shopee'])->all();
+//$mP = new Products;
+//foreach ($models as $value) {
+//    $value->handleUrl();
+//    $value->update();
+//}
 
-$url = Yii::$app->request->serverName.Url::to(["/product/action/detail", 'url'=> '123']);
-echo '<pre>';
-print_r(Url::to(["/product/action/detail", 'url'=> '123']));
-echo '<br>';
-print_r(Yii::$app->params['homeUrl']);
-echo '</pre>';
-die;
+//$url = Yii::$app->request->serverName.Url::to(["/product/action/detail", 'url'=> '123']);
+//echo '<pre>';
+//print_r(Url::to(["/product/action/detail", 'url'=> '123']));
+//echo '<br>';
+//print_r(Yii::$app->params['homeUrl']);
+//echo '</pre>';
+//die;
 
 //    $data = ['Duong', 'hihi', 'do ngoc', 'dadalkadsf'];
 //    echo AutoComplete::widget([

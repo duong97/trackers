@@ -3,12 +3,19 @@ $(function() {
     beforeSearchButtonClick();
     bindAutocompleteSearchNav();
     bindSomeEffect();
+    bindSelectAllOnFocusNav();
 //    bindNotification();
     bindCategoryAutocomplete();
 });
 
 function bindSomeEffect(){
     searchEffect();
+}
+
+function bindSelectAllOnFocusNav(){
+    $("#nav-search-product").on('focus', function () {
+        $(this).select();
+    });
 }
 
 function searchEffect(){

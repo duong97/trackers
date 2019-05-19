@@ -5,6 +5,7 @@ use yii\web\JsExpression;
 use app\models\UserData;
 
 $mUserData = new UserData();
+$session   = \Yii::$app->session;
 ?>
 <!--Search bar-->
 <div class="">
@@ -22,11 +23,11 @@ $mUserData = new UserData();
                         AutoComplete::widget([
                             'name'      => 'search-value',
                             'id'        => 'nav-search-product',
+                            'value'     => $session->get('search-nav'),
                             'options'   => [
                                 'class'         => 'form-control',
                                 'autocomplete'  => 'off',
                                 'placeholder'   => Yii::t('app', 'Search'),
-                                'value'         => isset($_GET['search-value']) ? $_GET['search-value'] : ''
                             ],
                             'clientOptions' => [
                                 'source'    => $mUserData->getKeywordNav(),
