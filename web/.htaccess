@@ -2,8 +2,8 @@ RewriteEngine on
 # If a directory or a file exists, use it directly
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
-RewriteRule ^(.*)$ index.php?/$1 [QSA]
-#RewriteRule . index.php
+#RewriteRule ^(.*)$ index.php?/$1 [QSA]
+RewriteRule . index.php
 
 # redirect www to non-wwww
 #RewriteBase /

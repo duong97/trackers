@@ -128,4 +128,5 @@ return [
     'Stop trading'          =>'Ngừng kinh doanh',
     'View more'             =>'Xem thêm',
     'Note'                  =>'Ghi chú',
+    'Please configure your primary email on facebook!' =>'Vui lòng cấu hình email chính của bạn trên facebook!',
 ];

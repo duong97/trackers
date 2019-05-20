@@ -91,13 +91,14 @@ class SiteController extends BaseController
         
         $model = new LoginForm();
         if ($model->load(Yii::$app->request->post()) && $model->login()) {
-            if(Yii::$app->user->returnUrl != '/'){
-                return $this->redirect(Yii::$app->user->returnUrl);
-            }else{
-                return $this->goBack();
-            }
+            return $this->goHome();
+//            if(Yii::$app->user->returnUrl != '/'){
+//                return $this->redirect(Yii::$app->user->returnUrl);
+//            }else{
+//                return $this->goBack();
+//            }
         }
-        Yii::$app->user->returnUrl = (Yii::$app->user->returnUrl == '/') ? Yii::$app->request->referrer : Yii::$app->user->returnUrl;
+//        Yii::$app->user->returnUrl = (Yii::$app->user->returnUrl == '/') ? Yii::$app->request->referrer : Yii::$app->user->returnUrl;
         
         $model->password = '';
         return $this->render('login', [
@@ -299,6 +300,10 @@ class SiteController extends BaseController
      */
     public function oAuthSuccess($client) {
         $userData = $client->getUserAttributes();
+        if( empty($userData['email']) ){
+            Yii::$app->session->setFlash('error', 'Please configure your primary email on facebook!');
+            return $this->redirect(['/site/login']);
+        }
         $platform = Users::plf_facebook;
         $models   = Users::find()->where([
                                 'email' => $userData['email'],

@@ -1,11 +1,9 @@
 <?php 
 use app\helpers\MyFormat;
 ?>
-<!--<div class="row">
-    <div class="col-sm-12">-->
-        <canvas id="priceChart" width="900" height="300"></canvas>
-<!--    </div>
-</div>-->
+<div class="table-responsive">
+    <canvas id="priceChart" ></canvas>
+</div>
 <?php 
 $aLabelDate     = [];
 $aLabelTime     = [];
@@ -27,6 +25,9 @@ $jsonPPrice     = json_encode($aPPrice);
 ?>
 <script>
 var ctx = document.getElementById("priceChart").getContext('2d');
+ctx.canvas.style.minWidth   = '100%';
+ctx.canvas.style.width      = 'auto';
+ctx.canvas.style.height     = '300px';
 var myChart = new Chart(ctx, {
     type: 'line',
     data: {
@@ -50,7 +51,8 @@ var myChart = new Chart(ctx, {
         ]
     },
     options: {
-        responsive: true,
+        responsive: false,
+        maintainAspectRatio: false,
 //        tooltips: {
 //            enabled: false
 //        },
