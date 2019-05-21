@@ -45,12 +45,11 @@ AppAsset::register($this);
         js = d.createElement(s); js.id = id;
         js.src = 'https://connect.facebook.net/vi_VN/sdk/xfbml.customerchat.js';
         fjs.parentNode.insertBefore(js, fjs);
-    }(document, 'script', 'facebook-jssdk'));</script>
+    }(document, 'script', 'facebook-jssdk'));
+</script>
 <!-- Your customer chat code -->
-<div class="fb-customerchat"
-    attribution=setup_tool
-    page_id="1127264994113778">
-</div><!-- END Load Facebook SDK for JavaScript -->
+<div class="fb-customerchat" attribution=setup_tool page_id="1127264994113778" greeting_dialog_display="hide"></div>
+<!-- END Load Facebook SDK for JavaScript -->
 
 <div class="wrap">
     <!-- top menu -->
