@@ -14,4 +14,8 @@ $config = yii\helpers\ArrayHelper::merge(
     require __DIR__ . '/../config/web.php',
     require __DIR__ . '/../config/bootstrap.php'
 );
+
+// Const use for whole project
+require __DIR__ . '/../config/const.php';
+
 (new yii\web\Application($config))->run();
