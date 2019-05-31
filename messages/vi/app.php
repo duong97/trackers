@@ -131,4 +131,7 @@ return [
     'Please configure your primary email on facebook!' =>'Vui lòng cấu hình email chính của bạn trên facebook!',
     'The most tracked products' =>'Những sản phẩm được theo dõi nhiều nhất',
     'The most tracking'     =>'Theo dõi nhiều nhất',
+    'Filters'               =>'Lọc',
+    'Prices change the most'=>'Giá thay đổi nhiều nhất',
+    'Prices change the least'=>'Giá thay đổi ít nhất',
 ];

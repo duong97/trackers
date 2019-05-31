@@ -134,7 +134,13 @@ class GetData extends BaseModel
             $mUserData->handleUserKeyword($keyword);
         }
         $slugKeyword    = MyFormat::slugify($keyword);
-        $aProduct       = Products::find()->where("slug like '%{$slugKeyword}%'")->all();
+        $aProduct       = Products::find()
+                            ->where([
+                                'like',
+                                'slug',
+                                $slugKeyword
+                            ])
+                            ->andWhere(['status'=> Products::STT_ACTIVE])->all();
         $ret            = [];
         $aProductId     = [];
         foreach ($aProduct as $p) {

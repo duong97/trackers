@@ -48,10 +48,13 @@ class ListController extends BaseController
             $models     = $query->offset($pages->offset)
                                 ->limit($pages->limit)
                                 ->all();
-            $aData  = [];
+            $aData      = [];
             foreach ($models as $value) {
-                $value->rProduct->numberTracking = $value->id;
-                $aData[]                         = $value->rProduct;
+                $mProduct = isset($value->rProduct) ? $value->rProduct : null;
+                if($mProduct){
+                    $mProduct->numberTracking = $value->id;
+                    $aData[]                  = $mProduct;
+                }
             }
             return $this->render('most_tracking', [
                 'aData' => $aData,

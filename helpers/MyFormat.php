@@ -14,6 +14,7 @@ class MyFormat{
     const datetime_format   = "d/m/Y H:i";
     
     public static function formatCurrency($price){
+        if( !is_numeric($price) ) return $price;
         return number_format($price , 0 , '.' , ',') . '₫';
     }
     

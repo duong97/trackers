@@ -18,12 +18,14 @@ use app\helpers\MyFormat;
 use yii\data\ActiveDataProvider;
 use yii\helpers\Url;
 use yii\helpers\Html;
+use app\models\SupportedWebsites;
 
 /**
  * This is the model class for table "products".
  *
  * @property string $id
  * @property string $name
+ * @property string $seller_id
  * @property string $url
  * @property string $url_redirect
  * @property string $price
@@ -63,6 +65,13 @@ class Products extends BaseModel
             [['name', 'url', 'url_redirect', 'price', 'image', 'status'], 'safe'],
             [['name', 'url', 'url_redirect', 'price', 'image'], 'required', 'on'=>'create']
         ];
+    }
+    
+    /**
+     * @todo relation seller
+     */
+    public function getRSeller(){
+        return $this->hasOne(SupportedWebsites::className(), ['id' => 'seller_id']);
     }
     
     /**
@@ -106,6 +115,17 @@ class Products extends BaseModel
     
     public function beforeSave($insert) {
         $this->slug = MyFormat::slugify($this->name);
+        if($this->isNewRecord){
+            $parse  = parse_url($this->url);
+            $domain = str_replace("www.", "", $parse['host']);
+            $models = SupportedWebsites::find()
+                                ->where([
+                                    'like',
+                                    'url',
+                                    $domain
+                                ])->one();
+            $this->seller_id = isset($models) ? $models->id : null;
+        }
         return parent::beforeSave($insert);
     }
     
@@ -178,11 +198,28 @@ class Products extends BaseModel
         return $ret;
     }
     
+    /**
+     * @todo get detail url of product
+     */
     public function getDetailUrl(){
         return Url::to(['/product/action/detail', 'url'=> $this->url]);
     }
     
+    /**
+     * @todo get product name with url
+     */
     public function getProductNameWithLink(){
         return Html::a($this->name, $this->getDetailUrl());
+    }
+    
+    /**
+     * @todo get seller
+     */
+    public function getSeller(){
+        $mSeller = isset($this->rSeller) ? $this->rSeller : null;
+        if($mSeller){
+            return Html::img($mSeller->getLogoUrl(), ['alt'=>$mSeller->name, 'class'=>'logo']);
+        }
+        return false;
     }
 }
