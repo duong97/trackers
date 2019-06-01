@@ -16,6 +16,7 @@ use app\controllers\BaseController;
 use app\models\UserTracking;
 use app\helpers\Checks;
 use yii\data\Pagination;
+use Yii;
 
 /**
  * Default controller for the `product` module

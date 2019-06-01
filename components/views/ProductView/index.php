@@ -1,21 +1,51 @@
 <?php 
 use app\helpers\MyFormat;
 use app\models\UserTracking;
+use app\models\SupportedWebsites;
+use yii\widgets\ActiveForm;
 ?>
 
-<div class="dropdown pull-right">
-    <div class="btn btn-default dropdown-toggle" data-toggle="dropdown">
-        <i class="fas fa-filter"></i>
-        <?= Yii::t('app', 'Filters') ?>
-        <span class="caret"></span>
-    </div>
-    <ul class="dropdown-menu">
-        <li><a href="#"><?= Yii::t('app', 'The most tracking') ?></a></li>
-        <li><a href="#"><?= Yii::t('app', 'Prices change the most') ?></a></li>
-        <li><a href="#"><?= Yii::t('app', 'Prices change the least') ?></a></li>
-    </ul>
-</div>
-<div class="clearfix"></div>
+<!--<div class="container" style="padding: 0 20px;">
+    <?php $form = ActiveForm::begin([
+        'id' => 'form-filter-product',
+        'method' =>'get',
+        'options' => [
+            'class' => 'form-inline'
+        ]
+        ]); ?>
+        <div class="row">
+            <div class="col-md-9 col-sm-12" style="border-right: 2px groove #9a9a9a;">
+                <?php 
+                $mSW = new SupportedWebsites();
+                $aSW = $mSW->getAll();
+                foreach ($aSW as $item) :
+                ?>
+                    <div class="col-sm-6 col-md-4 col-lg-3">
+                        <label class="pure-material-checkbox">
+                            <input type="checkbox" name="Products[seller_id][]" value="<?= $item->id ?>">
+                            <span><?= $item->name ?></span>
+                        </label>
+                    </div>
+                <?php 
+                endforeach;
+                ?>
+            </div>
+            <div class="col-md-3 col-sm-12 text-center">
+                <div class="form-group">
+                    <label for="sort"><?= Yii::t('app', 'Sort') ?> </label>
+                    <select class="form-control" id="sort" name="Products[sort_by]">
+                        <option><?= Yii::t('app', 'Price increases') ?></option>
+                        <option><?= Yii::t('app', 'Price decreases') ?></option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    
+        <div class="text-right">
+            <button type="submit" class="btn btn-primary"><?= Yii::t('app', 'Filters') ?></button>
+        </div>
+    <?php ActiveForm::end(); ?>
+</div>-->
 
 <div class="row">
     <?php if(!empty($aData)){ ?>

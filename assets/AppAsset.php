@@ -23,6 +23,7 @@ class AppAsset extends AssetBundle
     public $css = [
         'css/site.css',
         'css/main.css',
+        'css/material.css',
         'css/responsive.css',
         'fontawesome-5.7.2/css/all.css'
     ];
