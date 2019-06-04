@@ -3,11 +3,8 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/var/www/html/trackers/web/css/material.css</file>
-            <file>file:/var/www/html/trackers/assets/AppAsset.php</file>
-            <file>file:/var/www/html/trackers/messages/vi/app.php</file>
-            <file>file:/var/www/html/trackers/modules/product/controllers/ListController.php</file>
-            <file>file:/var/www/html/trackers/components/views/ProductView/index.php</file>
+            <file>file:/var/www/html/trackers/modules/api/controllers/DefaultController.php</file>
+            <file>file:/var/www/html/trackers/config/web.php</file>
         </group>
     </open-files>
 </project-private>

@@ -100,5 +100,20 @@ class MyFormat{
         return $string;
     }
     
+    /**
+     * @todo get only number from string
+     */
+    public static function numberOnly($number){
+        preg_match_all('!\d+!', $number, $matches);
+        if(is_array($matches[0])){
+            $number = "";
+            foreach ($matches[0] as $v) {
+                $number .= $v;
+            }
+        } else {
+            $number = $matches[0];
+        }
+        return (int)$number;
+    }
 }
 

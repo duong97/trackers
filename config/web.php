@@ -111,6 +111,9 @@ $config = [
         'admin' => [
             'class' => 'app\modules\admin\AdminModule',
         ],
+        'api' => [
+            'class' => 'app\modules\api\ApiModule',
+        ],
     ],
 ];
 

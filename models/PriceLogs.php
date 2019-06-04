@@ -13,7 +13,7 @@
 namespace app\models;
 
 use Yii;
-use app\helpers\Constants;
+use app\helpers\MyFormat;
 
 /**
  * This is the model class for table "price_logs".
@@ -65,15 +65,28 @@ class PriceLogs extends BaseModel
         ];
     }
     
-    public function getByUrl($url) {
+    /**
+     * @params url: product url on tiki, lazada, ...
+     * @params formatData: format price and date
+     */
+    public function getByUrl($url, $formatData = false) {
         $prd        = new Products();
         $prd->url   = $url;
         $prd->handleUrl();
-        return PriceLogs::find()
+        $aLogs = PriceLogs::find()
                     ->joinWith('prd')
                     ->where(['products.url' => $prd->url])
                     ->orderBy(['updated_date'=>SORT_DESC])
                     ->all();
+        $ret = [];
+        foreach ($aLogs as $value) {
+            if($formatData){
+                $value->price = MyFormat::formatCurrency($value->price);
+                $value->updated_date = MyFormat::formatDatetime($value->updated_date);
+            }
+            $ret[$value->id] = $value;
+        }
+        return $ret;
     }
     
     /*
@@ -106,5 +119,33 @@ class PriceLogs extends BaseModel
             $ret[$value->product_id] = $onlyPrice ? $value->price : $value;
         }
         return is_array($aProductId) ? $ret : $ret[$aProductId];
+    }
+    
+    /**
+     * @todo get data for chart (api chrome extension)
+     */
+    public function getChartData($aPriceLog){
+        $aLabel         = [];
+        $aCPrice        = [];
+        $aPPrice        = [];
+        $cPrice         = null;
+        foreach ($aPriceLog as $log) {
+            if($cPrice == null){
+                $cPrice = $log->price;
+            }
+            $fDate      = date(MyFormat::date_format, strtotime($log->updated_date));
+            $fTime      = date("H:i", strtotime($log->updated_date));
+            $aLabel[]   = [$fDate, $fTime];
+            $aCPrice[]  = MyFormat::numberOnly($cPrice);
+            $aPPrice[]  = MyFormat::numberOnly($log->price);
+        }
+        $jsonLabel      = json_encode($aLabel);
+        $jsonCPrice     = json_encode($aCPrice);
+        $jsonPPrice     = json_encode($aPPrice);
+        return [
+            'label' => $jsonLabel,
+            'cPrice' => $jsonCPrice,
+            'pPrice' => $jsonPPrice
+        ];
     }
 }
