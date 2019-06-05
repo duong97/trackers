@@ -92,7 +92,7 @@ class TrackingController extends Controller
                 }
             }
             // Set stop trading for product with zero price
-            Products::updateAll(['status' => Products::STT_INACTIVE], ['in', 'id', $aStopTrading]);
+//            Products::updateAll(['status' => Products::STT_INACTIVE], ['in', 'id', $aStopTrading]);
             
             // Change product name
             foreach ($aChangeName as $key => $name) {
