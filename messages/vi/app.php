@@ -135,4 +135,6 @@ return [
     'Price increases'       =>'Giá tăng dần',
     'Price decreases'       =>'Giá giảm dần',
     'Sort'                  =>'Sắp xếp',
+    'PHONE ACCESSORIES'     =>'PHỤ KIỆN ĐIỆN THOẠI',
+    'SUPPORT WEBSITE'       =>'NHỮNG WEBSITE HỖ TRỢ',
 ];
