@@ -123,7 +123,8 @@ class Users extends BaseModel
                 return $('#users-newpassword').val() != '';
             }"],
             [['newPassword', 'cnewPassword'], 'safe'],
-            ['email', 'unique'],
+            ['email', 'unique', 'on' => [Yii::$app->params['SCENARIO_CREATE']]],
+            ['email', 'required', 'on' => ['forgotPassword']],
             [['email'], 'email'],
         ];
     }

@@ -46,6 +46,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 ?>
                 <?= $form->field($model, 'email')->textInput([
                             'autofocus' => true,
+                            'autocomplete'=>'off',
                             'placeholder' => $model->attributeLabels()['email']
                         ])
                         ->label('<i class="fas fa-envelope"></i>', [
@@ -55,6 +56,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 <?= $form->field($model, 'password')
                         ->passwordInput([
                             'autofocus' => true,
+                            'autocomplete'=>'off',
                             'placeholder' => $model->attributeLabels()['password']
                         ])
                         ->label('<i class="fas fa-unlock"></i>', [
@@ -64,6 +66,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 <?= $form->field($model, 'cpassword')
                         ->passwordInput([
                             'autofocus' => true,
+                            'autocomplete'=>'off',
                             'placeholder' => Yii::t('app', 'Confirm Password')
                         ])
                         ->label('<i class="fas fa-unlock"></i>', [

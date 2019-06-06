@@ -18,6 +18,7 @@ use app\helpers\Constants;
 use yii\helpers\Url;
 use yii\helpers\Html;
 use yii\data\ActiveDataProvider;
+use yii\base\Security;
 
 
 class SiteController extends BaseController
@@ -102,6 +103,40 @@ class SiteController extends BaseController
         
         $model->password = '';
         return $this->render('login', [
+            'model' => $model,
+        ]);
+    }
+
+    /**
+     * Forgot password action.
+     *
+     * @return Response|string
+     */
+    public function actionForgotPassword()
+    {
+        if (!Yii::$app->user->isGuest) {
+            return $this->goHome();
+        }
+        
+        $model = new Users();
+        $model->scenario = 'forgotPassword';
+        $post  = Yii::$app->request->post();
+        if( !empty($post) ){
+            $model->load(Yii::$app->request->post());
+            $model->validate();
+            $existsUser = Users::find()->where(['email'=>$model->email])->one();
+            if($existsUser){
+                $mailer     = new Mailer();
+                $mSecurity  = new Security();
+                $tmpPass    = $mSecurity->generateRandomString(12);
+                $mailer->forgotPassword($model->email, $tmpPass);
+                Yii::$app->session->setFlash('success', Yii::t('app', 'Email has been sent'));
+            } else {
+                Yii::$app->session->setFlash('error', Yii::t('app', 'This email does not match any accounts'));
+            }
+        }
+        
+        return $this->render('forgot_password', [
             'model' => $model,
         ]);
     }

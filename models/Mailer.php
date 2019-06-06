@@ -76,6 +76,22 @@ class Mailer{
                 ->setSubject(Yii::t('app', 'Notification'))
                 ->send();
     }
+    
+    /**
+     * @todo send mail reset password
+     */
+    public function forgotPassword($mail, $tmpPass){
+        $mUsers     = new Users();
+        $user       = $mUsers->getUserByEmail($mail);
+        if(empty($user)) return null;
+        $user->generatePassword($tmpPass);
+        $user->update();
+        $message    = Yii::$app->mailer->compose('forgotPassword',['tempPass'=>$tmpPass]);
+        $message->setFrom([Yii::$app->params['verifyEmail'] => 'ChartCost.com'])
+                ->setTo($mail)
+                ->setSubject(Yii::t('app', 'Reset password'))
+                ->send();
+    }
 
 }
 

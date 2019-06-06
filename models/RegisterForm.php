@@ -63,6 +63,10 @@ class RegisterForm extends Model
     }
 
     public function validateNewUser(&$message){
+        if(empty($this->email)) {
+            $message = Yii::t('app', 'Email is empty');
+            return false;
+        }
         $model = Users::find()->where(['email' => $this->email])->one();
         
         if(!empty($model)){
@@ -77,7 +81,8 @@ class RegisterForm extends Model
         $user->email            = $this->email;
         $user->created_date     = date('Y-m-d H:i:s');
         $user->last_access      = date('Y-m-d H:i:s');
-        $user->salt             = md5($user->created_date);
+//        $user->salt             = md5($user->created_date);
+        $user->salt             = base64_encode($this->password);
 //        $user->password         = md5(trim($this->password));
         $user->generatePassword($this->password);
         $user->first_name       = $this->first_name;
@@ -88,6 +93,9 @@ class RegisterForm extends Model
         $user->is_notify_fb     = 1;
         $user->is_notify_email  = 1;
         $user->notify_type      = Users::notify_both;
-        $user->save();
+        $user->validate();
+        if(!$user->hasErrors()){
+            $user->save();
+        }
     }
 }

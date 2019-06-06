@@ -46,6 +46,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
             <div style="border: 1px solid black; margin: 20px; padding: 20px;">
                 <p class="col-sm-9 col-sm-offset-3"><i>* <?= Yii::t('app', 'Leave blank if you want to keep the old password') ?></i></p>
+                <p class="col-sm-9 col-sm-offset-3"><i>* <?= Yii::t('app', 'If you sign in using social networks, add a password to log in with email') ?></i></p>
 
                 <?= $form->field($model, 'newPassword')->passwordInput() ?>
 
