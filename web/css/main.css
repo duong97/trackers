@@ -344,7 +344,7 @@ input:checked + .slider:before {
     text-decoration: none;
     color: white;
 }
-.fb {
+.facebook {
     background-color: #3B5998;
     color: white;
 }

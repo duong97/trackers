@@ -24,6 +24,11 @@ $config = [
                     'clientSecret' => 'd7d3116ab1aa1d5ab6b58ba45b78b544',
                     'attributeNames' => ['name', 'email', 'first_name', 'last_name'],
                 ],
+                'google' => [
+                    'class' => 'yii\authclient\clients\Google',
+                    'clientId' => '583166492010-fdd95ibejqh7dgelcb6m88gjcoc9nkib.apps.googleusercontent.com',
+                    'clientSecret' => 'dkWMt5ddraNBUEL3N0mmuYAI',
+                ],
             ],
         ],
         // Translation

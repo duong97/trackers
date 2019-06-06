@@ -6,7 +6,6 @@
 
 use yii\helpers\Html;
 use yii\bootstrap\ActiveForm;
-use yii\helpers\Url;
 use yii\authclient\widgets\AuthChoice;
 
 $this->title = Yii::t('app', 'Login');
@@ -76,29 +75,26 @@ $this->params['breadcrumbs'][] = $this->title;
         <!--Login use social media-->
         <div class="col-sm-6 col-md-4 col-lg-3">
             <div class="login-social-container">
-                <?php
-                echo AuthChoice::widget([
-                    'baseAuthUrl' => ['site/auth'],
-                    'popupMode' => true,
-                ]); 
-                ?>
                 
-<!--                <div>
-                    <ul class="auth-clients">
-                        <li>
-                            <a href="" title="Zalo">
-                                <img src="<?= Url::to('@web/images/logo/zalo-icon.png') ?>"
-                                     style="width: 32px">
-                            </a>
-                        </li>
-                    </ul>
-                </div>-->
-<!--                
-                <a href="#" class="google login-social">
-                    <i class="fab fa-google"></i>   <?= Yii::t('app', 'Login with Google+') ?>
-                </a>-->
+                <?php $authAuthChoice = AuthChoice::begin([
+                    'baseAuthUrl' => ['site/auth'],
+                    'options' => [
+                        'class'=>'social-container'
+                    ]
+                ]); ?>
+                    <?php foreach ($authAuthChoice->getClients() as $client): ?>
+                        <?php $text = $client->getName() == 'google' ? Yii::t('app', 'Login with Google') : $text = Yii::t('app', 'Login with Facebook'); ?>
+                        <?= $authAuthChoice->clientLink($client, '<i class="fab fa-'.$client->getName().'"></i> '.$text, ['class'=>$client->getName().' login-social']) ?>
+                    <?php endforeach; ?>
+                <?php AuthChoice::end(); ?>
             </div>
         </div>
     </div>
 </div>
             
+<script>
+//    $(function(){
+//        $('.facebook.auth-link').append('<span class="txt">Sign in with facebook</span>');
+//        $('.google.auth-link').append('<span class="txt">Sign in with google</span>');
+//    });
+</script>

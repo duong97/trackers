@@ -47,7 +47,9 @@ class Users extends BaseModel
     const NOTIFY_ZALO           = 3;
     const NOTIFY_EMAIL          = 4;
     
-    const plf_facebook = 1;
+    const PLATFORM_FACEBOOK = 1;
+    const PLATFORM_GOOGLE   = 2;
+    const PLATFORM_OTHERS   = 3;
     
     const DEVICE_DESKTOP        = 1;
     const DEVICE_MOBILE         = 2;
@@ -55,7 +57,9 @@ class Users extends BaseModel
     public $newPassword, $cnewPassword;
     
     public static $aPlatform = [
-        self::plf_facebook => 'facebook'
+        self::PLATFORM_FACEBOOK => 'Facebook',
+        self::PLATFORM_GOOGLE   => 'Google',
+        self::PLATFORM_OTHERS   => 'Others',
     ];
     
     public static $aDevice = [

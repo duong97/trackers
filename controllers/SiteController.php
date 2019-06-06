@@ -331,25 +331,33 @@ class SiteController extends BaseController
     }
     
     /**
-     * @todo login with fb (using AuthClient Yii2)
+     * @todo login with fb, google (using AuthClient Yii2)
      */
     public function oAuthSuccess($client) {
-        $userData = $client->getUserAttributes();
+        $userData   = $client->getUserAttributes();
+        $clientName = $client->getName();
         if( empty($userData['email']) ){
-            Yii::$app->session->setFlash('error', 'Please configure your primary email on facebook!');
+            Yii::$app->session->setFlash('error', 'Please configure your primary email on '.$clientName.'!');
             return $this->redirect(['/site/login']);
         }
-        $platform = Users::plf_facebook;
-        $models   = Users::find()->where([
+        $aPlatform      = Users::$aPlatform;
+        $platform       = array_search(strtolower($clientName), array_map('strtolower', $aPlatform));
+        $models         = Users::find()->where([
                                 'email' => $userData['email'],
                             ])->one();
         if(!$models){
             $user               = new Users();
-            $user->fb_id        = $userData['id'];
-            $user->first_name   = $userData['first_name'];
-            $user->last_name    = $userData['last_name'];
+            if($platform == Users::PLATFORM_FACEBOOK){
+                $user->fb_id        = $userData['id'];
+                $user->first_name   = $userData['first_name'];
+                $user->last_name    = $userData['last_name'];
+            }
+            if($platform == Users::PLATFORM_GOOGLE){
+                $user->first_name   = $userData['given_name'];
+                $user->last_name    = $userData['family_name'];
+            }
             $user->email        = $userData['email'];
-            $user->platform     = $platform;
+            $user->platform     = ($platform === false) ? null : $platform;
             $user->role         = Constants::USER;
             $user->status       = Users::STT_ACTIVE;
             $user->last_access  = date('Y-m-d H:i:s');
