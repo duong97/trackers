@@ -137,4 +137,6 @@ return [
     'Sort'                  =>'Sắp xếp',
     'PHONE ACCESSORIES'     =>'PHỤ KIỆN ĐIỆN THOẠI',
     'SUPPORT WEBSITE'       =>'NHỮNG WEBSITE HỖ TRỢ',
+    'Save successful.'      =>'Lưu thành công.',
+    'Category'              =>'Loại',
 ];

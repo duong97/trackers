@@ -39,6 +39,13 @@ $this->params['breadcrumbs'][] = $this->title;
                 }
             ],
             [
+                'attribute' => 'category_id',
+                'format' => 'raw',
+                'value' => function($model){
+                    return $model->getCategory();
+                }
+            ],
+            [
                 'attribute' => 'url',
                 'format' => 'raw',
                 'value' => function($model){

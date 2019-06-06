@@ -2,6 +2,12 @@
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
-        <group/>
+        <group>
+            <file>file:/var/www/html/trackers/modules/admin/views/products/_form.php</file>
+            <file>file:/var/www/html/trackers/models/Products.php</file>
+            <file>file:/var/www/html/trackers/modules/admin/views/products/index.php</file>
+            <file>file:/var/www/html/trackers/messages/vi/app.php</file>
+            <file>file:/var/www/html/trackers/modules/admin/views/products/view.php</file>
+        </group>
     </open-files>
 </project-private>

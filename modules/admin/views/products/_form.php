@@ -16,7 +16,9 @@ use app\models\Products;
         'id' => 'form-create'
 	]); ?>
     
-    <?= $form->field($model, 'url_redirect')->textInput() ?>
+    <?php // echo $form->field($model, 'url_redirect')->textInput() ?>
+    
+    <?= $form->field($model, 'category_id')->dropDownList(Products::$aCategory) ?>
     
     <?= $form->field($model, 'status')->dropDownList(Products::$aStatus) ?>
 

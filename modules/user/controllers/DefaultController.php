@@ -195,6 +195,7 @@ class DefaultController extends BaseController
             if(isset($post)){
                 $user->attributes = $post;
                 $user->update();
+                Yii::$app->session->setFlash('success', Yii::t('app', 'Save successful.'));
             }
             return $this->render('settings', ['user' => $user]);
         } catch (Exception $exc) {

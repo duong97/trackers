@@ -48,6 +48,13 @@ $this->params['breadcrumbs'][] = $this->title;
                     return $model->getProductNameWithLink();
                 }
             ],
+            [
+                'attribute' => 'category_id',
+                'format' => 'raw',
+                'value' => function($model){
+                    return $model->getCategory();
+                }
+            ],
 //            'url:ntext',
             [
                 'attribute' => 'price',

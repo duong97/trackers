@@ -26,6 +26,7 @@ use app\models\SupportedWebsites;
  * @property string $id
  * @property string $name
  * @property string $seller_id
+ * @property string $category_id
  * @property string $url
  * @property string $url_redirect
  * @property string $price
@@ -40,12 +41,24 @@ class Products extends BaseModel
     const STT_ACTIVE    = 1;
     const STT_INACTIVE  = 0;
     
+    const CATEGORY_FASHION      = 1;
+    const CATEGORY_HOUSEWARE    = 2;
+    const CATEGORY_ACCESSORIES  = 3;
+    const CATEGORY_PHONE        = 4;
+    
     const TYPE_INCREASE = Users::notify_increase;
     const TYPE_DECREASE = Users::notify_decrease;
     
     public static $aStatus = [
         self::STT_ACTIVE   => 'Đang bán',
         self::STT_INACTIVE => 'Ngừng kinh doanh',
+    ];
+    
+    public static $aCategory = [
+        self::CATEGORY_FASHION      => 'Thời trang',
+        self::CATEGORY_HOUSEWARE    => 'Đồ gia dụng',
+        self::CATEGORY_ACCESSORIES  => 'Phụ kiện',
+        self::CATEGORY_PHONE        => 'Điện thoại',
     ];
     
     /**
@@ -62,7 +75,7 @@ class Products extends BaseModel
     public function rules()
     {
         return [
-            [['name', 'url', 'url_redirect', 'price', 'image', 'status'], 'safe'],
+            [['name', 'category_id', 'url', 'url_redirect', 'price', 'image', 'status'], 'safe'],
             [['name', 'url', 'url_redirect', 'price', 'image'], 'required', 'on'=>'create']
         ];
     }
@@ -83,6 +96,7 @@ class Products extends BaseModel
             'id' => 'ID',
             'url' => Yii::t('app', 'Product link'),
             'name' => Yii::t('app', 'Name'),
+            'category_id' => Yii::t('app', 'Category'),
             'image' => Yii::t('app', 'Images'),
             'created_date' => Yii::t('app', 'Created Date'),
         ];
@@ -221,5 +235,13 @@ class Products extends BaseModel
             return Html::img($mSeller->getLogoUrl(), ['alt'=>$mSeller->name, 'class'=>'logo']);
         }
         return false;
+    }
+    
+    /**
+     * @todo get category name
+     */
+    public function getCategory(){
+        $aCategory = self::$aCategory;
+        return isset($aCategory[$this->category_id]) ? $aCategory[$this->category_id] : '';
     }
 }
