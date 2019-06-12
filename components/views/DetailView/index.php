@@ -155,6 +155,6 @@ $urlManager     = \Yii::$app->getUrlManager();
             </table>
         </div>
     </div>
-    <?php count($aPriceLog)>1 ? include('chart.php') : "" ?>
+    <?php count($aPriceLog)>1 ? include('chart_highstock.php') : "" ?>
     <?php endif; ?>
 </div>

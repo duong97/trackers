@@ -1,4 +1,7 @@
 <?php 
+/*
+ * Chart using Chart JS
+ */
 use app\helpers\MyFormat;
 ?>
 <div class="table-responsive">
