@@ -11,7 +11,7 @@ use yii\widgets\Pjax;
 /* @var $this yii\web\View */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Users';
+$this->title = 'Quản lý Users';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="users-index">
@@ -20,7 +20,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <?php Pjax::begin(); ?>
 
     <p>
-        <?= Html::a('Create Users', ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a('Tạo mới Users', ['create'], ['class' => 'btn btn-success']) ?>
     </p>
 
     <?= GridView::widget([
@@ -61,7 +61,8 @@ $this->params['breadcrumbs'][] = $this->title;
                     $value = isset(Users::$aStatus[$model->status]) ? Users::$aStatus[$model->status] : '';
                     $css   = isset(Users::$aStatusCss[$model->status]) ? Users::$aStatusCss[$model->status] : '';
                     return Html::label($value, null, ['class' => $css]);
-                }
+                },
+                'filter' => Users::$aStatus
             ],
             [
                 'attribute' => 'ip',
@@ -74,13 +75,35 @@ $this->params['breadcrumbs'][] = $this->title;
                 'attribute' => 'last_access',
                 'value' => function($model){
                     return MyFormat::formatDatetime($model->last_access);
-                }
+                },
+                'filter' => \yii\jui\DatePicker::widget([
+                    'attribute'     => 'last_access',
+                    'language'      => 'vi', 
+                    'dateFormat'    => 'dd-MM-yyyy',
+                    'model'         => $searchModel,
+                    'options' => [
+                        'class'=>'form-control',
+                        'autocomplete'=>'off'
+                    ]
+                ]),
+                'format' => 'raw',
             ],
             [
                 'attribute' => 'created_date',
                 'value' => function($model){
                     return MyFormat::formatDatetime($model->created_date);
-                }
+                },
+                'filter' => \yii\jui\DatePicker::widget([
+                    'attribute'     => 'created_date',
+                    'language'      => 'vi', 
+                    'dateFormat'    => 'dd-MM-yyyy',
+                    'model'         => $searchModel,
+                    'options' => [
+                        'class'=>'form-control',
+                        'autocomplete'=>'off'
+                    ]
+                ]),
+                'format' => 'raw',
             ],
             //'first_name',
             //'last_name',

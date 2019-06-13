@@ -8,6 +8,7 @@ use yii\data\ActiveDataProvider;
 
 use app\helpers\Checks;
 use app\helpers\Constants;
+use app\helpers\MyFormat;
 /**
  * This is the model class for table "users".
  *
@@ -229,13 +230,18 @@ class Users extends BaseModel
             ],
         ]);
         // No search? Then return data Provider
-        if (!($this->load($params) && $this->validate())) {
+//        if (!($this->load($params) && $this->validate())) {
+        if (!($this->load($params))) {
             return $dataProvider;
         }
         // We have to do some search... Lets do some magic
         $query->andFilterWhere(['like', 'first_name', $this->first_name])
-        ->andFilterWhere(['like', 'last_name', $this->last_name])
-        ->andFilterWhere(['like', 'email', $this->email]);
+                ->andFilterWhere(['like', 'last_name', $this->last_name])
+                ->andFilterWhere(['like', 'ip', $this->ip])
+                ->andFilterWhere(['like', 'email', $this->email])
+                ->andFilterWhere(['status'=> $this->status])
+                ->andFilterWhere(['DATE(last_access)'=> MyFormat::formatSqlDate($this->last_access)])
+                ->andFilterWhere(['DATE(created_date)'=> MyFormat::formatSqlDate($this->created_date)]);
         return $dataProvider;
     }
     

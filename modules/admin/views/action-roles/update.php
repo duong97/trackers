@@ -6,7 +6,7 @@ use yii\helpers\Html;
 /* @var $model app\models\ActionRoles */
 
 $controllerName = $model->rController->controller_name;
-$this->title = 'Update Action Roles: ' . $controllerName;
+$this->title = 'Cập nhật phân quyền: ' . $controllerName;
 $this->params['breadcrumbs'][] = ['label' => 'Action Roles', 'url' => ['index']];
 $this->params['breadcrumbs'][] = ['label' => $controllerName, 'url' => ['view', 'id' => $model->id]];
 $this->params['breadcrumbs'][] = 'Update';

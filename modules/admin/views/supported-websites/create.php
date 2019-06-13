@@ -5,8 +5,8 @@ use yii\helpers\Html;
 /* @var $this yii\web\View */
 /* @var $model app\models\SupportedWebsites */
 
-$this->title = 'Create Supported Websites';
-$this->params['breadcrumbs'][] = ['label' => 'Supported Websites', 'url' => ['index']];
+$this->title = 'Tạo mới website hỗ trợ';
+$this->params['breadcrumbs'][] = ['label' => 'Websie hỗ trợ', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="supported-websites-create">

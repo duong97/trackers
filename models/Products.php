@@ -75,7 +75,7 @@ class Products extends BaseModel
     public function rules()
     {
         return [
-            [['name', 'category_id', 'url', 'url_redirect', 'price', 'image', 'status'], 'safe'],
+            [['name', 'category_id', 'url', 'url_redirect', 'price', 'image', 'status', 'created_date'], 'safe'],
             [['name', 'url', 'url_redirect', 'price', 'image'], 'required', 'on'=>'create']
         ];
     }
@@ -123,7 +123,9 @@ class Products extends BaseModel
         }
         // We have to do some search... Lets do some magic
         $query->andFilterWhere(['like', 'name', $this->name])
-        ->andFilterWhere(['like', 'price', $this->price]);
+                ->andFilterWhere(['category_id' => $this->category_id])
+                ->andFilterWhere(['DATE(created_date)' => MyFormat::formatSqlDate($this->created_date)])
+                ->andFilterWhere(['like', 'price', $this->price]);
         return $dataProvider;
     }
     

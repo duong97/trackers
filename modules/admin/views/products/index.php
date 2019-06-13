@@ -4,12 +4,13 @@ use yii\helpers\Html;
 use yii\grid\GridView;
 use app\helpers\MyFormat;
 use yii\widgets\Pjax;
+use app\models\Products;
 
 /* @var $this yii\web\View */
 /* @var $searchModel app\models\Products */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Products';
+$this->title = 'Sản phẩm';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="products-index">
@@ -18,7 +19,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
     <p>
-        <?= Html::a('Create Products', ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a('Tạo mới sản phẩm', ['create'], ['class' => 'btn btn-success']) ?>
     </p>
 
     <?php Pjax::begin(); ?>
@@ -38,7 +39,8 @@ $this->params['breadcrumbs'][] = $this->title;
                 'format' => 'html',
                 'value' => function($model){
                     return Html::img($model->image, ['style'=>'width:70px;']);
-                }
+                },
+                'filter' => false
             ],
 
             [
@@ -53,7 +55,8 @@ $this->params['breadcrumbs'][] = $this->title;
                 'format' => 'raw',
                 'value' => function($model){
                     return $model->getCategory();
-                }
+                },
+                'filter' => Products::$aCategory
             ],
 //            'url:ntext',
             [
@@ -67,7 +70,18 @@ $this->params['breadcrumbs'][] = $this->title;
                 'attribute' => 'created_date',
                 'value' => function($model){
                     return MyFormat::formatDatetime($model->created_date);
-                }
+                },
+                'filter' => \yii\jui\DatePicker::widget([
+                    'attribute'     => 'created_date',
+                    'language'      => 'vi', 
+                    'dateFormat'    => 'dd-MM-yyyy',
+                    'model'         => $searchModel,
+                    'options' => [
+                        'class'=>'form-control',
+                        'autocomplete'=>'off'
+                    ]
+                ]),
+                'format' => 'raw',
             ],
             [
                 'class' => 'yii\grid\ActionColumn',

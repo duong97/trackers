@@ -7,7 +7,7 @@ use yii\widgets\DetailView;
 /* @var $model app\models\ActionRoles */
 
 $this->title = $model->rController->controller_name;
-$this->params['breadcrumbs'][] = ['label' => 'Action Roles', 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => 'Phân quyền', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 \yii\web\YiiAsset::register($this);
 ?>

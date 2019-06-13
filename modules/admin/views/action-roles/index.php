@@ -6,7 +6,7 @@ use yii\grid\GridView;
 /* @var $this yii\web\View */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Action Roles';
+$this->title = 'Phân quyền';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="action-roles-index">

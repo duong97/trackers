@@ -5,8 +5,8 @@ use yii\helpers\Html;
 /* @var $this yii\web\View */
 /* @var $model app\models\ActionRoles */
 
-$this->title = 'Create Action Roles';
-$this->params['breadcrumbs'][] = ['label' => 'Action Roles', 'url' => ['index']];
+$this->title = 'Tạo mới phân quyền';
+$this->params['breadcrumbs'][] = ['label' => 'Phân quyền', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="action-roles-create">

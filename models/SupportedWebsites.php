@@ -39,9 +39,9 @@ class SupportedWebsites extends BaseModel
     public $homepageLogo, $icon;
     
     public static $aStatus = [
-        self::STT_GOOD            => 'Good',
-        self::STT_MAINTENANCE     => 'Is maintained',
-        self::STT_STOP_SUPPORTING => 'Stop supporting',
+        self::STT_GOOD            => 'Tốt',
+        self::STT_MAINTENANCE     => 'Đang bảo trì',
+        self::STT_STOP_SUPPORTING => 'Ngừng hỗ trợ',
     ];
     
     public static $aStatusCss = [
@@ -146,8 +146,13 @@ class SupportedWebsites extends BaseModel
             return $dataProvider;
         }
         // We have to do some search... Lets do some magic
+        // If use where only, query cant filter empty condition
         $query->andFilterWhere(['like', 'name', $this->name])
-        ->andFilterWhere(['like', 'url', $this->url]);
+            ->andFilterWhere(['like', 'url', $this->url])
+            ->andFilterWhere(['like', 'check_time', $this->check_time])
+            ->andFilterWhere(['like', 'note', $this->note])
+            ->andFilterWhere(['currency' => $this->currency])
+            ->andFilterWhere(['status' => $this->status]);
         return $dataProvider;
     }
     

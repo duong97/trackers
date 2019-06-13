@@ -10,8 +10,8 @@ namespace app\helpers;
 class MyFormat{
     
     const str_max_length    = 30;
-    const date_format       = "d/m/Y";
-    const datetime_format   = "d/m/Y H:i";
+    const date_format       = "d-m-Y";
+    const datetime_format   = "d-m-Y H:i";
     
     public static function formatCurrency($price){
         if( !is_numeric($price) ) return $price;

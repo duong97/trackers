@@ -5,10 +5,10 @@ use yii\helpers\Html;
 /* @var $this yii\web\View */
 /* @var $model app\models\SupportedWebsites */
 
-$this->title = 'Update Supported Websites: ' . $model->name;
-$this->params['breadcrumbs'][] = ['label' => 'Supported Websites', 'url' => ['index']];
+$this->title = 'Cập nhật website hỗ trợ: ' . $model->name;
+$this->params['breadcrumbs'][] = ['label' => 'Website hỗ trợ', 'url' => ['index']];
 $this->params['breadcrumbs'][] = ['label' => $model->name, 'url' => ['view', 'id' => $model->id]];
-$this->params['breadcrumbs'][] = 'Update';
+$this->params['breadcrumbs'][] = 'Cập nhật';
 ?>
 <div class="supported-websites-update">
 

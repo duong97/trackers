@@ -8,7 +8,7 @@ use yii\widgets\Pjax;
 /* @var $this yii\web\View */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Supported Websites';
+$this->title = 'Website hỗ trợ';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="supported-websites-index">
@@ -16,7 +16,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <h1><?= Html::encode($this->title) ?></h1>
 
     <p>
-        <?= Html::a('Create Supported Websites', ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a('Tạo mới website hỗ trợ', ['create'], ['class' => 'btn btn-success']) ?>
     </p>
     
     <?php Pjax::begin(); ?>
@@ -37,7 +37,8 @@ $this->params['breadcrumbs'][] = $this->title;
                 'format' => 'raw',
                 'value' => function($model){
                     return Html::img($model->getLogoUrl(), ['style'=>'max-width:20px;']);
-                }
+                },
+                'filter' => false
             ],
             [
                 'attribute' => 'name',
@@ -56,7 +57,8 @@ $this->params['breadcrumbs'][] = $this->title;
                 'attribute' => 'currency',
                 'value' => function($model){
                     return isset(SupportedWebsites::$aCurrency[$model->currency]) ? SupportedWebsites::$aCurrency[$model->currency] : '';
-                }
+                },
+                'filter' => SupportedWebsites::$aCurrency
             ],
             [
                 'attribute' => 'check_time',
@@ -77,6 +79,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     $value = isset(SupportedWebsites::$aStatus[$model->status]) ? SupportedWebsites::$aStatus[$model->status] : '';
                     return Html::label($value, null, ['class' => SupportedWebsites::$aStatusCss[$model->status]]);
                 },
+                'filter' => SupportedWebsites::$aStatus
             ],
 
             [

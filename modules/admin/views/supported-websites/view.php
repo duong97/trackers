@@ -9,7 +9,7 @@ use app\models\SupportedWebsites;
 /* @var $model app\models\SupportedWebsites */
 
 $this->title = $model->name;
-$this->params['breadcrumbs'][] = ['label' => 'Supported Websites', 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => 'Website hỗ trợ', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 \yii\web\YiiAsset::register($this);
 ?>
