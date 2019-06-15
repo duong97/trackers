@@ -57,7 +57,7 @@ use yii\helpers\Url;
                                         <h1 style="border:none;margin:0px;padding:0px;text-decoration:none;color:rgb(85,85,85);font-size:32px;font-weight:bold;line-height:36px;letter-spacing:-0.04em;text-align:center" align="center">
                                             <?= Yii::t('app', 'Reset password') ?>.</h1>
                                         <h2 style="border:none;margin:0px;padding:7px 0px 0px;font-family:Comic Sans MS;font-weight:200;text-decoration:none;color:rgb(97,100,103);font-size:17px;line-height:23px;text-align:center" align="center">
-                                            <?= Yii::t('app', 'The price of the product you are tracking has been changed') ?>.</h2>
+                                            <?= Yii::t('app', 'Use this temporary password to login, remember to change your password') ?>.</h2>
                                     </td>
                                     <td style="border:none;margin:0px;padding:0px;width:6.25%" 
                                         width="6.25%" valign="middle"></td>

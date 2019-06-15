@@ -12,7 +12,7 @@ $config = [
         '@npm'   => '@vendor/npm-asset',
     ],
     'vendorPath' => '../../yii2-framework/vendor',
-    'language'=>'en', // Default language
+    'language'=>'vi', // Default language
     'components' => [
         'authClientCollection' => [
             'class' => 'yii\authclient\Collection',

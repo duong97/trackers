@@ -28,8 +28,8 @@ class BaseController extends Controller
     
     public function setLanguage(){
         $cookies                = Yii::$app->request->cookies;
-        $language               = $cookies->getValue('language', 'en');
-        \Yii::$app->language    = $language;
+        $language               = $cookies->getValue('language');
+        Yii::$app->language    = $language ? $language : Yii::$app->language;
     }
     
     public function beforeAction($action)
