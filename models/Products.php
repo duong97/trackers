@@ -19,6 +19,7 @@ use yii\data\ActiveDataProvider;
 use yii\helpers\Url;
 use yii\helpers\Html;
 use app\models\SupportedWebsites;
+use app\models\UserTracking;
 
 /**
  * This is the model class for table "products".
@@ -98,6 +99,7 @@ class Products extends BaseModel
             'name' => Yii::t('app', 'Name'),
             'category_id' => Yii::t('app', 'Category'),
             'image' => Yii::t('app', 'Images'),
+            'status' => Yii::t('app', 'Status'),
             'created_date' => Yii::t('app', 'Created Date'),
         ];
     }
@@ -122,8 +124,10 @@ class Products extends BaseModel
             return $dataProvider;
         }
         // We have to do some search... Lets do some magic
-        $query->andFilterWhere(['like', 'name', $this->name])
+        $slugKeyword    = MyFormat::slugify($this->name);
+        $query->andFilterWhere(['like', 'slug', $slugKeyword])
                 ->andFilterWhere(['category_id' => $this->category_id])
+                ->andFilterWhere(['status' => $this->status])
                 ->andFilterWhere(['DATE(created_date)' => MyFormat::formatSqlDate($this->created_date)])
                 ->andFilterWhere(['like', 'price', $this->price]);
         return $dataProvider;
@@ -141,6 +145,11 @@ class Products extends BaseModel
                                     $domain
                                 ])->one();
             $this->seller_id = isset($models) ? $models->id : null;
+        }
+        if($this->status == self::STT_INACTIVE){
+            $mUserTracking = new UserTracking();
+            $mUserTracking->product_id = $this->id;
+            $mUserTracking->untrackStopTrading();
         }
         return parent::beforeSave($insert);
     }
@@ -245,5 +254,20 @@ class Products extends BaseModel
     public function getCategory(){
         $aCategory = self::$aCategory;
         return isset($aCategory[$this->category_id]) ? $aCategory[$this->category_id] : '';
+    }
+    
+    /**
+     * @todo get product by category
+     */
+    public function getByCategory(){
+        $aCategory  = array_keys(self::$aCategory);
+        $ret        = [];
+        if(!empty($this->category_id) && in_array($this->category_id, $aCategory)){
+            $models = Products::find()->where(['category_id' => $this->category_id])->all();
+            foreach ($models as $value) {
+                $ret[$value->id] = $value;
+            }
+        }
+        return $ret;
     }
 }

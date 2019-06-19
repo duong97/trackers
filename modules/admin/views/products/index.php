@@ -67,6 +67,17 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
             //'slug',
             [
+                'attribute' => 'status',
+                'value' => function($model){
+                    $aStatus = Products::$aStatus;
+                    $sttTxt  = isset($aStatus[$model->status]) ? $aStatus[$model->status] : '';
+                    $class   = $model->status == Products::STT_ACTIVE ? 'label label-success' : 'label label-danger';
+                    return Html::tag('span', $sttTxt, ['class'=>$class]);
+                },
+                'format' => 'raw',
+                'filter' => Products::$aStatus
+            ],
+            [
                 'attribute' => 'created_date',
                 'value' => function($model){
                     return MyFormat::formatDatetime($model->created_date);

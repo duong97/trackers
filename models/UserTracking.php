@@ -14,6 +14,7 @@ namespace app\models;
 
 use Yii;
 use app\models\Products;
+use app\models\Loggers;
 use app\helpers\Constants;
 
 /**
@@ -256,4 +257,15 @@ class UserTracking extends BaseModel
                 ->execute();
     }
     
+    /**
+     * @todo untracking stop trading product
+     */
+    public function untrackStopTrading(){
+        $now = date('Y-m-d H:i:00');
+        if(!empty($this->product_id)){
+            UserTracking::updateAll(['end_date' => $now], ['product_id'=>$this->product_id]);
+            $message = 'Untracking product with id: '.$this->product_id;
+            Loggers::WriteLog($message, Loggers::type_info);
+        }
+    }
 }

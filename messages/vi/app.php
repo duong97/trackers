@@ -150,4 +150,5 @@ return [
     'Use this temporary password to login, remember to change your password'=>'Sử dụng mật khẩu tạm thời này để đăng nhập, nhớ đổi mật khẩu của bạn',
     'Temporary password'    =>'Mật khẩu tạm thời',
     'If you do not do this, please ignore this email' =>'Nếu bạn không làm điều  này, hãy bỏ qua email này',
+    'Status'                =>'Trạng thái',
 ];

@@ -36,7 +36,8 @@ $this->title = Yii::t('app', Constants::website_name);
 
 <?php 
 $mProduct = new Products();
-$aProduct = $mProduct->getAll();
+$mProduct->category_id = Products::CATEGORY_PHONE;
+$aProduct = $mProduct->getByCategory();
 ?>
 <div class="homepage-content">
     <h3 class="medium-title color-bold"><?= Yii::t('app', 'PHONE ACCESSORIES') ?></h3>
