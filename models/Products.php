@@ -39,16 +39,18 @@ class Products extends BaseModel
     
     public $numberTracking; // Number of people are currently tracking this product
     
-    const STT_ACTIVE    = 1;
-    const STT_INACTIVE  = 0;
+    const STT_ACTIVE            = 1;
+    const STT_INACTIVE          = 0;
     
     const CATEGORY_FASHION      = 1;
     const CATEGORY_HOUSEWARE    = 2;
     const CATEGORY_ACCESSORIES  = 3;
     const CATEGORY_PHONE        = 4;
     
-    const TYPE_INCREASE = Users::notify_increase;
-    const TYPE_DECREASE = Users::notify_decrease;
+    const TYPE_INCREASE         = Users::notify_increase;
+    const TYPE_DECREASE         = Users::notify_decrease;
+    
+    const LIMIT_RELATED         = 6;
     
     public static $aStatus = [
         self::STT_ACTIVE   => 'Đang bán',
@@ -266,6 +268,62 @@ class Products extends BaseModel
             $models = Products::find()->where(['category_id' => $this->category_id])->all();
             foreach ($models as $value) {
                 $ret[$value->id] = $value;
+            }
+        }
+        return $ret;
+    }
+    
+    /**
+     * @todo get related product (suggest for user)
+     */
+    public function getRelated(){
+        $ret = [];
+        if(!empty($this->name)){
+//            Extract word from string
+//            $vnChar  = 'áạàảãăắặằẳẵâấậầẩẫéẹèẻẽêếệềểễíịìỉĩóọòỏõôốộồổỗơớợờởỡúụùủũưứựừửữýỵỳỷỹđ';
+//            $vnChar .= 'ÁẠÀẢÃĂẮẶẰẲẴÂẤẬẦẨẪÉẸÈẺẼÊẾỆỀỂỄÍỊÌỈĨÓỌÒỎÕÔỐỘỒỔỖƠỚỢỜỞỠÚỤÙỦŨƯỨỰỪỬỮÝỴỲỶỸĐ';
+//            echo '<pre>';
+//            print_r(str_word_count($this->name, 1, $vnChar));
+//            echo '</pre>';
+            
+            $fmtName        = MyFormat::slugify($this->name, ' ');
+            $aKeyword       = MyFormat::$aKeyword;
+            $kwSuggest      = '';
+            $category       = $this->category_id;
+            foreach ($aKeyword as $kw) {
+                if(stripos($fmtName, $kw) !== FALSE){
+                    $kwSuggest = $kw;
+                }
+            }
+            $kwSuggestSlug  = str_replace(' ', '-', $kwSuggest);
+            $cond           = empty($this->id) ? 
+                                ['like', 'slug', $kwSuggestSlug] :
+                                [
+                                    'and',
+                                    ['like', 'slug', $kwSuggestSlug],
+                                    ['<>', 'id', $this->id]
+                                ];
+            $models         = Products::find()->where($cond)->limit(self::LIMIT_RELATED)->all();
+            foreach ($models as $value) {
+                $ret[$value->id] = $value;
+            }
+            // If not enough, find same type, not in id,...
+            while(count($ret) < self::LIMIT_RELATED){
+                $remain     = self::LIMIT_RELATED-count($models);
+                $aIdNotIn   = array_keys($ret);
+                $aIdNotIn[] = empty($this->id) ? null : $this->id;
+                $cond2      = empty($category) ?
+                                ['not in', 'id', array_filter($aIdNotIn)] :
+                                [
+                                    'and',
+                                    ['category_id' => $this->category_id],
+                                    ['not in', 'id', array_filter($aIdNotIn)]
+                                ];
+                $adtModels  = Products::find()->where($cond2)->limit($remain)->all();
+                foreach ($adtModels as $value) {
+                    $ret[$value->id] = $value;
+                }
+                $category = null; // if same type still not enough, find id not in
             }
         }
         return $ret;

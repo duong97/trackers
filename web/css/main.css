@@ -52,10 +52,12 @@ li.ui-menu-item>div.ui-menu-item-wrapper.ui-state-active{
     background: #f7f7f7;
 }
 .prd-container .prd-image{
+    text-align: center;
     padding: 3px;
 }
 .prd-container .prd-image img{
-    width: 100%;
+    max-width: 100%;
+    height: 165px;
 }
 .prd-container .tracking-label{
     position: absolute;

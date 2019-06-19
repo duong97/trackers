@@ -13,6 +13,28 @@ class MyFormat{
     const date_format       = "d-m-Y";
     const datetime_format   = "d-m-Y H:i";
     
+     /**
+     * @todo array keyword for related product 
+     */
+    public static $aKeyword = [
+        // name
+        'dong ho',
+        'dien thoai',
+        'ao',
+        'ao khoac',
+        'quan',
+        'vay',
+        'loa',
+        'tai nghe',
+        
+        // brand
+        'apple',
+        'samsung',
+        'xiaomi',
+        'huawei',
+        'oppo',
+    ];
+    
     public static function formatCurrency($price){
         if( !is_numeric($price) ) return $price;
         return number_format($price , 0 , '.' , ',') . '₫';
@@ -53,7 +75,7 @@ class MyFormat{
     /*
      * create slug from string ("Đồng hồ [chính hãng]" => "dong-ho-chinh-hang")
      */
-    public static function slugify($str){
+    public static function slugify($str, $separate = '-'){
         $str = preg_replace("/(à|á|ạ|ả|ã|â|ầ|ấ|ậ|ẩ|ẫ|ă|ằ|ắ|ặ|ẳ|ẵ)/", 'a', $str);
         $str = preg_replace("/(è|é|ẹ|ẻ|ẽ|ê|ề|ế|ệ|ể|ễ)/", 'e', $str);
         $str = preg_replace("/(ì|í|ị|ỉ|ĩ)/", 'i', $str);
@@ -68,9 +90,9 @@ class MyFormat{
         $str = preg_replace("/(Ù|Ú|Ụ|Ủ|Ũ|Ư|Ừ|Ứ|Ự|Ử|Ữ)/", 'U', $str);
         $str = preg_replace("/(Ỳ|Ý|Ỵ|Ỷ|Ỹ)/", 'Y', $str);
         $str = preg_replace("/(Đ)/", 'D', $str);
-        $str = str_replace(" ", "-", str_replace("&*#39;","",$str));
+        $str = str_replace(" ", $separate, str_replace("&*#39;","",$str));
         $str = strtolower($str);
-        return preg_replace('/[^A-Za-z0-9\-]/', '', $str);
+        return preg_replace("/[^A-Za-z0-9".$separate."]/", '', $str);
     } 
 
     /**

@@ -162,4 +162,17 @@ $this->params['breadcrumbs'][] = $this->title;
     </div>
     <?php count($aPriceLog)>1 ? include('chart_highstock.php') : "" ?>
     <?php endif; ?>
+    
+    <div style="margin-top: 20px;">
+        <h4><?= Yii::t('app', 'Recommended products') ?></h4>
+        <?php 
+        //Related product
+        $mProduct               = new Products();
+        $mProduct->name         = $aData['name'];
+        $mProduct->id           = isset($aData['id']) ? $aData['id'] : null;
+        $mProduct->category_id  = isset($aData['category_id']) ? $aData['category_id'] : null;
+        $aRelated               = $mProduct->getRelated();
+        ?>
+        <?= \app\components\ProductViewWidget::widget(['aData'=>$aRelated]) ?>
+    </div>
 </div>
