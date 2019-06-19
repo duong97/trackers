@@ -9,14 +9,13 @@ use app\models\SupportedWebsites;
 
 $this->title = $aData['name'];
 $this->params['breadcrumbs'][] = $this->title;
-
-$urlManager     = \Yii::$app->getUrlManager();
 ?>
 <div class="container-fluid">
     <div class="row">
         <div class="col-sm-1"></div>
         <div class="col-sm-4">
             <?php 
+            $sellerLogo = '';
             $productUrl = isset($_GET['url']) ? $_GET['url'] : "";
             $imgUrl     = isset($aData['image']) ? $aData['image'] : ""; 
             $status     = isset($aData['status']) ? $aData['status'] : Products::STT_ACTIVE;
@@ -57,7 +56,14 @@ $urlManager     = \Yii::$app->getUrlManager();
                     <input type="hidden" name="Products[image]" value="<?= $imgUrl ?>">
 
                     <div class="form-group">
+                        <?php 
+                        if(isset($aData['seller_id'])): 
+                            $aSeller    = SupportedWebsites::getArraySeller();
+                            $sellerLogo = isset($aSeller[$aData['seller_id']]) ? $aSeller[$aData['seller_id']] : '';
+                        endif;
+                        ?>
                         <?= Html::submitButton(Yii::t('app', 'Start tracking'), ['class' => 'btn btn-primary', Yii::$app->user->isGuest ? 'disabled' : null]) ?>
+                        <?= Html::a(Yii::t('app', 'Go to shop').' '.$sellerLogo, $productUrl, ['class' => 'btn btn-default', 'target'=>'_blank']) ?>
                         <?php if(Yii::$app->user->isGuest): ?>
                             <?php 
                                 $urlLogin = Url::to(['/site/login']);
@@ -82,19 +88,10 @@ $urlManager     = \Yii::$app->getUrlManager();
                 <p class="label label-default">
                     <?= Yii::t('app', 'End date') . ": " . (empty($endDate) ? Yii::t('app', 'Until canceled') : MyFormat::formatDate($endDate)) ?>
                 </p><br><br>
-                
-                    <?php 
-                    $sellerLogo     = '';
-                    if(isset($aData['seller_id'])): 
-                        $aSeller    = SupportedWebsites::getArraySeller();
-                        $sellerLogo = isset($aSeller[$aData['seller_id']]) ? $aSeller[$aData['seller_id']] : '';
-                    endif;
-                    ?>
                     <?php $url = Url::to(['/user/default/stop-tracking', 'id' => $aData['id']]); ?>
                     <?= Html::a(Yii::t('app', 'Stop tracking'), $url, ['class' => 'btn btn-danger']) ?>
 
             <?php } ?>
-            <?= Html::a(Yii::t('app', 'Go to shop').' '.$sellerLogo, $productUrl, ['class' => 'btn btn-default', 'target'=>'_blank']) ?>
         </div>
         <div class="col-sm-1"></div>
     </div>
