@@ -75,10 +75,10 @@ $config = [
                 'port' => '465', 
                 'encryption' => 'ssl', 
             ],
-            'messageConfig' => [
-                'charset' => 'UTF-8',
-                'from' => ['admin@chartcost.com' => 'ChartCost.Com'],
-            ],
+//            'messageConfig' => [
+//                'charset' => 'UTF-8',
+//                'from' => ['admin@chartcost.com' => 'ChartCost.Com'],
+//            ],
         ],
         'log' => [
             'traceLevel' => YII_DEBUG ? 3 : 0,

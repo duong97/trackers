@@ -5,6 +5,7 @@ use yii\helpers\Url;
 use yii\bootstrap\ActiveForm;
 use app\models\UserTracking;
 use app\models\Products;
+use app\models\SupportedWebsites;
 
 $this->title = $aData['name'];
 $this->params['breadcrumbs'][] = $this->title;
@@ -82,11 +83,18 @@ $urlManager     = \Yii::$app->getUrlManager();
                     <?= Yii::t('app', 'End date') . ": " . (empty($endDate) ? Yii::t('app', 'Until canceled') : MyFormat::formatDate($endDate)) ?>
                 </p><br><br>
                 
+                    <?php 
+                    $sellerLogo     = '';
+                    if(isset($aData['seller_id'])): 
+                        $aSeller    = SupportedWebsites::getArraySeller();
+                        $sellerLogo = isset($aSeller[$aData['seller_id']]) ? $aSeller[$aData['seller_id']] : '';
+                    endif;
+                    ?>
                     <?php $url = Url::to(['/user/default/stop-tracking', 'id' => $aData['id']]); ?>
                     <?= Html::a(Yii::t('app', 'Stop tracking'), $url, ['class' => 'btn btn-danger']) ?>
 
             <?php } ?>
-            <?= Html::a(Yii::t('app', 'Go to shop'), $productUrl, ['class' => 'btn btn-success', 'target'=>'_blank']) ?>
+            <?= Html::a(Yii::t('app', 'Go to shop').' '.$sellerLogo, $productUrl, ['class' => 'btn btn-default', 'target'=>'_blank']) ?>
         </div>
         <div class="col-sm-1"></div>
     </div>

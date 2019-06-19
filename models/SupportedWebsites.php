@@ -14,6 +14,7 @@ namespace app\models;
 
 use Yii;
 use yii\data\ActiveDataProvider;
+use yii\helpers\Html;
 
 /**
  * This is the model class for table "supported_websites".
@@ -171,6 +172,19 @@ class SupportedWebsites extends BaseModel
         $ret    = [];
         foreach ($models as $value) {
             $ret[$value->id] = $value;
+        }
+        return $ret;
+    }
+    
+    /**
+     * @todo get array logo of seller
+     */
+    public static function getArraySeller(){
+        $mSW = new SupportedWebsites();
+        $aSeller = $mSW->getAll();
+        $ret = [];
+        foreach ($aSeller as $seller_id => $item) {
+            $ret[$seller_id] = Html::img($item->getLogoUrl(), ['alt'=>$item->name, 'class'=>'logo']);
         }
         return $ret;
     }
