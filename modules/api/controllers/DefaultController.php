@@ -34,6 +34,15 @@ class DefaultController extends BaseController
     public function actionGetProductHistory($url)
     {
         Yii::$app->response->format = Response:: FORMAT_JSON;
+        $get        = Yii::$app->request->get();
+        $token      = isset($get['token']) ? $get['token'] : '';
+        $appToken   = 'ad8912mJ!alY%1dDXj3j1312akjdD';
+        if(empty($token) || $token != $appToken){
+            return [
+                'status' => 'fail',
+                'message'=> 'Missing params',
+            ];
+        }
         $mPriceLogs = new PriceLogs();
         $aLogs      = $mPriceLogs->getByUrl($url, true);
         $chartData  = $mPriceLogs->getChartData($aLogs);
