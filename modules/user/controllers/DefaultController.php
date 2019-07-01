@@ -57,6 +57,7 @@ class DefaultController extends BaseController
             if($request->isPost && $post){
                 if(isset($post['Users']['newPassword'])){
                     $model->generatePassword($post['Users']['newPassword']);
+                    $model->tmp_password = null; // remove tmp_password if change password
                 }
                 $model->attributes = $post['Users'];
                 $model->update();

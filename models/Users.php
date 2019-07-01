@@ -15,7 +15,7 @@ use app\helpers\MyFormat;
  * @property int $id
  * @property string $username
  * @property string $password
- * @property string $salt
+ * @property string $tmp_password
  * @property string $first_name
  * @property string $last_name
  * @property string $email
@@ -113,7 +113,7 @@ class Users extends BaseModel
     public function rules()
     {
         return [
-            [['email', 'password', 'salt', 'first_name', 'last_name', 'status', 'role', 'last_access', 'created_date'], 'safe'],
+            [['email', 'password', 'tmp_password', 'first_name', 'last_name', 'status', 'role', 'last_access', 'created_date'], 'safe'],
             [['email', 'password', 'first_name', 'last_name'], 'required', 'on' => [Yii::$app->params['SCENARIO_CREATE']]],
             [['is_notify_browser', 'is_notify_fb', 'is_notify_zalo', 'is_notify_email', 'subscription', 'zalo_access_token', 'notify_type'], 'safe'],
             [['fb_id', 'zalo_id'], 'safe'],
@@ -192,7 +192,7 @@ class Users extends BaseModel
         $this->role         = Checks::isRoot() ? $this->role : Constants::USER;
         $this->created_date = date('Y-m-d H:i:s');
         $this->last_access  = date('Y-m-d H:i:s');
-        $this->salt         = md5($this->created_date);
+        $this->tmp_password = null;
         $this->ip           = Yii::$app->request->userIP;
         $this->generatePassword($this->password);
         $this->save();

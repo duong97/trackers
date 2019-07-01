@@ -84,7 +84,7 @@ class Mailer{
         $mUsers     = new Users();
         $user       = $mUsers->getUserByEmail($mail);
         if(empty($user)) return null;
-        $user->generatePassword($tmpPass);
+        $user->tmp_password = md5($tmpPass);
         $user->update();
         $message    = Yii::$app->mailer->compose('forgotPassword',['tempPass'=>$tmpPass]);
         $message->setFrom([Yii::$app->params['verifyEmail'] => 'ChartCost.com'])

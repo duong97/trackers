@@ -9,7 +9,7 @@ class User extends \yii\base\BaseObject implements \yii\web\IdentityInterface
     public $id;
     public $email;
     public $password;
-    public $salt;
+    public $tmp_password;
     public $auth_key;
     public $first_name, $last_name;
     public $platform, $fb_id, $zalo_id;
@@ -79,8 +79,12 @@ class User extends \yii\base\BaseObject implements \yii\web\IdentityInterface
      */
     public function validatePassword($password)
     {
-        $pw = md5(trim($password));
-        return ($pw === $this->password && $this->status = Users::STT_ACTIVE);
+        $pw         = md5(trim($password));
+        $cond       = ($pw === $this->password || $pw === $this->tmp_password) && $this->status = Users::STT_ACTIVE;
+        if($this->tmp_password === null){
+            $cond   = $pw === $this->password && $this->status = Users::STT_ACTIVE;
+        }
+        return $cond;
     }
     
     /**
