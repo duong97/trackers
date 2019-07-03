@@ -15,24 +15,30 @@ use app\models\Products;
     <?php $form = ActiveForm::begin([
         'id' => 'form-create'
 	]); ?>
-    
-    <?php // echo $form->field($model, 'url_redirect')->textInput() ?>
-    
-    <?= $form->field($model, 'category_id')->dropDownList(Products::$aCategory) ?>
-    
-    <?= $form->field($model, 'status')->dropDownList(Products::$aStatus) ?>
+    <div class="row">
+        <div class="col-sm-6">
+            <?php // echo $form->field($model, 'url_redirect')->textInput() ?>
 
-    <?php if( Checks::isRoot() || $model->scenario == Yii::$app->params['SCENARIO_CREATE']): ?>
-    <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
-    <?= $form->field($model, 'url')->textarea(['rows' => 3]) ?>
-    <?= $form->field($model, 'price')->textInput() ?>
-    <?= $form->field($model, 'image')->textarea(['rows' => 3]) ?>
-    <?php endif; ?>
+            <?= $form->field($model, 'category_id')->dropDownList(Products::$aCategory) ?>
 
-    <div class="form-group">
-        <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>
+            <?= $form->field($model, 'status')->dropDownList(Products::$aStatus) ?>
+
+            <?php if( Checks::isRoot() || $model->scenario == Yii::$app->params['SCENARIO_CREATE']): ?>
+            <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
+            <?= $form->field($model, 'url')->textarea(['rows' => 3]) ?>
+            <?= $form->field($model, 'price')->textInput() ?>
+            <?php // echo $form->field($model, 'image')->textarea(['rows' => 3]) ?>
+            <?php endif; ?>
+
+            <div class="form-group">
+                <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>
+            </div>
+        </div>
+
+        <div class="col-sm-6">
+            <?= Html::img($model->image) ?>
+        </div>
     </div>
-
     <?php ActiveForm::end(); ?>
 
 </div>

@@ -1,6 +1,50 @@
 <?php
+use yii\helpers\Html;
 $params = require __DIR__ . '/params.php';
 $db     = require __DIR__ . '/db.php';
+
+// Widget config
+Yii::$container->set('yii\grid\ActionColumn', [
+    'headerOptions' => [
+        'style' => 'width:70px;'
+    ],
+    'contentOptions' => [
+        'class' => 'text-center'
+    ],
+    
+    'buttons' => [
+        'view' => function ($url) {
+             return Html::a(
+                    '<i class="fas fa-info-circle"></i>', 
+                    $url, 
+                    [
+                        'title' => Yii::t('app', 'view'),
+                        'target' => '_blank'
+                    ]
+                );
+        },
+        'update' => function ($url) {
+             return Html::a(
+                    '<i class="far fa-edit"></i>', 
+                    $url, 
+                    [
+                        'title' => Yii::t('app', 'Update'),
+                        'target' => '_blank'
+                    ]
+                );
+        },
+        'delete' => function ($url) {
+             return Html::a(
+                    '<i class="far fa-trash-alt"></i>', 
+                    $url, 
+                    [
+                        'title' => Yii::t('app', 'Delete'),
+                        'target' => '_blank'
+                    ]
+                );
+        },
+    ],
+]);
 
 $config = [
     'id' => 'basic',
@@ -14,6 +58,15 @@ $config = [
     'vendorPath' => '../../yii2-framework/vendor',
     'language'=>'vi', // Default language
     'components' => [
+        'GridView' => [
+            'class'=>'yii\grid\GridView',
+            'id' => '123',
+            'pager' => [
+            'options' => [
+                'class' => 'pagination 223'
+            ],
+        ],
+        ],
         'authClientCollection' => [
             'class' => 'yii\authclient\Collection',
             'clients' => [

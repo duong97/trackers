@@ -1,5 +1,6 @@
 <?php 
 use app\helpers\MyFormat;
+use app\helpers\Checks;
 use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\bootstrap\ActiveForm;
@@ -56,14 +57,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     <input type="hidden" name="Products[image]" value="<?= $imgUrl ?>">
 
                     <div class="form-group">
-                        <?php 
-                        if(isset($aData['seller_id'])): 
-                            $aSeller    = SupportedWebsites::getArraySeller();
-                            $sellerLogo = isset($aSeller[$aData['seller_id']]) ? $aSeller[$aData['seller_id']] : '';
-                        endif;
-                        ?>
                         <?= Html::submitButton(Yii::t('app', 'Start tracking'), ['class' => 'btn btn-primary', Yii::$app->user->isGuest ? 'disabled' : null]) ?>
-                        <?= Html::a(Yii::t('app', 'Go to shop').' '.$sellerLogo, $productUrl, ['class' => 'btn btn-default', 'target'=>'_blank']) ?>
                         <?php if(Yii::$app->user->isGuest): ?>
                             <?php 
                                 $urlLogin = Url::to(['/site/login']);
@@ -92,6 +86,22 @@ $this->params['breadcrumbs'][] = $this->title;
                     <?= Html::a(Yii::t('app', 'Stop tracking'), $url, ['class' => 'btn btn-danger']) ?>
 
             <?php } ?>
+                
+            <?php 
+                if(isset($aData['seller_id'])): 
+                    $aSeller    = SupportedWebsites::getArraySeller();
+                    $sellerLogo = isset($aSeller[$aData['seller_id']]) ? $aSeller[$aData['seller_id']] : '';
+                endif;
+                $canShowUpdateBtn = Checks::isAdmin() && !empty($aData['id']);
+            ?>
+            <?= Html::a(Yii::t('app', 'Go to shop').' '.$sellerLogo, $productUrl, ['class' => 'btn btn-default', 'target'=>'_blank']) ?>
+                <?php 
+                if($canShowUpdateBtn):
+                    $updateBtn = Url::to(['/admin/products/update', 'id'=>$aData['id']]);
+                    echo Html::a('<i class="far fa-edit"></i>', $updateBtn, ['class' => 'btn btn-default', 'target'=>'_blank']);
+                endif; 
+                ?>
+                
         </div>
         <div class="col-sm-1"></div>
     </div>

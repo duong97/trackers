@@ -152,4 +152,9 @@ return [
     'If you do not do this, please ignore this email' =>'Nếu bạn không làm điều  này, hãy bỏ qua email này',
     'Status'                =>'Trạng thái',
     'Recommended products'  =>'Sản phẩm đề xuất',
+    'Type'                  =>'Loại',
+    'Is Brand'              =>'Nhãn hiệu',
+    'View'                  =>'Xem',
+    'Update'                =>'Cập nhật',
+    'Delete'                =>'Xóa',
 ];
