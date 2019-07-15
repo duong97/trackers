@@ -48,7 +48,8 @@ $this->params['breadcrumbs'][] = $this->title;
                     <p><b><?= Yii::t('app', 'Notify via Zalo') ?></b></p>
                     <p><?= Yii::t('app', 'Receive notifications via Zalo message, require to link to a Zalo account') . "." ?></p>
                     <?php 
-                    $redirect = 'https://chartcost.com/site/zalo-login';
+//                    $redirect = 'https://chartcost.com/site/zalo-login';
+                    $redirect = Url::to(['/site/zalo-login'], true);
                     $urlZalo  = "https://oauth.zaloapp.com/v3/auth?app_id=".Yii::$app->params['zalo_app_id']."&redirect_uri=$redirect" 
                     ?>
                     <i>

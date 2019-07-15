@@ -46,6 +46,16 @@ class Products extends BaseModel
     const CATEGORY_HOUSEWARE    = 2;
     const CATEGORY_ACCESSORIES  = 3;
     const CATEGORY_PHONE        = 4;
+    const CATEGORY_ELICTRONIC   = 5;  // Thời trang
+    const CATEGORY_LAPTOP       = 6;  // Đồ gia dụng
+    const CATEGORY_CAMERA       = 7;  // Phụ kiện
+    const CATEGORY_LIFE         = 8;  // Điện thoại - Máy tính bảng
+    const CATEGORY_FOOD         = 9;  // Điện tử - Điện lạnh
+    const CATEGORY_TOY          = 10; // Máy tính - IT
+    const CATEGORY_HEALTH       = 11; // Máy ảnh - Máy quay phim
+    const CATEGORY_SPORT        = 12; // Đời sống
+    const CATEGORY_VEHICLE      = 13; // Thực phẩm
+    const CATEGORY_BOOK         = 14; // Đồ chơi
     
     const TYPE_INCREASE         = Users::notify_increase;
     const TYPE_DECREASE         = Users::notify_decrease;
@@ -61,7 +71,23 @@ class Products extends BaseModel
         self::CATEGORY_FASHION      => 'Thời trang',
         self::CATEGORY_HOUSEWARE    => 'Đồ gia dụng',
         self::CATEGORY_ACCESSORIES  => 'Phụ kiện',
-        self::CATEGORY_PHONE        => 'Điện thoại',
+        self::CATEGORY_PHONE        => 'Điện thoại - Máy tính bảng',
+        self::CATEGORY_ELICTRONIC   => 'Điện tử - Điện lạnh',
+        self::CATEGORY_LAPTOP       => 'Máy tính - IT',
+        self::CATEGORY_CAMERA       => 'Máy ảnh - Máy quay phim',
+        self::CATEGORY_LIFE         => 'Đời sống',
+        self::CATEGORY_FOOD         => 'Thực phẩm',
+        self::CATEGORY_TOY          => 'Đồ chơi',
+        self::CATEGORY_HEALTH       => 'Sức khỏe',
+        self::CATEGORY_SPORT        => 'Thể thao',
+        self::CATEGORY_VEHICLE      => 'Xe cộ',
+        self::CATEGORY_BOOK         => 'Sách',
+    ];
+    
+    public static $aCategoryHomePage = [
+        self::CATEGORY_HOUSEWARE,
+        self::CATEGORY_ACCESSORIES,
+        self::CATEGORY_PHONE,
     ];
     
     /**
@@ -173,7 +199,7 @@ class Products extends BaseModel
                 if( count($aUrlParams) < 2){ // https://shopee.vn/product/82239615/1826571737?smtt=0.0.9&fbclid=IwAR1fl1xYSA_WBFDrxSk8fi4EMY5UTIGti0FyY1EMXrjVK_o5kVZ4iH9Wbjo
                     $aUrlParams = explode('/', $url);
                     $shopId     = isset($aUrlParams[4]) ? $aUrlParams[4] : '';
-                    $itemId     = isset(explode('?', $aUrlParams[5])[0]) ? explode('?', $aUrlParams[5])[0] : '';
+                    $itemId     = isset($aUrlParams[5]) && isset(explode('?', $aUrlParams[5])[0]) ? explode('?', $aUrlParams[5])[0] : '';
                 } else {
                     $aId        = explode(".", $aUrlParams[1]);
                     $shopId     = isset($aId[0]) ? $aId[0] : '';
@@ -264,10 +290,15 @@ class Products extends BaseModel
     public function getByCategory(){
         $aCategory  = array_keys(self::$aCategory);
         $ret        = [];
-        if(!empty($this->category_id) && in_array($this->category_id, $aCategory)){
-            $models = Products::find()->where(['category_id' => $this->category_id])->all();
+        $models     = null;
+        if( !empty($this->category_id) ){
+            if( is_array($this->category_id) ){
+                $models = Products::find()->where(['IN', 'category_id', $this->category_id])->all();
+            } else {
+                $models = Products::find()->where(['category_id' => $this->category_id])->all();
+            }
             foreach ($models as $value) {
-                $ret[$value->id] = $value;
+                $ret[$value->category_id][$value->id] = $value;
             }
         }
         return $ret;

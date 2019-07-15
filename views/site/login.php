@@ -83,6 +83,9 @@ $this->params['breadcrumbs'][] = $this->title;
                     ]
                 ]); ?>
                     <?php foreach ($authAuthChoice->getClients() as $client): ?>
+                    <?php 
+                    $client->validateAuthState = false;
+                    ?>
                         <?php $text = $client->getName() == 'google' ? Yii::t('app', 'Login with Google') : $text = Yii::t('app', 'Login with Facebook'); ?>
                         <?= $authAuthChoice->clientLink($client, '<i class="fab fa-'.$client->getName().'"></i> '.$text, ['class'=>$client->getName().' login-social']) ?>
                     <?php endforeach; ?>

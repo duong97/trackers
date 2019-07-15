@@ -205,7 +205,7 @@ class GetData extends BaseModel
         if( count($aUrlParams) < 2){ // https://shopee.vn/product/82239615/1826571737?smtt=0.0.9&fbclid=IwAR1fl1xYSA_WBFDrxSk8fi4EMY5UTIGti0FyY1EMXrjVK_o5kVZ4iH9Wbjo
             $aUrlParams = explode('/', $url);
             $shopId     = isset($aUrlParams[4]) ? $aUrlParams[4] : '';
-            $itemId     = isset(explode('?', $aUrlParams[5])[0]) ? explode('?', $aUrlParams[5])[0] : '';
+            $itemId     = isset($aUrlParams[5]) && isset(explode('?', $aUrlParams[5])[0]) ? explode('?', $aUrlParams[5])[0] : '';
         } else { // https://shopee.vn/-KM-TH%C3%81NG-5-Balo-cao-c%E1%BA%A5p-%C4%91%E1%BB%B1ng-Laptop-Nam-phong-c%C3%A1ch-H%C3%A0n-Qu%E1%BB%91c-(%E1%BA%A2nh-SP-th%E1%BA%ADt)-i.82239615.1826571737
             $aId        = explode(".", $aUrlParams[1]);
             $shopId     = isset($aId[0]) ? $aId[0] : '';

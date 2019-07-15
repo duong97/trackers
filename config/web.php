@@ -58,15 +58,6 @@ $config = [
     'vendorPath' => '../../yii2-framework/vendor',
     'language'=>'vi', // Default language
     'components' => [
-        'GridView' => [
-            'class'=>'yii\grid\GridView',
-            'id' => '123',
-            'pager' => [
-            'options' => [
-                'class' => 'pagination 223'
-            ],
-        ],
-        ],
         'authClientCollection' => [
             'class' => 'yii\authclient\Collection',
             'clients' => [

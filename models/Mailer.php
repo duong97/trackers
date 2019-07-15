@@ -8,6 +8,7 @@
 namespace app\models;
 use Yii;
 use app\models\Users;
+use app\models\Loggers;
 use app\models\Products;
 use app\models\UserTracking;
 
@@ -23,6 +24,8 @@ class Mailer{
                 ->setTo($mail)
                 ->setSubject(Yii::t('app', 'Verify Registration'))
                 ->send();
+        $logMessage = 'Verify email was sent to: '.$mail.' at '.date('Y-m-d H:i:s');
+        Loggers::WriteLog($logMessage, Loggers::type_info);
     }
     
     /**
@@ -91,6 +94,8 @@ class Mailer{
                 ->setTo($mail)
                 ->setSubject(Yii::t('app', 'Reset password'))
                 ->send();
+        $logMessage = 'Reset password email was sent to: '.$mail.' at '.date('Y-m-d H:i:s');
+        Loggers::WriteLog($logMessage, Loggers::type_info);
     }
 
 }

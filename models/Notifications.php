@@ -191,9 +191,9 @@ class Notifications{
         $jRes   = curl_exec($ch);
         $aRes   = json_decode($jRes, true);
         if($aRes['error'] == 0){
-            Loggers::WriteLog('Notify Zalo successful: '.$jRes, Loggers::type_info);
+            Loggers::WriteLog('Notify Zalo successful: '.$jRes.' - Zalo ID: '.$zaloId, Loggers::type_info);
         } else {
-            Loggers::WriteLog('Notify Zalo error: '.$jRes, Loggers::type_app_error);
+            Loggers::WriteLog('Notify Zalo error: '.$jRes.' - Zalo ID: '.$zaloId, Loggers::type_app_error);
         }
         curl_close($ch);
     }

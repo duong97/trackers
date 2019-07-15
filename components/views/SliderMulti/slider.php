@@ -4,10 +4,10 @@ use app\models\UserTracking;
 use yii\helpers\Url;
 ?>
 <div class="slider-out-top">
-    <div class="h-slide-thumb col-sm-2">
-        <img src="<?= Url::to('@web/images/thumb/phone.jpg'); ?>">
-    </div>
-    <div class="carousel slide col-sm-10" data-ride="carousel" data-type="multi" data-interval="3000" id="myCarousel">
+<!--    <div class="h-slide-thumb col-sm-2">
+        <img src="<?php // echo  Url::to('@web/images/thumb/phone.jpg'); ?>">
+    </div>-->
+    <div class="carousel slide col-sm-12" data-ride="carousel" data-type="multi" data-interval="3000" id="myCarousel">
         <div class="carousel-inner">
             <?php if(!empty($aData)): ?>
                 <?php $i = 0; ?>

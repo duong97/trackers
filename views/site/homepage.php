@@ -35,14 +35,21 @@ $this->title = Yii::t('app', Constants::website_name);
 
 
 <?php 
-$mProduct = new Products();
-$mProduct->category_id = Products::CATEGORY_PHONE;
-$aProduct = $mProduct->getByCategory();
+$aCategory              = Products::$aCategory;
+$mProduct               = new Products();
+$mProduct->category_id  = Products::$aCategoryHomePage;
+$aProduct               = $mProduct->getByCategory();
 ?>
-<div class="homepage-content">
-    <h3 class="medium-title color-bold"><?= Yii::t('app', 'PHONE ACCESSORIES') ?></h3>
-    <?= \app\components\SliderMultiWidget::widget(['aData'=>$aProduct]) ?>
-</div>
+<?php foreach ($aProduct as $category_id => $aPrd): ?>
+    <div class="homepage-content">
+        <!--<h3 class="medium-title color-bold"><?php // echo Yii::t('app', 'PHONE ACCESSORIES') ?></h3>-->
+        <h3 class="container">
+            <i class="fas fa-angle-right"></i>
+            <?php echo isset($aCategory[$category_id]) ? $aCategory[$category_id] : '' ?>
+        </h3>
+        <?= \app\components\SliderMultiWidget::widget(['aData'=>$aPrd]) ?>
+    </div>
+<?php endforeach; ?>
 
 <!--List supported website-->
 <div class="list-support-website">

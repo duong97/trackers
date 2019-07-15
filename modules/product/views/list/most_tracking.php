@@ -1,5 +1,7 @@
 <?php 
 use yii\widgets\LinkPager;
+use app\models\Products;
+use yii\data\ArrayDataProvider;
 
 $this->title = Yii::t('app', 'The most tracked products');
 $this->params['breadcrumbs'][] = $this->title;

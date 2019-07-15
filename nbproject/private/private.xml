@@ -1,11 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
-    <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
+    <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="1">
+        <file>
+            <url>modules/product/views/list/most_tracking.php</url>
+            <bookmark id="1">
+                <name/>
+                <line>0</line>
+                <key/>
+            </bookmark>
+        </file>
+    </editor-bookmarks>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/var/www/html/trackers/config/params.php</file>
+            <file>file:/var/www/html/trackers/models/Products.php</file>
+            <file>file:/var/www/html/trackers/components/views/ProductView/_item.php</file>
+            <file>file:/var/www/html/trackers/modules/product/controllers/ListController.php</file>
+            <file>file:/var/www/html/trackers/components/views/ProductView/index_listview.php</file>
+            <file>file:/var/www/html/trackers/components/ProductViewWidget.php</file>
             <file>file:/var/www/html/trackers/models/Mailer.php</file>
             <file>file:/var/www/html/trackers/config/web.php</file>
+            <file>file:/var/www/html/trackers/modules/product/views/list/most_tracking.php</file>
         </group>
     </open-files>
 </project-private>

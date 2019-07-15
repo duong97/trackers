@@ -25,8 +25,8 @@ use app\models\Products;
 
             <?php if( Checks::isRoot() || $model->scenario == Yii::$app->params['SCENARIO_CREATE']): ?>
             <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
-            <?= $form->field($model, 'url')->textarea(['rows' => 3]) ?>
-            <?= $form->field($model, 'price')->textInput() ?>
+            <?php // echo $form->field($model, 'url')->textarea(['rows' => 3]) ?>
+            <?php // echo $form->field($model, 'price')->textInput() ?>
             <?php // echo $form->field($model, 'image')->textarea(['rows' => 3]) ?>
             <?php endif; ?>
 
