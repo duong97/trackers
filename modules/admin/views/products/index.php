@@ -19,7 +19,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
     <p>
-        <?= Html::a('Tạo mới sản phẩm', ['create'], ['class' => 'btn btn-success']) ?>
+        <?php // echo Html::a('Tạo mới sản phẩm', ['create'], ['class' => 'btn btn-success']) ?>
     </p>
 
     <?php Pjax::begin(); ?>

@@ -206,9 +206,17 @@ input:checked + .slider:before {
 .home-background{
     width: 100%;
     height: 670px;
-    background-image: linear-gradient(#279033, #008555, #00776A);
     position: relative;
 }
+.home-background::before{
+    content: "";
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background-image: url("/images/general/background_low.jpg");
+    filter: brightness(0.9);
+}
+
 .banner-container{
     position: relative;
     width: 100%;
@@ -227,7 +235,7 @@ input:checked + .slider:before {
     font-weight: bold; 
     line-height: 40px; 
     margin: 0 0 18px; 
-    text-shadow: 1px 0 0 #fff;
+    text-shadow: 3px 4px 5px #403a3a;
 }
 /*Description*/
 .home-background>.banner-container>p{
@@ -235,9 +243,10 @@ input:checked + .slider:before {
     width: 100%;
     text-align: center;
     top: 55px;
-    color: white;
+    color: #272727;
     font-size: 16px; 
     padding: 10px 20%;
+    background: rgba(255, 255, 255, 0.39);
 }
 /*Link/button*/
 .home-background>.banner-container>.button-container{
@@ -252,6 +261,7 @@ input:checked + .slider:before {
     border: 3px solid white;
     font-family: 'Open Sans Condensed', sans-serif;
     color: white;
+    background: #377868;
     padding: 8px 18px;
     font-size: 22px;
     text-decoration: none;

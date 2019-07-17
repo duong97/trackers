@@ -56,6 +56,7 @@ class Products extends BaseModel
     const CATEGORY_SPORT        = 12; // Đời sống
     const CATEGORY_VEHICLE      = 13; // Thực phẩm
     const CATEGORY_BOOK         = 14; // Đồ chơi
+    const CATEGORY_TRAVEL       = 15; // Du lịch
     
     const TYPE_INCREASE         = Users::notify_increase;
     const TYPE_DECREASE         = Users::notify_decrease;
@@ -82,12 +83,15 @@ class Products extends BaseModel
         self::CATEGORY_SPORT        => 'Thể thao',
         self::CATEGORY_VEHICLE      => 'Xe cộ',
         self::CATEGORY_BOOK         => 'Sách',
+        self::CATEGORY_TRAVEL       => 'Du lịch - Dã ngoại',
     ];
     
     public static $aCategoryHomePage = [
         self::CATEGORY_HOUSEWARE,
         self::CATEGORY_ACCESSORIES,
         self::CATEGORY_PHONE,
+        self::CATEGORY_TRAVEL,
+        self::CATEGORY_FASHION,
     ];
     
     /**
