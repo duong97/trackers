@@ -39,7 +39,7 @@ use yii\data\Pagination;
     ],
     'layout' => "{items}\n<div class='clearfix'></div>{summary}{pager}",
     'itemView' => function ($model, $key, $index, $widget) {
-        return $this->render('_item', ['mProduct' => $model]);
+        return $this->render('_item', ['model' => $model]);
     },
 ]);
 

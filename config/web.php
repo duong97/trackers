@@ -39,7 +39,8 @@ Yii::$container->set('yii\grid\ActionColumn', [
                     $url, 
                     [
                         'title' => Yii::t('app', 'Delete'),
-                        'target' => '_blank'
+                        'data-confirm' => Yii::t('app', 'Are you sure you will delete this item?'),
+                        'data-method' => "post",
                     ]
                 );
         },

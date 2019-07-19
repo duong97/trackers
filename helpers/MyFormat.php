@@ -6,12 +6,15 @@
  * and open the template in the editor.
  */
 namespace app\helpers;
+use Yii;
+use DateTime;
 
 class MyFormat{
     
-    const str_max_length    = 30;
-    const date_format       = "d-m-Y";
-    const datetime_format   = "d-m-Y H:i";
+    const str_max_length            = 30;
+    const description_max_length    = 150;
+    const date_format               = "d-m-Y";
+    const datetime_format           = "d-m-Y H:i";
     
      /**
      * @todo array keyword for related product 
@@ -40,8 +43,8 @@ class MyFormat{
         return number_format($price , 0 , '.' , ',') . '₫';
     }
     
-    public static function shortenName($name){
-        return (strlen($name) > self::str_max_length) ? mb_substr($name, 0, self::str_max_length,"utf-8")."..." : $name;
+    public static function shortenName($name, $length = self::str_max_length){
+        return (strlen($name) > $length) ? mb_substr($name, 0, $length,"utf-8")."..." : $name;
     }
     
     /*
@@ -136,6 +139,44 @@ class MyFormat{
             $number = $matches[0];
         }
         return (int)$number;
+    }
+    
+    /**
+     * get current user id
+     */
+    public static function getCurrentUid(){
+        if( Yii::$app->user->isGuest ) return null;
+        return Yii::$app->user->id;
+    }
+    
+    public static function addValue(&$var, $val){
+        if( empty($var) ){
+            $var = $val;
+        } else {
+            $var += $val;
+        }
+    }
+    
+    public static function timeTilNow($datetime){
+        $prev   = new DateTime($datetime);
+        $now    = new DateTime('now');
+        
+        // The diff-methods returns a new DateInterval-object...
+        $diff   = $prev->diff($now);
+        
+        $days   = $diff->format('%a');
+        $hour   = $diff->format('%h');
+        $minute = $diff->format('%i');
+        $second = $diff->format('%s');
+        
+        $res    = '';
+        $days  += ($hour >= 18) ? 1 : 0;
+        $res    = "$days ngày trước";
+        
+        if(empty($days))    $res = "$hour giờ trước";
+        if(empty($hour))    $res = "$minute phút trước";
+        if(empty($minute))  $res = "$second giây trước";
+        return $res;
     }
 }
 

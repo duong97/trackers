@@ -48,6 +48,7 @@ AppAsset::register($this);
             'items' => [
                 ['label' => Yii::t('app', 'Home'), 'url' => Yii::$app->homeUrl],
                 ['label' => Yii::t('app', 'The most tracking'), 'url' => ['/product/list/most-tracking']],
+                ['label' => 'Blog', 'url' => ['/site/blog']],
                 ['label' => Yii::t('app', 'Supported websites'), 'url' => ['/site/supported-websites']],
                 ['label' => Yii::t('app', 'About'), 'url' => ['/site/about']],
     //            ['label' => Yii::t('app', 'Contact'), 'url' => ['/site/contact']],

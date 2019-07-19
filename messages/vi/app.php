@@ -157,4 +157,9 @@ return [
     'View'                  =>'Xem',
     'Update'                =>'Cập nhật',
     'Delete'                =>'Xóa',
+    'Are you sure you will delete this item?' => 'Bạn có chắc là sẽ xóa mục này không?',
+    'Title'                 =>'Tiêu đề',
+    'Description'           =>'Mô tả',
+    'Content'               =>'Nội dung',
+    'Created By'            =>'Tạo bởi',
 ];

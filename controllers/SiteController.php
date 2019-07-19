@@ -13,8 +13,10 @@ use app\models\ContactForm;
 use app\models\Users;
 use app\models\SupportedWebsites;
 use app\models\Mailer;
+use app\models\Blog;
 
 use app\helpers\Constants;
+use app\helpers\Checks;
 use yii\helpers\Url;
 use yii\helpers\Html;
 use yii\data\ActiveDataProvider;
@@ -273,6 +275,42 @@ class SiteController extends BaseController
             return $this->render('supported_websites', [
                 'dataProvider' => $dataProvider,
             ]);
+        } catch (Exception $exc) {
+            
+        }
+    }
+    
+    /*
+     * Blog
+     */
+    public function actionBlog($view = ''){
+        try {
+            if( empty($view) ):
+                $type  = isset($_GET['type']) ? $_GET['type'] : '';
+                $query = Blog::find();
+                if(in_array($type, array_keys(Blog::$aType))){
+                    $query->where(['type'=>$type]);
+                }
+                $dataProvider = new ActiveDataProvider([
+                        'query' => $query->orderBy(['id'=>SORT_DESC]),
+                        'pagination' => [
+                            'pageSize' => DEFAULT_PAGE_SIZE,
+                        ],
+                    ]);
+                $mBlog          = new Blog();
+                $aDataReport    = $mBlog->getReportForList();
+                return $this->render('blog', [
+                    'dataProvider' => $dataProvider,
+                    'aDataReport'  => $aDataReport,
+                ]);
+            else:
+                $mBlog = new Blog();
+                $mBlog = $mBlog->getModelFromSlug($view);
+                if(empty($mBlog)) Checks::notFoundExc ();
+                return $this->render('blog_view', [
+                    'model' => $mBlog,
+                ]);
+            endif;
         } catch (Exception $exc) {
             
         }

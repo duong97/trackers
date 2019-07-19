@@ -93,16 +93,15 @@ class SupportedWebsitesController extends BaseController
                     Yii::$app->session->setFlash('error', 'Lỗi upload file.');
                     return $this->redirect(['create']);
                 }
-                if ( !$model->save() ) {
-                    echo '<pre>';
-                    print_r($model->getErrors());
-                    echo '</pre>';
-                    die;
+                if ( $model->hasErrors() ) {
                     Yii::$app->session->setFlash('error', 'System error.');
+                    return $this->redirect(['create']);
+                } else {
+                    Yii::$app->session->setFlash('success', 'Create successful.');
                     return $this->redirect(['create']);
                 }
                 
-                $model->save();
+//                $model->save();
                 return $this->redirect(['view', 'id' => $model->id]);
             }
 

@@ -4,6 +4,7 @@ namespace app\models;
 
 use Yii;
 use app\models\ActionRoles;
+use app\helpers\MyFormat;
 
 class BaseModel extends \yii\db\ActiveRecord
 {
@@ -11,6 +12,10 @@ class BaseModel extends \yii\db\ActiveRecord
         if($this->isNewRecord){
             if($this->hasAttribute('created_date') ){
                 $this->created_date = empty($this->created_date) ? date('Y-m-d H:i:s') : $this->created_date;
+            }
+            if($this->hasAttribute('created_by') ){
+                $cUid = MyFormat::getCurrentUid();
+                $this->created_by = $cUid;
             }
             if($this->hasAttribute('updated_date') ){
                 $this->updated_date = empty($this->updated_date) ? date('Y-m-d H:i:s') : $this->updated_date;
