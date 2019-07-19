@@ -1,6 +1,8 @@
 <?php 
 use yii\helpers\Url;
 use app\helpers\MyFormat;
+use app\helpers\Checks;
+use yii\helpers\Html;
 ?>
 <li>
     <div>
@@ -21,6 +23,9 @@ use app\helpers\MyFormat;
         <!--Mô tả-->
         <p class="blog-des">
             <?= MyFormat::shortenName($model->description, MyFormat::description_max_length); ?>
+            <?php if(Checks::isAdmin()): ?>
+                <?= Html::a('<i class="far fa-edit"></i>', ['/admin/blog/update', 'id'=>$model->id], ['target'=>'_blank']) ?>
+            <?php endif; ?>
         </p>
 
         <!--Thời gian-->

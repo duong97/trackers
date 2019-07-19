@@ -16,6 +16,8 @@ use Yii;
 use yii\data\ActiveDataProvider;
 use app\models\UploadForm;
 use app\helpers\MyFormat;
+use yii\helpers\Html;
+use yii\helpers\Url;
 
 /**
  * This is the model class for table "blog".
@@ -92,6 +94,21 @@ class Blog extends BaseModel
         ];
     }
     
+    /**
+     * @todo relation
+     */
+    public function getRCreatedBy()
+    {
+        return $this->hasOne(Users::className(), ['id' => 'created_by']);
+    }
+    
+    public function getCreatedBy(){
+        if(isset($this->rCreatedBy)){
+            return $this->rCreatedBy->getFullName();
+        }
+        return '';
+    }
+    
     public function getType(){
         $aType = Blog::$aType;
         return isset($aType[$this->type]) ? $aType[$this->type] : '';
@@ -106,6 +123,15 @@ class Blog extends BaseModel
         if( empty($this->thumb) ) return '';
         $mUploadForm = new UploadForm();
         return $mUploadForm->getRelativeUploadPath().$this->thumb;
+    }
+    
+    public function getThumbnailHtml($size = 150){
+        $url = $this->getThumbnailUrl();
+        return Html::img($url, ['style'=>'max-width:'.$size.'px;']);
+    }
+    
+    public function getUrlUserView(){
+        return Url::to(['/site/blog', 'view'=> $this->getSlug()]);
     }
     
     public function getSlug(){
@@ -123,11 +149,11 @@ class Blog extends BaseModel
         $query = Blog::find();
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
-//            'sort' => [
-//                'defaultOrder' => [
-//                    'created_date' => SORT_DESC,
-//                ]
-//            ],
+            'sort' => [
+                'defaultOrder' => [
+                    'id' => SORT_DESC,
+                ]
+            ],
             'pagination' => [ 
                 'pageSize'=> isset(Yii::$app->params['defaultPageSize']) ? Yii::$app->params['defaultPageSize'] : 10,
             ],
@@ -136,8 +162,13 @@ class Blog extends BaseModel
         if (!($this->load($params) && $this->validate())) {
             return $dataProvider;
         }
+        $this->created_date = MyFormat::formatSqlDate($this->created_date);
+        
         // We have to do some search... Lets do some magic
-        $query->andFilterWhere(['like', 'name', $this->name]);
+        $query->andFilterWhere(['like', 'LOWER(title)', $this->title])
+                ->andFilterWhere(['type'=> $this->type, 'status'=> $this->status, 'DATE(created_date)'=> $this->created_date])
+                ->andFilterWhere(['like', 'created_by', $this->created_by])
+                ->andFilterWhere(['like', 'description', $this->description]);
 //        ->andFilterWhere([]);
         return $dataProvider;
     }

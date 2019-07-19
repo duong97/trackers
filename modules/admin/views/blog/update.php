@@ -5,7 +5,7 @@ use yii\helpers\Html;
 /* @var $this yii\web\View */
 /* @var $model app\models\Blog */
 
-$this->title = Yii::t('app', 'Update Blog: {name}', [
+$this->title = Yii::t('app', 'Chỉnh sửa bài viết: {name}', [
     'name' => $model->title,
 ]);
 $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Blog'), 'url' => ['index']];

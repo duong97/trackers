@@ -3,6 +3,7 @@
 use yii\helpers\Html;
 use yii\widgets\DetailView;
 use app\helpers\MyFormat;
+use app\models\Blog;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\Blog */
@@ -37,47 +38,59 @@ $this->params['breadcrumbs'][] = $this->title;
                 }
             ],
             [
-                'attribute' => 'title',
+                'attribute' => 'thumb',
+                'format' => 'raw',
                 'value' => function($model){
-                    return $model->title;
+                    return $model->getThumbnailHtml();
+                }
+            ],
+            [
+                'attribute' => 'title',
+                'format' => 'raw',
+                'value' => function($model){
+                    return Html::a($model->title, $model->getUrlUserView(), ["target"=>'_blank']);
                 }
             ],
             [
                 'attribute' => 'description',
                 'value' => function($model){
                     return $model->description;
-                }
-            ],
-            [
-                'attribute' => 'content',
-                'value' => function($model){
-                    return $model->content;
-                }
+                },
+                'options' => [
+                    'style' => 'width: 300px;'
+                ]
             ],
             [
                 'attribute' => 'type',
                 'value' => function($model){
-                    return $model->type;
+                    return $model->getType();
                 }
             ],
             [
                 'attribute' => 'status',
                 'value' => function($model){
-                    return $model->status;
-                }
-            ],
-            [
-                'attribute' => 'created_by',
-                'value' => function($model){
-                    return $model->created_by;
+                    return $model->getStatus();
                 }
             ],
             [
                 'attribute' => 'created_date',
                 'value' => function($model){
-                    return $model->created_date;
+                    return MyFormat::formatDatetime($model->created_date);
                 }
             ],
+            [
+                'attribute' => 'created_by',
+                'value' => function($model){
+                    return $model->getCreatedBy();
+                }
+            ],
+            [
+                'attribute' => 'content',
+                'format'=>'raw',
+                'value' => function($model){
+                    return $model->content;
+                }
+            ]
         ],
     ]) ?>
 
