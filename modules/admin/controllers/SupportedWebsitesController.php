@@ -96,12 +96,9 @@ class SupportedWebsitesController extends BaseController
                 if ( $model->hasErrors() ) {
                     Yii::$app->session->setFlash('error', 'System error.');
                     return $this->redirect(['create']);
-                } else {
-                    Yii::$app->session->setFlash('success', 'Create successful.');
-                    return $this->redirect(['create']);
                 }
-                
-//                $model->save();
+                $model->save();
+                Yii::$app->session->setFlash('success', 'Create successful.');
                 return $this->redirect(['view', 'id' => $model->id]);
             }
 
