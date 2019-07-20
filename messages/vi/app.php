@@ -165,4 +165,5 @@ return [
     'Create Blog'           =>'Tạo bài viết',
     'Blog'                  =>'Bài viết',
     'Load more'             =>'Xem thêm',
+    'No data yet.'          =>'Chưa có dữ liệu.',
 ];

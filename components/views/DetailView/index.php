@@ -171,6 +171,8 @@ $this->params['breadcrumbs'][] = $this->title;
         </div>
     </div>
     <?php count($aPriceLog)>1 ? include('chart_highstock.php') : "" ?>
+    <?php else: ?>
+        <?= Yii::t('app', 'No data yet.') ?>
     <?php endif; ?>
     
     <div style="margin-top: 20px;">
