@@ -10,6 +10,7 @@ use app\models\UserData;
 use app\helpers\Constants;
 use app\helpers\MyFormat;
 use app\helpers\Checks;
+use yii\data\ActiveDataProvider;
 
 class GetData extends BaseModel
 {
@@ -134,35 +135,21 @@ class GetData extends BaseModel
             $mUserData->handleUserKeyword($keyword);
         }
         $slugKeyword    = MyFormat::slugify($keyword);
-        $aProduct       = Products::find()
-                            ->where([
-                                'like',
-                                'slug',
-                                $slugKeyword
-                            ])
-                            ->andWhere(['status'=> Products::STT_ACTIVE])->all();
-        $ret            = [];
-        $aProductId     = [];
-        foreach ($aProduct as $p) {
-            $aProductId[$p->id] = $p->id;
-        }
-        $aTracking = UserTracking::find()
-                        ->select(['count(id) as id', 'product_id'])
-                        ->where(['in', 'product_id', $aProductId])
-                        ->groupBy(['product_id'])
-                        ->all();
-        $aTrackingInfo  = [];
-        $mPriceLog      = new PriceLogs();
-        $aLogInfo       = $mPriceLog->getArrayLastPrice($aProductId, true);
-        foreach ($aTracking as $t) {
-            $aTrackingInfo[$t->product_id] = $t->id;
-        }
-        foreach ($aProduct as $p) {
-            $p->numberTracking  = isset($aTrackingInfo[$p->id]) ? $aTrackingInfo[$p->id] : 0;
-            $p->price           = isset($aLogInfo[$p->id]) ? $aLogInfo[$p->id] : $p->price;
-            $ret[$p->id]        = $p;
-        }
-        return $ret;
+        $query = Products::find()
+                    ->alias('p')
+                    ->select(['p.*', 'count(u.id) as numberTracking'])
+                    ->innerJoin('user_tracking u', 'p.id=u.product_id')
+                    ->where(['like', 'slug', $slugKeyword])
+                    ->groupBy(['p.id'])
+                    ->orderBy(['numberTracking' => SORT_DESC]);
+        
+        $dataProvider = new ActiveDataProvider([
+            'query' => $query,
+            'pagination' => [
+                'pageSize' => DEFAULT_PAGE_SIZE,
+            ],
+        ]);
+        return $dataProvider;
     }
 
     /*

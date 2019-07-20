@@ -13,10 +13,10 @@
 namespace app\modules\product\controllers;
 
 use app\controllers\BaseController;
-use app\models\UserTracking;
-use app\helpers\Checks;
-use yii\data\Pagination;
+use yii\data\ActiveDataProvider;
 use Yii;
+use app\helpers\Checks;
+use app\models\Products;
 
 /**
  * Default controller for the `product` module
@@ -37,29 +37,21 @@ class ListController extends BaseController
      */
     public function actionMostTracking(){
         try {
-            $query = UserTracking::find()
-                            ->select(['count(id) as id', 'product_id'])
-                            ->groupBy(['product_id'])
-                            ->orderBy(['id' => SORT_DESC]);
-            $countQuery = clone $query;
-            $pages      = new Pagination([
-                            'defaultPageSize' => DEFAULT_PAGE_SIZE,
-                            'totalCount' => $countQuery->count(),
-                        ]);
-            $models     = $query->offset($pages->offset)
-                                ->limit($pages->limit)
-                                ->all();
-            $aData      = [];
-            foreach ($models as $value) {
-                $mProduct = isset($value->rProduct) ? $value->rProduct : null;
-                if($mProduct){
-                    $mProduct->numberTracking = $value->id;
-                    $aData[]                  = $mProduct;
-                }
-            }
+            $query = Products::find()
+                    ->alias('p')
+                    ->select(['p.*', 'count(u.id) as numberTracking'])
+                    ->innerJoin('user_tracking u', 'p.id=u.product_id')
+                    ->groupBy(['p.id'])
+                    ->orderBy(['numberTracking' => SORT_DESC]);
+            $dataProvider = new ActiveDataProvider([
+                'query' => $query,
+                'pagination' => [
+                    'pageSize' => DEFAULT_PAGE_SIZE,
+                ],
+            ]);
+            
             return $this->render('most_tracking', [
-                'aData' => $aData,
-                'pages' => $pages,
+                'dataProvider' => $dataProvider,
             ]);
         } catch (Exception $exc) {
             Checks::catchAllExeption($exc);

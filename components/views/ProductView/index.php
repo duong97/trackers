@@ -74,14 +74,14 @@ use yii\widgets\ActiveForm;
                         </a>
                         <p>
                             <b style="color:#419a13;"><?= MyFormat::formatCurrency($p->price) ?></b>
+                            /
+                            <?= $p->getSeller() ?>
                             <?php if( !empty($p->numberTracking) ): ?>
                             /
                             <i class="label label-info" title="<?= Yii::t('app', 'Number of people tracking this product') ?>">
                                 <i class="fas fa-eye"></i>
                                 <?= $p->numberTracking ?>
                             </i>
-                            /
-                            <?= $p->getSeller() ?>
                             <?php endif; ?>
                         </p>
                     </div>

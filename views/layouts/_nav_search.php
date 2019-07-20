@@ -41,7 +41,7 @@ $session   = \Yii::$app->session;
                                     'my' => 'center top',
                                     'at' => 'center bottom'
                                 ],
-                                'autoFocus' => true,
+//                                'autoFocus' => true,
                                 'select'    => new JsExpression("function( event, ui ) {
                                                 bindSearchNav();
                                             }")

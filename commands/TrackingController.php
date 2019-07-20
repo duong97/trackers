@@ -83,6 +83,8 @@ class TrackingController extends Controller
                         } else {
                             $aProductChange[Products::TYPE_DECREASE][]   = $p->id;
                         }
+                        // Cập nhật giá sản phẩm khi thay đổi
+                        Products::updateAll(['price' => $aData['price']], ['id' => $p->id]);
 //                        echo "Cron price | product_id:$p->id, new price:{$aData['price']}\n";
                         Loggers::WriteLog("Cron price changed | name: $p->name | id: $p->id", Loggers::type_cron, $p->getDetailUrl());
                     }

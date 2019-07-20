@@ -21,7 +21,8 @@
         "yiisoft/yii2-authclient": "~2.1.7",
         "minishlink/web-push": "^5.2",
         "yiisoft/yii2-jui": "^2.0",
-        "2amigos/yii2-ckeditor-widget" : "*"
+        "2amigos/yii2-ckeditor-widget" : "*",
+        "kop/yii2-scroll-pager": "dev-master"
     },
     "require-dev": {
         "yiisoft/yii2-debug": "~2.0.0",

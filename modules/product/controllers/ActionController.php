@@ -43,7 +43,7 @@ class ActionController extends BaseController
                 $session->set('search-nav', urldecode($searchValue));
                 $mGetData       = new GetData();
                 $aData          = $mGetData->getInfo($searchValue);
-                if(!empty($aData['name'])){
+                if(is_array($aData) && !empty($aData['name'])){
                     return $this->redirect(['action/detail', 'url' => $searchValue]);
                 }
             }

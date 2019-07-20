@@ -164,4 +164,5 @@ return [
     'Created By'            =>'Tạo bởi',
     'Create Blog'           =>'Tạo bài viết',
     'Blog'                  =>'Bài viết',
+    'Load more'             =>'Xem thêm',
 ];
