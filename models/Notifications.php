@@ -111,7 +111,7 @@ class Notifications{
         $aUserNotify    = $mUserTracking->getListNotifyUser($listProdId);
 //        $aUserNotify = [
 //            25 => [
-////                20, 21, 22
+//                69,70,71
 //            ]
 //        ];//test
         $mUser          = new Users();

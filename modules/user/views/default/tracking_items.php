@@ -54,7 +54,7 @@ if(Checks::isRoot()){ ?>
             'buttons' => [
                 'delete' => function ($url, $model) {
                     if(isset($model->rProduct->id)){
-                        $url = Url::to(['user/default/stop-tracking', 'id' => $model->rProduct->id]);
+                        $url = Url::to(['/user/default/stop-tracking', 'id' => $model->rProduct->id]);
                         return Html::a(Yii::t('app', 'Stop tracking'), $url, [
                                     'class' => 'btn btn-danger need-confirm'
                         ]);

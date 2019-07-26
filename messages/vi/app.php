@@ -166,4 +166,5 @@ return [
     'Blog'                  =>'Bài viết',
     'Load more'             =>'Xem thêm',
     'No data yet.'          =>'Chưa có dữ liệu.',
+    'In order to receive notifications, you need to follow our Official Account.'=>'Để nhận được thông báo, bạn cần quan tâm Official Account của chúng tôi.',
 ];

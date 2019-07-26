@@ -31,7 +31,7 @@ $this->params['breadcrumbs'][] = $this->title;
             </li>
 <!--            <li class="list-group-item">
                 <label class="switch">
-                    <?= Html::activeCheckbox($user, 'is_notify_fb',['label'=>false]) ?>
+                    <?php // echo Html::activeCheckbox($user, 'is_notify_fb',['label'=>false]) ?>
                     <span class="slider round"></span>
                 </label>
                 <div>
@@ -61,6 +61,10 @@ $this->params['breadcrumbs'][] = $this->title;
                             <?= Html::a(Yii::t('app', 'link now'), $urlZalo) ?>
                         <?php } ?>
                     </i>
+                    <p><?= Yii::t('app', 'In order to receive notifications, you need to follow our Official Account.') ?></p>
+                    <div>
+                        <?= Html::img('@web/images/general/qr_zalo.jpg', ['style'=>'width:150px;']) ?>
+                    </div>
                 </div>
             </li>
             <li class="list-group-item">

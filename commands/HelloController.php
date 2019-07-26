@@ -10,7 +10,7 @@ namespace app\commands;
 use yii\console\Controller;
 use yii\console\ExitCode;
 use app\models\Notifications;
-use app\models\Mailer;
+use app\models\Products;
 
 /**
  * This command echoes the first argument that you have entered.
@@ -32,10 +32,11 @@ class HelloController extends Controller
     public function actionIndex()
     {
         try {
-            $mNotification = new \app\models\Notifications();
-            $aProductChange = [23];
-            $mailer = new Mailer();
-            $mailer->notifyPriceChanged($aProductChange);
+            $aProductChange[Products::TYPE_INCREASE]=[
+                69,70,71
+            ];
+            $mNotification = new Notifications();
+            $mNotification->notifyPriceChangedViaZalo($aProductChange);
         } catch (Exception $exc) {
             Loggers::WriteLog("Cron errors: hello | ".date('d/m/Y H:i:s'), Loggers::type_cron);
         }

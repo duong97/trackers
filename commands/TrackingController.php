@@ -103,6 +103,9 @@ class TrackingController extends Controller
             }
             
             
+//            $aProductChange[Products::TYPE_INCREASE]=[
+//                69,70,71
+//            ]; // testing
             // Notify User by email
             $mailer = new Mailer();
             $mailer->notifyPriceChanged($aProductChange);
