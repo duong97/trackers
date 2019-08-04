@@ -73,6 +73,8 @@ $config = [
                     'class' => 'yii\authclient\clients\Google',
                     'clientId' => '583166492010-fdd95ibejqh7dgelcb6m88gjcoc9nkib.apps.googleusercontent.com',
                     'clientSecret' => 'dkWMt5ddraNBUEL3N0mmuYAI',
+//                    'returnUrl' => 'http://localhost/trackers/web/site/auth?authclient=google', // local
+                    'returnUrl' => $_SERVER['REQUEST_SCHEME'].'://'.$_SERVER['SERVER_NAME'].'/site/auth?authclient=google', // live
                 ],
             ],
         ],
