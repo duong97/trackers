@@ -71,7 +71,7 @@ class Loggers extends BaseModel
                 ]
             ],
             'pagination' => [ 
-                'pageSize'=> isset(Yii::$app->params['defaultPageSize']) ? Yii::$app->params['defaultPageSize'] : 10,
+                'pageSize'=> PAGE_SIZE_50,
             ],
         ]);
         // No search? Then return data Provider

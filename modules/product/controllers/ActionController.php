@@ -58,13 +58,15 @@ class ActionController extends BaseController
     /*
      * View product detail
      */
-    public function actionDetail($url){
+    public function actionDetail($url, $forceCrawl = false){
         try {
-            $aData      = GetData::instance()->searchUrl($url);
+            $aData      = GetData::instance()->searchUrl($url, $forceCrawl);
             if( empty($aData) ){
                 Checks::notFoundExc();
             }
             $aPriceLog  = PriceLogs::instance()->getByUrl($url);
+            
+            $aData['current_url'] = $url;
             return $this->render('detail', [
                 'aData'     => $aData,
                 'aPriceLog' => $aPriceLog,

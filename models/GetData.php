@@ -61,9 +61,14 @@ class GetData extends BaseModel
     /*
      * Search for url
      */
-    public function searchUrl($url){
-        $ret = empty($this->searchExistsUrl($url)) ? $this->searchNewUrl($url) : $this->searchExistsUrl($url);
-//        $ret = $this->searchNewUrl($url);
+    public function searchUrl($url, $forceCrawl = false){
+        $ret                = empty($this->searchExistsUrl($url)) ? $this->searchNewUrl($url) : $this->searchExistsUrl($url);
+        if( $forceCrawl ){
+            $newData        = $this->searchNewUrl($url);
+            $ret['name']    = empty($newData['name']) ? '' : $newData['name'];
+            $ret['price']   = empty($newData['price']) ? '' : $newData['price'];
+            $ret['image']   = empty($newData['image']) ? '' : $newData['image'];
+        }
         if( empty($ret['price']) && empty($ret['name']) ){
             Checks::productNotFoundExc();
         }
@@ -238,11 +243,20 @@ class GetData extends BaseModel
      * @des get data from Sendo by api
      */
     public function getSendo($url){
-        $r          = str_replace(["https://www.sendo.vn/",".html"], "", $url);
-        $api        = "https://www.sendo.vn/m/wap_v2/full/san-pham/{$r}";
-        $result     = file_get_contents($api);
-        $aData      = json_decode($result, true);
-        $aImage     = [];
+        $limitLoop      = 2; // Chạy vòng lặp tối đa 2 lần
+        $aData          = [];
+        $tmpUrl         = $url;
+        $limitLoop     -= 1;
+        do{ // xử lý nếu url sp redirect sang url khác 
+            echo $limitLoop;
+            $r          = str_replace(["https://www.sendo.vn/",".html"], "", $tmpUrl);
+            $api        = "https://www.sendo.vn/m/wap_v2/full/san-pham/{$r}";
+            $result     = file_get_contents($api);
+            $aData      = json_decode($result, true);
+            $tmpUrl     = empty($aData['result']['meta_data']['redirect']) ? '' : $aData['result']['meta_data']['redirect'];
+        } while ( empty($aData['result']['data']) && $limitLoop-- );
+        
+        $aImage         = [];
         if(isset($aData['result']['data']['media'])){
             foreach ($aData['result']['data']['media'] as $media) {
                 if($media['type'] == 'image'){

@@ -92,15 +92,23 @@ $this->params['breadcrumbs'][] = $this->title;
                     $aSeller    = SupportedWebsites::getArraySeller();
                     $sellerLogo = isset($aSeller[$aData['seller_id']]) ? $aSeller[$aData['seller_id']] : '';
                 endif;
-                $canShowUpdateBtn = Checks::isAdmin() && !empty($aData['id']);
             ?>
             <?= Html::a(Yii::t('app', 'Go to shop').' '.$sellerLogo, $productUrl, ['class' => 'btn btn-default', 'target'=>'_blank']) ?>
-                <?php 
-                if($canShowUpdateBtn):
+            <?php 
+                // Button for admin only
+                if( Checks::isAdmin() && !empty($aData['id']) ):
                     $updateBtn = Url::to(['/admin/products/update', 'id'=>$aData['id']]);
                     echo Html::a('<i class="far fa-edit"></i>', $updateBtn, ['class' => 'btn btn-default', 'target'=>'_blank']);
                 endif; 
-                ?>
+                if( Checks::isAdmin() && !empty($aData['current_url']) ):
+                    $forceCrawl = Url::to([
+                                    '/product/action/detail',
+                                    'url'       => $aData['current_url'],
+                                    'forceCrawl'=> true
+                                ]);
+                    echo Html::a('<i class="fas fa-angle-double-down"></i>', $forceCrawl, ['class' => 'btn btn-default']);
+                endif; 
+            ?>
                 
         </div>
         <div class="col-sm-1"></div>
