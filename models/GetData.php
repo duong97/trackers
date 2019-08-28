@@ -6,6 +6,7 @@ use Yii;
 //use yii\helpers\Url;
 use app\models\simple_html_dom;
 use app\models\UserTracking;
+use app\models\SupportedWebsites;
 use app\models\UserData;
 use app\helpers\Constants;
 use app\helpers\MyFormat;
@@ -68,6 +69,9 @@ class GetData extends BaseModel
             $ret['name']    = empty($newData['name']) ? '' : $newData['name'];
             $ret['price']   = empty($newData['price']) ? '' : $newData['price'];
             $ret['image']   = empty($newData['image']) ? '' : $newData['image'];
+            if( !empty($newData['seller_id']) ){
+                $ret['seller_id'] = $newData['seller_id'];
+            }
         }
         if( empty($ret['price']) && empty($ret['name']) ){
             Checks::productNotFoundExc();
@@ -100,30 +104,34 @@ class GetData extends BaseModel
         $ret            = [];
         switch ($domain) {
             case $aWebsiteDomain[Constants::LAZADA]:
-                $ret = $this->getLazada($url);
+                $ret    = $this->getLazada($url);
                 break;
             case $aWebsiteDomain[Constants::SHOPEE]:
-                $ret = $this->getShopee($url);
+                $ret    = $this->getShopee($url);
                 break;
             case $aWebsiteDomain[Constants::SENDO]:
-                $ret = $this->getSendo($url);
+                $ret    = $this->getSendo($url);
                 break;
             case $aWebsiteDomain[Constants::TIKI]:
-                $ret = $this->getTiki($url);
+                $ret    = $this->getTiki($url);
                 break;
             case $aWebsiteDomain[Constants::TGDD]:
-                $ret = $this->getTgdd($url);
+                $ret    = $this->getTgdd($url);
                 break;
             case $aWebsiteDomain[Constants::AMAZON]:
-                $ret = $this->getAmazon($url);
+                $ret    = $this->getAmazon($url);
                 break;
             case $aWebsiteDomain[Constants::EBAY]:
-                $ret = $this->getEbay($url);
+                $ret    = $this->getEbay($url);
                 break;
 
             default:
-                $ret = [];
+                $ret    = [];
                 break;
+        }
+        $mSpWebsite     = SupportedWebsites::find()->where(['like', 'url', $domain])->one();
+        if( !empty($mSpWebsite) ){
+            $ret['seller_id'] = $mSpWebsite->id;
         }
         if(gettype($ret) === 'integer'){
             $ret = Yii::$app->formatter->asCurrency($ret);
@@ -160,16 +168,26 @@ class GetData extends BaseModel
     /*
      * @des use crawl to get data, use by other functions
      */
-    public function getByCrawl($url, $elm_name, $elm_img, $elm_price, $elm_price_2 = ""){
+    public function getByCrawl($url, $aElement){
+        $elm_name       = empty($aElement['name']) ? '' : $aElement['name'];
+        $elm_img        = empty($aElement['image']) ? '' : $aElement['image'];
+        $elm_price      = empty($aElement['price']) ? '' : $aElement['price'];
         $this->initCurl($url);
         $html    = new simple_html_dom();
 //        $html->load_file($url);
         $html->load($this->str);
-        $pr      = $html->find($elm_price, 0);
-        if(empty($pr)){
-            $pr  = $html->find($elm_price_2, 0);
+        
+        $objPrice       = null;
+        if( is_array($elm_price) ){
+            foreach ($elm_price as $price_class) :
+                $objPrice = $html->find($price_class, 0);
+                if(!empty($objPrice)) break;
+            endforeach;
+        } else {
+            $objPrice   = $html->find($elm_price, 0);
         }
-        $price  = isset($pr->plaintext) ? $pr->plaintext : 0;
+        
+        $price  = isset($objPrice->plaintext) ? $objPrice->plaintext : 0;
         $name   = isset($html->find($elm_name, 0)->plaintext) ? $html->find($elm_name, 0)->plaintext : "";
         $img    = $html->find($elm_img);
         $aImage = [];
@@ -329,11 +347,16 @@ class GetData extends BaseModel
      * https://tiki.vn/man-hinh-benq-gw2270-22inch-fullhd-5ms-60hz-va-hang-chinh-hang-p551192.html?src=recently-viewed&2hi=0
      */
     public function getTiki($url){
-        $elm_name       = 'h1[id=product-name]';
-        $elm_img        = 'img';
-        $elm_price      = 'span#span-price';
-        $elm_price2     = 'span[class=price]';
-        $aData          = $this->getByCrawl($url, $elm_name, $elm_img, $elm_price, $elm_price2);
+        $aElement       = [
+            'name'      => 'h1[id=product-name]',
+            'image'     => 'img',
+            'price'     => [
+                            'span[class=price]>span[class=red]', // nhập mã giảm giá
+                            'span#span-price', // normal
+                            'span[class=price]' // if not normal
+                        ],
+        ];
+        $aData          = $this->getByCrawl($url, $aElement);
         if( empty($aData['price']) ){
             $aData['price'] = Yii::t('app', 'Stop trading');
         } else {
@@ -361,11 +384,15 @@ class GetData extends BaseModel
      * @todo get data form thegioididong
      */
     public function getTgdd($url){
-        $elm_name       = '.rowtop h1';
-        $elm_img        = 'aside.picture img';
-        $elm_price      = 'aside.price_sale .area_price strong';
-        $elm_price2     = '.boxshock .boxshockheader div label strong';
-        $aData          = $this->getByCrawl($url, $elm_name, $elm_img, $elm_price, $elm_price2);
+        $aElement       = [
+            'name'      => '.rowtop h1',
+            'image'     => 'aside.picture img',
+            'price'     => [
+                            'aside.price_sale .area_price strong',
+                            '.boxshock .boxshockheader div label strong'
+                        ],
+        ];
+        $aData          = $this->getByCrawl($url, $aElement);
         if( empty($aData['price']) ){
             $aData['price'] = Yii::t('app', 'Stop trading');
         } else {
@@ -456,11 +483,16 @@ class GetData extends BaseModel
      * https://www.ebay.com/itm/NOW-Foods-MCT-Oil-Liquid-16-fl-oz-FREE-SHIPPING-MADE-IN-USA/372409979059
      */
     public function getEbay($url){
-        $elm_name       = 'h1[id=itemTitle]';
-        $elm_img        = 'img[id=icImg]';
-        $elm_price      = 'span[id=convbinPrice]';
-        $elm_price2     = 'span[id=prcIsum]';
-        $aData          = $this->getByCrawl($url, $elm_name, $elm_img, $elm_price, $elm_price2);
+        $aElement       = [
+            'name'      => 'h1[id=itemTitle]',
+            'image'     => 'img[id=icImg]',
+            'price_code'=> '',
+            'price'     => [
+                            'span[id=convbinPrice]',
+                            'span[id=prcIsum]'
+                        ],
+        ];
+        $aData          = $this->getByCrawl($url, $aElement);
         $aImg           = array_unique($aData['image']);
         $aNewImage      = [];
         if(!empty($aImg)){
