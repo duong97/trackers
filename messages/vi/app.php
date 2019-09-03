@@ -167,4 +167,8 @@ return [
     'Load more'             =>'Xem thêm',
     'No data yet.'          =>'Chưa có dữ liệu.',
     'In order to receive notifications, you need to follow our Official Account.'=>'Để nhận được thông báo, bạn cần quan tâm Official Account của chúng tôi.',
+    'Average price'         =>'Giá trung bình',
+    'The average time changed'=>'Thời gian thay đổi trung bình',
+    'days'                  =>'ngày',
+    'day'                   =>'ngày',
 ];

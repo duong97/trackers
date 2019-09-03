@@ -43,6 +43,11 @@ class MyFormat{
         return number_format($price , 0 , '.' , ',') . '₫';
     }
     
+    public static function formatDecimal($number){
+        if( !is_numeric($number) ) return $number;
+        return number_format($number , 2);
+    }
+    
     public static function shortenName($name, $length = self::str_max_length){
         return (strlen($name) > $length) ? mb_substr($name, 0, $length,"utf-8")."..." : $name;
     }
@@ -177,6 +182,19 @@ class MyFormat{
         if(empty($hour))    $res = "$minute phút trước";
         if(empty($minute))  $res = "$second giây trước";
         return $res;
+    }
+    
+    /**
+     * @todo count days between two dates
+     * @param type $date1, $date2 Y-m-d | d-m-Y, date or datetime
+     */
+    public static function countDays($date1, $date2){
+        $date1      = date('Y-m-d', strtotime($date1));
+        $date2      = date('Y-m-d', strtotime($date2));
+        $datetime1  = new DateTime($date1);
+        $datetime2  = new DateTime($date2);
+        $interval   = $datetime1->diff($datetime2);
+        return abs($interval->format('%r%a'));
     }
 }
 

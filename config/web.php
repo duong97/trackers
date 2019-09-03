@@ -151,6 +151,9 @@ $config = [
                 '<module:\w+>/<controller:\w+>' => '<module>/<controller>',
             ],
         ],
+        'setting' => [
+            'class' => 'app\components\SettingsComponent',
+        ],
     ],
     'params' => $params,
     'modules' => [

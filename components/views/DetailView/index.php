@@ -114,6 +114,7 @@ $this->params['breadcrumbs'][] = $this->title;
         <div class="col-sm-1"></div>
     </div>
     
+    <!--Bảng lịch sử giá-->
     <?php if(!empty($aPriceLog)): ?>
         <?php 
         $hPrice = reset($aPriceLog); 
@@ -122,6 +123,9 @@ $this->params['breadcrumbs'][] = $this->title;
             $hPrice = ($log->price > $hPrice->price) ? $log : $hPrice;
             $lPrice = ($log->price < $lPrice->price) ? $log : $lPrice;
         }
+        
+        $mPriceLogs = new app\models\PriceLogs();
+        echo $mPriceLogs->getRecommend($aPriceLog);
         ?>
     <div class="row">
         <div class="col-sm-8">

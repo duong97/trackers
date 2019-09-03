@@ -148,4 +148,31 @@ class PriceLogs extends BaseModel
             'pPrice' => $jsonPPrice
         ];
     }
+    
+    public function getRecommend($aPriceLog){
+        if(empty($aPriceLog) || !is_array($aPriceLog)) return '';
+        
+        $result     = '';
+        $avgPrice   = 0;
+        $avgDays    = 0;
+        $prevDate   = '';
+        $countLog   = 0;
+        foreach ($aPriceLog as $mPriceLogs) {
+            $countLog++;
+            $avgPrice       += $mPriceLogs->price;
+            if( !empty($prevDate) ){
+                $avgDays    += MyFormat::countDays($prevDate, $mPriceLogs->updated_date);
+            }
+            $prevDate        = $mPriceLogs->updated_date;
+            
+        }
+        $avgPrice           /= (empty($countLog) ? 1 : $countLog);
+        $avgDays            /= empty($countLog-1) ? 1 : ($countLog-1);
+        $avgPrice            = MyFormat::formatCurrency($avgPrice);
+        $avgDays             = MyFormat::formatDecimal($avgDays);
+        $result             .= Yii::t('app', 'Average price').": $avgPrice<br>";
+        $result             .= Yii::t('app', 'The average time changed').": $avgDays ". Yii::t('app', 'days');
+        return $result;
+    }
+    
 }
