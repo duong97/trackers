@@ -6,6 +6,7 @@ use yii\helpers\Url;
 use yii\bootstrap\ActiveForm;
 use app\models\UserTracking;
 use app\models\Products;
+use app\models\PriceLogs;
 use app\models\SupportedWebsites;
 
 $this->title = $aData['name'];
@@ -113,6 +114,7 @@ $this->params['breadcrumbs'][] = $this->title;
         </div>
         <div class="col-sm-1"></div>
     </div>
+    <br>
     
     <!--Bảng lịch sử giá-->
     <?php if(!empty($aPriceLog)): ?>
@@ -123,65 +125,82 @@ $this->params['breadcrumbs'][] = $this->title;
             $hPrice = ($log->price > $hPrice->price) ? $log : $hPrice;
             $lPrice = ($log->price < $lPrice->price) ? $log : $lPrice;
         }
-        
-        $mPriceLogs = new app\models\PriceLogs();
-        echo $mPriceLogs->getRecommend($aPriceLog);
         ?>
-    <div class="row">
-        <div class="col-sm-8">
-            <table class="table table-striped table-hover">
-                <thead>
-                    <tr>
-                        <th class="text-center">#</th>
-                        <th class="text-center"><?= Yii::t('app', 'Price') ?></th>
-                        <th class="text-center"><?= Yii::t('app', 'Time') ?></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php $no = 1; ?>
-                    <?php foreach ($aPriceLog as $log): ?>
-                        <?php 
-                        $class = ($log->price == $hPrice->price) ? 'danger' :
-                                (($log->price == $lPrice->price) ? 'success' : 'active');
-                        ?>
-                        <tr class="text-center <?= $class ?>">
-                            <td><?= $no++; ?></td>
-                            <td><?= MyFormat::formatCurrency($log->price) ?></td>
-                            <td><?= MyFormat::formatDatetime($log->updated_date) ?></td>
-                        </tr>
-                    <?php endforeach; ?>
-                </tbody>
-            </table>
-        </div>
-        <div class="col-sm-4">
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th class="text-center">#</th>
-                        <th class="text-center"><?= Yii::t('app', 'Price') ?></th>
-                        <th class="text-center"><?= Yii::t('app', 'Time') ?></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr class="active">
-                        <td><?= Yii::t('app', 'Current price') ?></td>
-                        <td><?= is_numeric($cPrice) ? MyFormat::formatCurrency($cPrice) : ''; ?></td>
-                        <td><?= date('d/m/Y h:i') ?></td>
-                    </tr>
-                    <tr class="danger">
-                        <td><?= Yii::t('app', 'Highest price') ?></td>
-                        <td><?= MyFormat::formatCurrency($hPrice->price) ?></td>
-                        <td><?= MyFormat::formatDatetime($hPrice->updated_date) ?></td>
-                    </tr>
-                    <tr class="success">
-                        <td><?= Yii::t('app', 'Lowest price') ?></td>
-                        <td><?= MyFormat::formatCurrency($lPrice->price) ?></td>
-                        <td><?= MyFormat::formatDatetime($lPrice->updated_date) ?></td>
-                    </tr>
-                </tbody>
-            </table>
+    
+    <!--Đề xuất-->
+    <div class="panel panel-primary">
+        <div class="panel-heading"><?php echo Yii::t('app', 'Suggestions') ?></div>
+        <div class="panel-body">
+            <?php 
+            $mPriceLogs = new PriceLogs();
+            echo $mPriceLogs->getRecommend($aPriceLog);
+            ?>
         </div>
     </div>
+    
+    <!--Table lịch sử giá-->
+    <div class="panel panel-info">
+        <div class="panel-heading"><?php echo Yii::t('app', 'Price history') ?></div>
+        <div class="panel-body">
+            <div class="row">
+                <div class="col-sm-8">
+                    <table class="table table-striped table-hover">
+                        <thead>
+                            <tr>
+                                <th class="text-center">#</th>
+                                <th class="text-center"><?= Yii::t('app', 'Price') ?></th>
+                                <th class="text-center"><?= Yii::t('app', 'Time') ?></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php $no = 1; ?>
+                            <?php foreach ($aPriceLog as $log): ?>
+                                <?php 
+                                $class = ($log->price == $hPrice->price) ? 'danger' :
+                                        (($log->price == $lPrice->price) ? 'success' : 'active');
+                                ?>
+                                <tr class="text-center <?= $class ?>">
+                                    <td><?= $no++; ?></td>
+                                    <td><?= MyFormat::formatCurrency($log->price) ?></td>
+                                    <td><?= MyFormat::formatDatetime($log->updated_date) ?></td>
+                                </tr>
+                            <?php endforeach; ?>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="col-sm-4">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th class="text-center">#</th>
+                                <th class="text-center"><?= Yii::t('app', 'Price') ?></th>
+                                <th class="text-center"><?= Yii::t('app', 'Time') ?></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="active">
+                                <td><?= Yii::t('app', 'Current price') ?></td>
+                                <td><?= is_numeric($cPrice) ? MyFormat::formatCurrency($cPrice) : ''; ?></td>
+                                <td><?= date('d/m/Y h:i') ?></td>
+                            </tr>
+                            <tr class="danger">
+                                <td><?= Yii::t('app', 'Highest price') ?></td>
+                                <td><?= MyFormat::formatCurrency($hPrice->price) ?></td>
+                                <td><?= MyFormat::formatDatetime($hPrice->updated_date) ?></td>
+                            </tr>
+                            <tr class="success">
+                                <td><?= Yii::t('app', 'Lowest price') ?></td>
+                                <td><?= MyFormat::formatCurrency($lPrice->price) ?></td>
+                                <td><?= MyFormat::formatDatetime($lPrice->updated_date) ?></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Price Chart -->
     <?php count($aPriceLog)>1 ? include('chart_highstock.php') : "" ?>
     <?php else: ?>
         <?= Yii::t('app', 'No data yet.') ?>

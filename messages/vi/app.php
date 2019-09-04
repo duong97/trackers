@@ -171,4 +171,10 @@ return [
     'The average time changed'=>'Thời gian thay đổi trung bình',
     'days'                  =>'ngày',
     'day'                   =>'ngày',
+    'Suggestions'           =>'Gợi ý',
+    'Price history'         =>'Lịch sử giá',
+    'You should buy this product now because we think its current price is quite reasonable!'=>'Bạn nên mua sản phẩm này ngay lúc này vì chúng tôi thấy giá hiện tại của nó khá hợp lý!',
+    'You should not buy this product now. If possible, wait until the next sale!'=>'Bạn không nên mua sản phẩm này lúc này. Nếu được, hãy đợi tới đợt giảm giá tiếp theo nhé!',
+    "Sorry, we don't have enough data to recommend you!"=>'Xin lỗi, chúng tôi chưa có đủ dữ liệu để đưa ra khuyến nghị dành cho bạn!',
+    'Recommended price'     =>'Giá khuyến nghị',
 ];

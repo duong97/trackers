@@ -9,6 +9,7 @@ use app\models\UserTracking;
 use app\models\Notifications;
 use app\models\Mailer;
 use app\models\Users;
+use app\models\Settings;
 use Yii;
 
 /**
@@ -145,4 +146,26 @@ class RootAdminController extends BaseController
         }
         
     }
+    
+    public function actionSettings(){
+        try {
+            if(Checks::isRoot()){
+//                $model = new Settings();
+                $model = Yii::$app->setting->m;
+                
+                if ($model->load(Yii::$app->request->post())) {
+                    $model->saveSettings();
+                    Yii::$app->session->setFlash('success', "Cập nhật thành công");
+                }
+                return $this->render('settings',[
+                'model'  => $model,
+            ]);
+            } else {
+                return $this->redirect(['/site/index']);
+            }
+        } catch (Exception $exc) {
+            Checks::catchAllExeption($exc);
+        }
+    }
+    
 }

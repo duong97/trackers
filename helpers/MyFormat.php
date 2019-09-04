@@ -196,5 +196,27 @@ class MyFormat{
         $interval   = $datetime1->diff($datetime2);
         return abs($interval->format('%r%a'));
     }
+    
+    /**
+     * @todo conver string to camel case
+     * @ex Con-GA-con -> conGaCon
+     * @param type $string input string
+     * @param type $separate character separated of input string
+     * @param type $upperFirst capitalize first character
+     */
+    public static function toCamelCase($string, $separate = '-', $upperFirst = false){
+//        Short code
+        $str = str_replace(' ', '', ucwords(str_replace($separate, ' ', strtolower($string))));
+        
+//        Long code
+//        $strLower           = strtolower($string);
+//        $strSpaceBetween    = str_replace($separate, ' ', $strLower);
+//        $strCapital         = ucwords($strSpaceBetween);
+//        $str                = str_replace(' ', '', $strCapital);
+        if (!$upperFirst) {
+            $str[0] = strtolower($str[0]);
+        }
+        return $str;
+    }
 }
 

@@ -149,29 +149,64 @@ class PriceLogs extends BaseModel
         ];
     }
     
+    /**
+     * 
+     * @param type $aPriceLog array model PriceLogs, sort by updated_date newest first
+     * @return string
+     */
     public function getRecommend($aPriceLog){
         if(empty($aPriceLog) || !is_array($aPriceLog)) return '';
-        
+
         $result     = '';
         $avgPrice   = 0;
         $avgDays    = 0;
         $prevDate   = '';
         $countLog   = 0;
+        $aPriceOnly = [];
+        $currentPrice = 0;
         foreach ($aPriceLog as $mPriceLogs) {
+            if($countLog == 0){
+                $currentPrice = $mPriceLogs->price;
+            }
             $countLog++;
-            $avgPrice       += $mPriceLogs->price;
+            $avgPrice       += is_numeric($mPriceLogs->price) ? $mPriceLogs->price : 0;
             if( !empty($prevDate) ){
                 $avgDays    += MyFormat::countDays($prevDate, $mPriceLogs->updated_date);
             }
             $prevDate        = $mPriceLogs->updated_date;
-            
+            $aPriceOnly[$mPriceLogs->price] = $mPriceLogs->price;
         }
         $avgPrice           /= (empty($countLog) ? 1 : $countLog);
         $avgDays            /= empty($countLog-1) ? 1 : ($countLog-1);
-        $avgPrice            = MyFormat::formatCurrency($avgPrice);
-        $avgDays             = MyFormat::formatDecimal($avgDays);
-        $result             .= Yii::t('app', 'Average price').": $avgPrice<br>";
-        $result             .= Yii::t('app', 'The average time changed').": $avgDays ". Yii::t('app', 'days');
+        $avgPriceFormated    = MyFormat::formatCurrency($avgPrice);
+        $avgDaysFormated     = MyFormat::formatDecimal($avgDays);
+        $result             .= '<b>'.Yii::t('app', 'Average price')."</b>: $avgPriceFormated<br>";
+        $result             .= '<b>'.Yii::t('app', 'The average time changed')."</b>: $avgDaysFormated ". Yii::t('app', 'days').'<br>';
+        
+        sort($aPriceOnly); // sort asc and reindex key
+        $recommendText          = Yii::t('app', "Sorry, we don't have enough data to recommend you!");
+        if( count($aPriceOnly) >= 3 ){
+            $setting            = Yii::$app->setting->m;
+            $recommendPrice     = 0;
+            if($avgDays < $setting->avgDaysRecommend){ // Shop thay đổi giá liên tục => lấy giá khuyến nghị
+                $recomendOrder  = $setting->orderPriceRecommend; // Thấp nhất thì order = 1;
+                $recommendPrice = empty($aPriceOnly[$recomendOrder-1]) ? 0 : $aPriceOnly[$recomendOrder-1];
+                $countDown      = 1;
+                while (empty($recommendPrice) && $countDown >= 0){
+                    $recommendPrice = empty($aPriceOnly[$countDown]) ? 0 : $aPriceOnly[$countDown];
+                    $countDown--;
+                }
+            } else { // Shop ít đổi giá => lấy giá < giá trung bình
+                $recommendPrice = $avgPrice;
+            }
+            $canBuy             = ($currentPrice <= $recommendPrice);
+            $recommendText      = $canBuy 
+                    ? Yii::t('app', 'You should buy this product now because we think its current price is quite reasonable!')
+                    : Yii::t('app', 'You should not buy this product now. If possible, wait until the next sale!');
+            $recommendText     .= '<br><b>'.Yii::t('app', 'Recommended price').'</b>: '. MyFormat::formatCurrency($recommendPrice);
+        }
+        $result .='<i class="fas fa-lightbulb" style="color:#ffc107;"></i> '.$recommendText;
+        
         return $result;
     }
     
