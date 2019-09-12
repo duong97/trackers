@@ -9,6 +9,7 @@ use yii\data\ActiveDataProvider;
 use app\helpers\Checks;
 use app\helpers\Constants;
 use app\helpers\MyFormat;
+use app\models\Menus;
 /**
  * This is the model class for table "users".
  *
@@ -204,11 +205,12 @@ class Users extends BaseModel
      */
     public function initSessionBeforeLogin(){
         $session     = Yii::$app->session;
-        $mActionRole = new ActionRoles();
+        $mMenu       = new Menus();
 //        $aCA         = $mActionRole->getArrayAccess($this->role);
 //        $session->set('listAccessAction', $aCA);
 
-        $aMenu       = $mActionRole->getArrayMenu($this->role);
+//        $aMenu       = $mActionRole->getArrayMenu($this->role);
+        $aMenu       = $mMenu->getArrayMenuAdmin();
         $session->set('listMenu', $aMenu);
 
         $this->last_access = date('Y-m-d H:i:s');

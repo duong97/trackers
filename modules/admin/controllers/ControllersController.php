@@ -7,6 +7,7 @@ use app\models\Controllers;
 use app\models\Users;
 
 use app\helpers\Checks;
+use app\helpers\Htmls;
 
 use app\controllers\BaseController;
 
@@ -87,10 +88,10 @@ class ControllersController extends BaseController
                 return ActiveForm::validate($model);
             }
             if ($model->load(Yii::$app->request->post())) {
-                $model->actions = $_POST['Controllers']['actions'];
+                $model->handleBeforeSave();
                 $model->save();
-                $mUser = Users::find()->where(['id' => Yii::$app->user->id])->one();
-                $mUser->initSessionBeforeLogin();
+//                $mUser = Users::find()->where(['id' => Yii::$app->user->id])->one();
+//                $mUser->initSessionBeforeLogin();
                 return $this->redirect(['view', 'id' => $model->id]);
             }
             return $this->render('create', [
@@ -110,7 +111,23 @@ class ControllersController extends BaseController
             $model      = new Controllers();
             $aCA        = $model->getAllCA();
             $aAction    = isset($aCA[$cname]) ? $aCA[$cname] : [];
-            echo implode(', ', $aAction);
+            $aBodyTable = [];
+            $aActionName= Controllers::$aDefaultActionName;
+            $order      = 1;
+            foreach ($aAction as $action) {
+                $displayName    = empty($aActionName[$action]) ? '' : $aActionName[$action];
+                $aBodyTable[]   = [$order++, $action, $displayName];
+            }
+            $aDataTable = [
+                'header'=>['STT', 'Tên', 'Diễn giải'],
+                'body'  => $aBodyTable,
+            ];
+            $custom = [
+                'input'=>[
+                    2 => ['name'=>'Controllers[actions]', 'column_key'=>1]
+                ]
+            ];
+            echo Htmls::createTabelFromArray($aDataTable, 'table table-striped', $custom);
             die;
         }
     }
@@ -131,9 +148,11 @@ class ControllersController extends BaseController
                 Yii::$app->response->format = Response::FORMAT_JSON;
                 return ActiveForm::validate($model);
             }
-            if ($model->load(Yii::$app->request->post()) && $model->save()) {
-                $mUser = Users::find()->where(['id' => Yii::$app->user->id])->one();
-                $mUser->initSessionBeforeLogin();
+            if ($model->load(Yii::$app->request->post())) {
+                $model->handleBeforeSave();
+                $model->save();
+//                $mUser = Users::find()->where(['id' => Yii::$app->user->id])->one();
+//                $mUser->initSessionBeforeLogin();
                 return $this->redirect(['view', 'id' => $model->id]);
             }
             return $this->render('update', [

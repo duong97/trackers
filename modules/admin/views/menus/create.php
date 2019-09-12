@@ -3,13 +3,13 @@
 use yii\helpers\Html;
 
 /* @var $this yii\web\View */
-/* @var $model app\models\Controllers */
+/* @var $model app\models\Menus */
 
-$this->title = 'Tạo mới chức năng';
-$this->params['breadcrumbs'][] = ['label' => 'Controllers', 'url' => ['index']];
+$this->title = 'Create Menus';
+$this->params['breadcrumbs'][] = ['label' => 'Menuses', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="controllers-create">
+<div class="menus-create">
 
     <h1><?= Html::encode($this->title) ?></h1>
 

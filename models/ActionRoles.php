@@ -12,6 +12,7 @@
 
 namespace app\models;
 
+use app\models\Menus;
 use app\helpers\Constants;
 use app\helpers\Htmls;
 use yii\helpers\Url;
@@ -70,9 +71,9 @@ class ActionRoles extends BaseModel
     {
         return [
             'id' => Yii::t('app', 'ID'),
-            'role_id' => Yii::t('app', 'Roles ID'),
-            'controller_id' => Yii::t('app', 'Controller ID'),
-            'actions' => Yii::t('app', 'Actions'),
+            'role_id' => Yii::t('app', 'Chức vụ'),
+            'controller_id' => Yii::t('app', 'Tên chức năng'),
+            'actions' => Yii::t('app', 'Chức năng con'),
             'can_access' => Yii::t('app', 'Can Access'),
         ];
     }
@@ -104,6 +105,10 @@ class ActionRoles extends BaseModel
             $ret[$cName]    = array_map('trim', $aAction);
         }
         return $ret;
+    }
+    
+    public function getArrayAction(){
+        return json_decode($this->actions, true);
     }
     
     /**

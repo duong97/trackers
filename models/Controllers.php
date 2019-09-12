@@ -30,6 +30,14 @@ class Controllers extends BaseModel
         'admin' => 'Admin'
     ];
     
+    public static $aDefaultActionName = [
+        'index'     => 'Trang list',
+        'view'      => 'Xem',
+        'create'    => 'Tạo mới',
+        'update'    => 'Cập nhật',
+        'delete'    => 'Xóa',
+    ];
+    
     /**
      * {@inheritdoc}
      */
@@ -46,7 +54,8 @@ class Controllers extends BaseModel
         return [
             [['controller_name', 'display_name', 'module_name'], 'required'],
             ['controller_name', 'validateController'],
-            ['controller_name', 'unique', 'targetAttribute' => 'controller_name']
+            ['controller_name', 'unique', 'targetAttribute' => 'controller_name'],
+            [['controller_name', 'display_name', 'module_name', 'actions'], 'safe'],
         ];
     }
     
@@ -66,11 +75,11 @@ class Controllers extends BaseModel
     public function attributeLabels()
     {
         return [
-            'id' => Yii::t('app', 'ID'),
-            'controller_name' => Yii::t('app', 'Controller Name'),
-            'display_name' => Yii::t('app', 'Display Name'),
-            'module_name' => Yii::t('app', 'Module Name'),
-            'actions' => Yii::t('app', 'Actions'),
+            'id' => 'ID',
+            'controller_name' => 'Controller Name',
+            'display_name' => 'Tên chức năng',
+            'module_name' => 'Module',
+            'actions' => 'Các chức năng con',
         ];
     }
     
@@ -121,5 +130,37 @@ class Controllers extends BaseModel
             $ret[$value->id] = $onlyName ? $value->controller_name : $value;
         }
         return $ret;
+    }
+    
+    /**
+     * @todo handle save list action on create, update
+     */
+    public function handleBeforeSave(){
+        $aActionWithoutKey = [];
+        foreach ($this->actions as $key => $value) {
+            $aActionWithoutKey[] = [
+                'key'   => $key,
+                'value' => $value,
+            ];
+        }
+        $this->actions = json_encode($aActionWithoutKey); // encode with key cần decode 2 lần ?
+    }
+    
+    /**
+     * @todo get array action, key is controller name
+     * @return string
+     */
+    public function getArrayAction(){
+        $result         = [];
+        $aController    = Controllers::find()->all();
+        foreach ($aController as $mController) {
+            $aAction    = json_decode($mController->actions, true);
+            foreach ($aAction as $data) {
+                $key    = empty($data['key']) ? '' : $data['key'];
+                $value  = empty($data['value']) ? '' : $data['value'];
+                $result[$mController->controller_name][] = $key.' - '.$value;
+            }
+        }
+        return $result;
     }
 }

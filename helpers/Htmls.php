@@ -9,7 +9,7 @@ namespace app\helpers;
 
 use Yii;
 use app\models\Users;
-use app\models\LoginForm;
+use yii\helpers\Url;
 
 class Htmls{
     
@@ -39,32 +39,44 @@ class Htmls{
      * Get array user items for main menu
      */
     public static function getUserItems(){
-        $url        = \Yii::$app->getUrlManager();
         $aOption    = [
-            'profile' => Yii::t('app', 'Profile'),
-            'tracking-items' => Yii::t('app', 'Tracking items'),
-            'settings' => Yii::t('app', 'Settings')
+            'profile'           => Yii::t('app', 'Profile'),
+            'tracking-items'    => Yii::t('app', 'Tracking items'),
+            'settings'          => Yii::t('app', 'Settings')
         ];
         $ret        = [];
         foreach ($aOption as $action => $name) {
             $ret[] = [
                 'label' => $name,
-                'url' => $url->createUrl(["user/default/{$action}"]),
+                'url' => Url::to(["/user/default/{$action}"]),
             ];
         }
+        return $ret;
+    }
+    
+    /*
+     * Get array admin items for main menu
+     */
+    public static function getAdminItems(){
+        $ret                = [];
         if(Checks::isAdmin()){ // Menu for admin
-            $session     = Yii::$app->session;
-            $aCA         = $session->get('listMenu');
+            $session        = Yii::$app->session;
+            $aCA            = $session->get('listMenu');
             if(empty($aCA)){ // Login by cookie
-                $model          = Users::findOne(Yii::$app->user->id);
+                $model      = Users::findOne(Yii::$app->user->id);
                 $model->initSessionBeforeLogin();
-                $aCA            = $session->get('listMenu');
+                $aCA        = $session->get('listMenu');
             }
-            $sep = [
-                '<li class="divider"></li>',
-                '<li class="dropdown-header">Chức năng nâng cao</li>',
-            ];
-            array_push($ret, $sep[0], $sep[1]);
+            
+            // test live menu
+//            $mMenu = new \app\models\Menus();
+//            $aCA = $mMenu->getArrayMenuAdmin();
+            
+//            $sep = [
+//                '<li class="divider"></li>',
+//                '<li class="dropdown-header">Chức năng nâng cao</li>',
+//            ];
+//            array_push($ret, $sep[0], $sep[1]);
             foreach ($aCA as $value) {
                 $ret[]   = [
                             'label' => $value['label'],
@@ -83,6 +95,50 @@ class Htmls{
         $controller_id  = substr($name, 0, -10);
         $formatedCtl    = preg_replace('/\B([A-Z])/', '-$1', $controller_id);
         return strtolower($formatedCtl);
+    }
+    
+    /**
+     * 
+     * @param type $aData ['header'=>[], 'body'=>[0=>[], 1=>[]]]
+     * @param type $tableClass class of <table> tag
+     * @param $custom 
+     * [
+     *    'input'=>[
+     *        $index_column(0,1,2..) => ['name'=>'Model[name]', 'column_key'=>1]
+     *    ]
+     * ]
+     */
+    public static function createTabelFromArray($aData, $tableClass='table table-striped', $custom=[]){
+        $result  = "<table class='$tableClass'>";
+        if(empty($aData['header'])){
+            return $result;
+        }
+        $aHead   = $aData['header'];
+        $aBody   = empty($aData['body']) ? [] : $aData['body'];
+        $result .= '<thead>';
+        $result .=      '<tr>';
+        foreach ($aHead as $value) {
+            $result .=      "<th>$value</th>";
+        }
+        $result .=      '</tr>';
+        $result .= '<thead>';
+        $result .= '<tbody>';
+        foreach ($aBody as $row) {
+            $result .= '<tr>';
+            foreach ($aHead as $head_key => $head_name) {
+                $cell_value     = empty($row[$head_key]) ? '' : $row[$head_key];
+                if( isset($custom['input'][$head_key]) ){
+                    $inputName  = empty($custom['input'][$head_key]['name']) ? '' : $custom['input'][$head_key]['name'];
+                    $columnKey  = empty($custom['input'][$head_key]['column_key']) ? '' : $custom['input'][$head_key]['column_key'];
+                    $key        = empty($row[$columnKey]) ? '' : $row[$columnKey];
+                    $cell_value = "<input type='text' name='{$inputName}[$key]' value='{$cell_value}' class='form-control'>";
+                }
+                $result .=      "<td>$cell_value</td>";
+            }
+            $result .= '</tr>';
+        }
+        $result .= '</tbody>';
+        return $result;
     }
 
 }

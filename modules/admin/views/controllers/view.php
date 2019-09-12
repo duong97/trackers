@@ -6,10 +6,13 @@ use yii\widgets\DetailView;
 /* @var $this yii\web\View */
 /* @var $model app\models\Controllers */
 
-$this->title = $model->controller_name;
+$this->title = $model->display_name;
 $this->params['breadcrumbs'][] = ['label' => 'Controllers', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 \yii\web\YiiAsset::register($this);
+
+$aAction = empty($model->actions) ? [] : json_decode($model->actions, true);
+$order   = 1;
 ?>
 <div class="controllers-view">
 
@@ -36,5 +39,25 @@ $this->params['breadcrumbs'][] = $this->title;
             'actions:ntext',
         ],
     ]) ?>
-
+    <div class="list-action">
+        <table class="table table-striped" style="width: 100%">
+            <thead>
+                <th>STT</th>
+                <th>Tên</th>
+                <th>Diễn giải</th>
+            </thead>
+            <tbody>
+                <?php foreach ($aAction as $data): ?>
+                <tr>
+                    <td><?php echo $order++; ?></td>
+                    <td><?php echo $data['key']; ?></td>
+                    <td>
+                        <?php echo $data['value']; ?>
+                    </td>
+                </tr>
+                <?php endforeach; ?>
+            </tbody>
+        </table>
+    </div>
+    
 </div>

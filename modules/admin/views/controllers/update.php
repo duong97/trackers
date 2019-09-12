@@ -5,7 +5,7 @@ use yii\helpers\Html;
 /* @var $this yii\web\View */
 /* @var $model app\models\Controllers */
 
-$this->title = 'Cập nhật Controllers: ' . $model->controller_name;
+$this->title = 'Cập nhật chức năng: ' . $model->display_name;
 $this->params['breadcrumbs'][] = ['label' => 'Controllers', 'url' => ['index']];
 $this->params['breadcrumbs'][] = ['label' => $model->controller_name, 'url' => ['view', 'id' => $model->id]];
 $this->params['breadcrumbs'][] = 'Cập nhật';

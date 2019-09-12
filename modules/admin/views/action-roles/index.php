@@ -14,7 +14,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <h1><?= Html::encode($this->title) ?></h1>
 
     <p>
-        <?= Html::a('Create Action Roles', ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a('Tạo mới', ['create'], ['class' => 'btn btn-success']) ?>
     </p>
 
     <?= GridView::widget([
@@ -24,7 +24,7 @@ $this->params['breadcrumbs'][] = $this->title;
             [
             'attribute' => 'controller_id',
                 'value' => function ($model){
-                    return isset($model->rController->controller_name) ? $model->rController->controller_name : '';
+                    return isset($model->rController) ? $model->rController->display_name : '';
                 }
             ],
             [

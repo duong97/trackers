@@ -73,6 +73,12 @@ AppAsset::register($this);
                         'items' => Htmls::getUserItems()
                     ]
                 ),
+                Yii::$app->user->isGuest ? '' : ( // If loged in
+                    [
+                        'label' => '<span class="glyphicon glyphicon-cog"></span>',
+                        'items' => Htmls::getAdminItems()
+                    ]
+                ),
                 [
                     'label' => '<span class="glyphicon glyphicon-globe"></span>',
                     'items' => Htmls::getChangeLanguageItems()

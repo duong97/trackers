@@ -90,7 +90,8 @@ class User extends \yii\base\BaseObject implements \yii\web\IdentityInterface
     /**
      * @todo check if user is admin
      */
-    public function isAdmin(){
-        return ($this->role == Constants::ADMIN);
-    }
+//    public function isAdmin(){
+//        $aRoleAdmin = [Constants::ADMIN, Constants::ROOT];
+//        return in_array($this->role, $aRoleAdmin);
+//    }
 }
