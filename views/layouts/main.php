@@ -73,7 +73,7 @@ AppAsset::register($this);
                         'items' => Htmls::getUserItems()
                     ]
                 ),
-                Yii::$app->user->isGuest ? '' : ( // If loged in
+                !Checks::isAdmin() ? '' : ( // If is admin
                     [
                         'label' => '<span class="glyphicon glyphicon-cog"></span>',
                         'items' => Htmls::getAdminItems()
