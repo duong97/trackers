@@ -25,6 +25,30 @@ AppAsset::register($this);
     <link rel="shortcut icon" href="<?php echo Yii::$app->request->baseUrl; ?>/favicon.ico" type="image/x-icon" />
     <?= Html::csrfMetaTags() ?>
     <title><?= Html::encode($this->title) ?></title>
+    
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-148516309-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'UA-148516309-1');
+    </script>
+    
+    <!--Access Trade-->
+    <script type="text/javascript">
+        var __atsmarttag = {
+            pub_id: '5132866222513217268'
+        };
+        (function () {
+            var script = document.createElement('script');
+            script.src = '//static.accesstrade.vn/js/atsmarttag.min.js?v=1.1.0';
+            script.type = 'text/javascript';
+            script.async = true;
+            (document.getElementsByTagName('head')[0]||document.getElementsByTagName('body')[0]).appendChild(script);
+        })();
+    </script>
     <?php $this->head() ?>
 </head>
 <body>
@@ -47,10 +71,13 @@ AppAsset::register($this);
             'encodeLabels' => false,
             'items' => [
                 ['label' => Yii::t('app', 'Home'), 'url' => Yii::$app->homeUrl],
-                ['label' => Yii::t('app', 'The most tracking'), 'url' => ['/product/list/most-tracking']],
+//                ['label' => Yii::t('app', 'The most tracking'), 'url' => ['/product/list/most-tracking']],
+                !Yii::$app->user->isGuest ? (
+                    ['label' => Yii::t('app', 'The most tracking'), 'url' => ['/product/list/most-tracking']]
+                ) : '',
                 ['label' => 'Blog', 'url' => ['/site/blog']],
-                ['label' => Yii::t('app', 'Supported websites'), 'url' => ['/site/supported-websites']],
-                ['label' => Yii::t('app', 'About'), 'url' => ['/site/about']],
+//                ['label' => Yii::t('app', 'Supported websites'), 'url' => ['/site/supported-websites']],
+//                ['label' => Yii::t('app', 'About'), 'url' => ['/site/about']],
     //            ['label' => Yii::t('app', 'Contact'), 'url' => ['/site/contact']],
                 Yii::$app->user->isGuest ? (
                     ['label' => Yii::t('app', 'Login'), 'url' => ['/site/login']]
@@ -110,6 +137,7 @@ AppAsset::register($this);
                     <span><?= Yii::t('app', 'Explode') ?></span>
                     <?= Html::a(Yii::t('app', 'Home'), Yii::$app->homeUrl, ['class' => 'footer-link']) ?>
                     <?= Html::a(Yii::t('app', 'About'), ['/site/about'], ['class' => 'footer-link']) ?>
+                    <?= Html::a(Yii::t('app', 'Supported websites'), ['/site/supported-websites'], ['class' => 'footer-link']) ?>
                 </div>
                 <div class="col-xs-6 col-md-3 footer-col">
                     <span><?= Yii::t('app', 'Contact') ?></span>
