@@ -89,6 +89,27 @@ class PriceLogs extends BaseModel
         return $ret;
     }
     
+    /**
+     * @params url: product url on tiki, lazada, ...
+     * @params formatData: format price and date
+     */
+    public function getByProductID($productID, $formatData = false) {
+        $aLogs = PriceLogs::find()
+                    ->joinWith('prd')
+                    ->where(['products.id' => $productID])
+                    ->orderBy(['updated_date'=>SORT_DESC])
+                    ->all();
+        $ret = [];
+        foreach ($aLogs as $value) {
+            if($formatData){
+                $value->price = MyFormat::formatCurrency($value->price);
+                $value->updated_date = MyFormat::formatDatetime($value->updated_date);
+            }
+            $ret[$value->id] = $value;
+        }
+        return $ret;
+    }
+    
     /*
      * get all data to array with key = product_id
      */

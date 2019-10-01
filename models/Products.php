@@ -63,6 +63,8 @@ class Products extends BaseModel
     
     const LIMIT_RELATED         = 6;
     
+    const SEPARATE_NAME_ID_URL  = '__e';
+    
     public static $aStatus = [
         self::STT_ACTIVE   => 'Đang bán',
         self::STT_INACTIVE => 'Ngừng kinh doanh',
@@ -233,6 +235,16 @@ class Products extends BaseModel
     }
     
     /**
+     * @todo format name display on url with slugify name and product id
+     */
+    public function formatNameForSeo(){
+        $slugName  = MyFormat::slugify($this->name);
+        $slugName .= Products::SEPARATE_NAME_ID_URL;
+        $slugName .= $this->id;
+        $this->name = $slugName;
+    }
+    
+    /**
      * @todo get array product by array id
      * @param array $aProductId array product id
      * @return [product_id => model_products]
@@ -306,6 +318,21 @@ class Products extends BaseModel
             }
         }
         return $ret;
+    }
+    
+    /*
+     * Search for url in database
+     */
+    public function getByUrl($url){
+        $product    = new Products();
+        $urlShort   = $product->handleUrl($url);
+        $mProduct   = Products::find()->where(['url' => $urlShort])->one();
+        if($mProduct){
+            $mPriceLog       = new PriceLogs();
+            $mProduct->price = $mPriceLog->getArrayLastPrice($mProduct->id);
+            return $mProduct;
+        }
+        return null;
     }
     
     /**

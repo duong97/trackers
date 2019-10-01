@@ -5,7 +5,7 @@ namespace app\models;
 use Yii;
 //use yii\helpers\Url;
 use app\models\simple_html_dom;
-use app\models\UserTracking;
+use app\models\Products;
 use app\models\SupportedWebsites;
 use app\models\UserData;
 use app\helpers\Constants;
@@ -86,6 +86,21 @@ class GetData extends BaseModel
         $product    = new Products();
         $urlShort   = $product->handleUrl($url);
         $mProduct   = Products::find()->where(['url' => $urlShort])->one();
+        if($mProduct){
+            $mPriceLog       = new PriceLogs();
+            $mProduct->price = $mPriceLog->getArrayLastPrice($mProduct->id);
+            return $mProduct->attributes;
+        }
+        return [];
+    }
+    
+    /*
+     * Search for id in database
+     */
+    public function searchExistsByName($name){
+        $aRawData   = explode(Products::SEPARATE_NAME_ID_URL, $name);
+        $productID  = empty($aRawData[1]) ? 0 : $aRawData[1];
+        $mProduct   = Products::findOne($productID);
         if($mProduct){
             $mPriceLog       = new PriceLogs();
             $mProduct->price = $mPriceLog->getArrayLastPrice($mProduct->id);
