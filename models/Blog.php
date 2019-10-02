@@ -56,6 +56,8 @@ class Blog extends BaseModel
         self::STATUS_DRAFT      => 'Bản nháp',
     ];
     
+    const SEPARATE_TITLE_ID_URL = '__i';
+    
     /**
      * {@inheritdoc}
      */
@@ -135,11 +137,11 @@ class Blog extends BaseModel
     }
     
     public function getSlug(){
-        return MyFormat::slugify($this->title).'--'.$this->id;
+        return MyFormat::slugify($this->title).Blog::SEPARATE_TITLE_ID_URL.$this->id;
     }
     
     public function getModelFromSlug($slug){
-        $tmpData    = explode('--', $slug);
+        $tmpData    = explode(Blog::SEPARATE_TITLE_ID_URL, $slug);
         $id         = isset($tmpData[1]) ? $tmpData[1] : null;
         return Blog::findOne($id);
     }

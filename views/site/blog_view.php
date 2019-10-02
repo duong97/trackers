@@ -1,4 +1,5 @@
 <?php 
+$this->title = $model->title;
 $this->params['breadcrumbs'] = [
     ['label'=>'Blog', 'url'=>['/site/blog']],
     ['label'=>$model->title],

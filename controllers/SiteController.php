@@ -285,6 +285,7 @@ class SiteController extends BaseController
      */
     public function actionBlog($view = ''){
         try {
+            $mBlog          = new Blog();
             if( empty($view) ):
                 $type  = isset($_GET['type']) ? $_GET['type'] : '';
                 $query = Blog::find();
@@ -297,16 +298,14 @@ class SiteController extends BaseController
                             'pageSize' => DEFAULT_PAGE_SIZE,
                         ],
                     ]);
-                $mBlog          = new Blog();
                 $aDataReport    = $mBlog->getReportForList();
                 return $this->render('blog', [
                     'dataProvider' => $dataProvider,
                     'aDataReport'  => $aDataReport,
                 ]);
             else:
-                $mBlog = new Blog();
                 $mBlog = $mBlog->getModelFromSlug($view);
-                if(empty($mBlog)) Checks::notFoundExc ();
+                if(empty($mBlog)) {Checks::notFoundExc ();}
                 return $this->render('blog_view', [
                     'model' => $mBlog,
                 ]);
