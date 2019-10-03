@@ -3,13 +3,15 @@
 namespace app\modules\admin\controllers;
 
 use Yii;
-use app\models\Blog;
-use app\controllers\BaseController;
-use app\helpers\Checks;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\web\UploadedFile;
+
+use app\models\Blog;
 use app\models\UploadForm;
 use app\models\Files;
+use app\controllers\BaseController;
+use app\helpers\Checks;
 
 /**
  * BlogController implements the CRUD actions for Blog model.
@@ -29,6 +31,15 @@ class BlogController extends BaseController
                 ],
             ],
         ];
+    }
+    
+    public function beforeAction($action)
+    {            
+        if ($action->id == 'upload') {
+            $this->enableCsrfValidation = false;
+        }
+
+        return parent::beforeAction($action);
     }
 
     /**
@@ -158,5 +169,38 @@ class BlogController extends BaseController
         }
 
         throw new NotFoundHttpException(Yii::t('app', 'The requested page does not exist.'));
+    }
+    
+    public function actionUpload($id = ''){
+        try {
+            $model      = Blog::findOne($id);
+            $mUpload    = new UploadForm();
+            if(empty($model)){
+                $model  = new Blog();
+            }
+            $post       = Yii::$app->request->post();
+            if (!empty($post)):
+                $mUpload->aImageFile = [];
+                $file   = isset($_FILES['upload']) ? $_FILES['upload'] : '';
+                if(!empty($file)){
+                    $mUploadedFile              = new UploadedFile();
+                    $mUploadedFile->name        = $file['name'];
+                    $mUploadedFile->tempName    = $file['tmp_name'];
+                    $mUploadedFile->type        = $file['type'];
+                    $mUploadedFile->size        = $file['size'];
+                    $mUploadedFile->error       = $file['error'];
+                    $mUpload->aImageFile[]      = $mUploadedFile;
+                    $mUpload->handleUpload($model, 'aContentImage', Files::TYPE_BLOG_CONTENT);
+                }
+            endif;
+            $res = [
+                'uploaded'  => 1,
+                'fileName'  => $mUpload->pathAfterUpload,
+                'url'       => $mUpload->fullPathAfterUpload,
+            ];
+            echo json_encode($res);
+        } catch (Exception $exc) {
+            Checks::catchAllExeption($exc);
+        }
     }
 }

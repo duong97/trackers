@@ -33,7 +33,8 @@ class Files extends BaseModel
     const STATUS_HIDE    = 2;
     const STATUS_DELETED = 3;
     
-    const TYPE_BLOG      = 1;
+    const TYPE_BLOG         = 1;
+    const TYPE_BLOG_CONTENT = 2;
     
     /**
      * {@inheritdoc}

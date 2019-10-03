@@ -22,6 +22,7 @@ class UploadForm extends Model
     public $imageFile;
     public $aImageFile;
     public $pathAfterUpload;
+    public $fullPathAfterUpload;
     
     public static $aImageExtension = [
         'png',
@@ -102,18 +103,19 @@ class UploadForm extends Model
      * @param $isMulti is multiple files
      */
     public function handleUpload($model, $attribute, $type, $isMulti = false){
-        $this->aImageFile   = UploadedFile::getInstances($model, $attribute);
+        $this->aImageFile = empty($this->aImageFile) ? UploadedFile::getInstances($model, $attribute) : $this->aImageFile;
         if( empty($this->aImageFile) ){
             return false;
         }
         $this->filterBeforeUpload($isMulti);
-        $tmpName            = $type.'_'.strtotime('now');
+        $tmpName = $type.'_'.strtotime('now');
         if( is_array($this->aImageFile) ):
             foreach ($this->aImageFile as $key => $file) {
                 $filename = $tmpName.'_'.$key.'.'.$file->extension;
                 $file->saveAs( $this->getUploadPath().$filename );
                 if( !$isMulti ){
-                    $this->pathAfterUpload = $filename; // assign the path to var
+                    $this->pathAfterUpload      = $filename; // assign the path to var
+                    $this->fullPathAfterUpload  = $this->getRelativeUploadPath().$filename; // url can access on browser
                 }
                 $mFiles             = new Files();
                 $mFiles->name       = $filename;

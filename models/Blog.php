@@ -34,6 +34,8 @@ use yii\helpers\Url;
  */
 class Blog extends BaseModel
 {
+    public $aContentImage;
+            
     const TYPE_NEWS         = 1;
     const TYPE_VOUCHER      = 2;
     const TYPE_PROMOTION    = 3;
@@ -73,7 +75,7 @@ class Blog extends BaseModel
     {
         // thumb ko dc để safe, vì khi load data from post lúc update sẽ bị mất value cũ
         return [
-            [['title','description','content','type', 'status', 'created_by','created_date'], 'safe'],
+            [['title','description','content','type', 'status', 'created_by','created_date', 'aContentImage'], 'safe'],
             [['title'], 'required', 'on'=> ['create', 'update']],
         ];
     }
