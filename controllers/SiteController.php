@@ -293,7 +293,7 @@ class SiteController extends BaseController
                     $query->where(['type'=>$type]);
                 }
                 $dataProvider = new ActiveDataProvider([
-                        'query' => $query->orderBy(['id'=>SORT_DESC]),
+                        'query' => $query->where(['status'=>Blog::STATUS_PUBLIC])->orderBy(['id'=>SORT_DESC]),
                         'pagination' => [
                             'pageSize' => DEFAULT_PAGE_SIZE,
                         ],

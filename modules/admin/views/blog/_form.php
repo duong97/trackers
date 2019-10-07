@@ -27,7 +27,7 @@ use app\components\UploadFileWidget;
 
     <?= $form->field($model, 'content')->widget(CKEditor::className(), [
         'kcfinder' => true,
-        'preset' => 'custom',
+//        'preset' => 'custom',
         'kcfOptions' => [
             'uploadURL' => '@web/images/upload',
             'uploadDir' => '@webroot/images/upload',
