@@ -18,7 +18,10 @@ $this->params['breadcrumbs'][] = $this->title;
         <div class="col-sm-4">
             <?php 
             $sellerLogo = '';
-            $productUrl = isset($aData['url']) ? $aData['url'] : "";
+            $productUrl = isset($_GET['url']) ? $_GET['url1'] : "";
+            if(isset($aData['url'])){
+                $productUrl = isset($aData['url']) ? $aData['url'] : "";
+            }
             $imgUrl     = isset($aData['image']) ? $aData['image'] : ""; 
             $status     = isset($aData['status']) ? $aData['status'] : Products::STT_ACTIVE;
             $cPrice     = ($status == Products::STT_ACTIVE) ? $aData['price'] : Products::$aStatus[$status];

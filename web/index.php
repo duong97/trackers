@@ -16,10 +16,11 @@ else if(isset($_SERVER['REMOTE_ADDR']))
 else
     $ipaddress = 'UNKNOWN';
 $IP_ALLOW_DEBUG = [
-    '183.80.219.210'
+    '1.52.85.35',
+    '::1', // localhost
 ];
 $isDebug = in_array($ipaddress, $IP_ALLOW_DEBUG);
-defined('YII_DEBUG') or define('YII_DEBUG', $isDebug);
+defined('YII_DEBUG') or define('YII_DEBUG', false);
 defined('YII_ENV') or define('YII_ENV', 'dev');
 
 //$x = __DIR__ . '/../../yii2-framework/vendor/autoload.php';
