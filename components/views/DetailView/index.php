@@ -18,7 +18,7 @@ $this->params['breadcrumbs'][] = $this->title;
         <div class="col-sm-4">
             <?php 
             $sellerLogo = '';
-            $productUrl = isset($_GET['url']) ? $_GET['url1'] : "";
+            $productUrl = isset($_GET['url']) ? $_GET['url'] : "";
             if(isset($aData['url'])){
                 $productUrl = isset($aData['url']) ? $aData['url'] : "";
             }
