@@ -177,4 +177,8 @@ return [
     'You should not buy this product now. If possible, wait until the next sale!'=>'Bạn không nên mua sản phẩm này lúc này. Nếu được, hãy đợi tới đợt giảm giá tiếp theo nhé!',
     "Sorry, we don't have enough data to recommend you!"=>'Xin lỗi, chúng tôi chưa có đủ dữ liệu để đưa ra khuyến nghị dành cho bạn!',
     'Recommended price'     =>'Giá khuyến nghị',
+    'Thank you for having taken your time to provide us with valuable feedback. We are sincerely concerned and apologise that we fell short on your expectations in some respects.Your helpful comments are much appreciated, and your feedback help us improve our service quality.'
+    =>'Cảm ơn bạn đã dành thời gian của bạn để cung cấp cho chúng tôi những phản hồi có giá trị. Chúng tôi chân thành quan tâm và xin lỗi rằng đã không đáp ứng được kỳ vọng của bạn ở một số khía cạnh. Nhận xét hữu ích của bạn được đánh giá cao và giúp chúng tôi cải thiện chất lượng dịch vụ ngày càng tốt hơn.',
+    'You must answer at least one question'=>'Bạn phải trả lời ít nhất một câu hỏi!',
+    'Send feedback'         =>'Gửi phản hồi',
 ];

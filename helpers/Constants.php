@@ -58,5 +58,10 @@ class Constants{
         'en' => 'English',
         'vi' => 'Vietnamese',
     ];
+    
+    public static $aStatus = [
+        STATUS_ACTIVE => 'Hoạt động',
+        STATUS_INACTIVE => 'Không hoạt động',
+    ];
 }
 

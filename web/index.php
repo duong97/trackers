@@ -20,7 +20,7 @@ $IP_ALLOW_DEBUG = [
     '::1', // localhost
 ];
 $isDebug = in_array($ipaddress, $IP_ALLOW_DEBUG);
-defined('YII_DEBUG') or define('YII_DEBUG', false);
+defined('YII_DEBUG') or define('YII_DEBUG', true);
 defined('YII_ENV') or define('YII_ENV', 'dev');
 
 //$x = __DIR__ . '/../../yii2-framework/vendor/autoload.php';

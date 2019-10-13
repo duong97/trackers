@@ -14,6 +14,8 @@ use app\models\Users;
 use app\models\SupportedWebsites;
 use app\models\Mailer;
 use app\models\Blog;
+use app\models\Survey;
+use app\models\Feedback;
 
 use app\helpers\Constants;
 use app\helpers\Checks;
@@ -435,5 +437,34 @@ class SiteController extends BaseController
 //        $aProductChange = [20, 21, 22];
 //        $mNotification->notifyPriceChangedViaZalo($aProductChange);
 //    }
+    
+    /**
+     * feedback of user
+     */
+    public function actionFeedback(){
+        $model = new Survey();
+        $post  = Yii::$app->request->post('Survey');
+        if (!empty($post)) {
+            $isOk = false;
+            foreach ($post as $survey_id => $aAnswer){
+                $answer = isset($aAnswer['answer']) ? $aAnswer['answer'] : '';
+                if(empty($survey_id) || empty($answer)) continue;
+                $mFeedBack = new Feedback();
+                $mFeedBack->survey_id   = $survey_id;
+                $mFeedBack->answer      = json_encode($answer);
+                $mFeedBack->save();
+                $isOk = true;
+            }
+            $fl_message = $isOk 
+                    ? Yii::t('app', 'Thank you for having taken your time to provide us with valuable feedback. We are sincerely concerned and apologise that we fell short on your expectations in some respects.Your helpful comments are much appreciated, and your feedback help us improve our service quality.')
+                    : Yii::t('app', 'You must answer at least one question!');
+            $fl_type = $isOk ? 'success' : 'error';
+            Yii::$app->session->setFlash($fl_type, $fl_message);
+        }
+        
+        return $this->render('feedback', [
+            'model' => $model,
+        ]);
+    }
     
 }

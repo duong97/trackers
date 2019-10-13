@@ -71,6 +71,7 @@ AppAsset::register($this);
             'encodeLabels' => false,
             'items' => [
                 ['label' => Yii::t('app', 'Home'), 'url' => Yii::$app->homeUrl],
+                ['label' => Yii::t('app', 'Feedback'), 'url' => ['/site/feedback']],
 //                ['label' => Yii::t('app', 'The most tracking'), 'url' => ['/product/list/most-tracking']],
                 !Yii::$app->user->isGuest ? (
                     ['label' => Yii::t('app', 'The most tracking'), 'url' => ['/product/list/most-tracking']]

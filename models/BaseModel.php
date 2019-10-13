@@ -36,4 +36,12 @@ class BaseModel extends \yii\db\ActiveRecord
         }
         return true;
     }
+    
+    public function getCreatedDate($format = MyFormat::datetime_format){
+        if($this->hasAttribute('created_date') ){
+            return date($format, strtotime($this->created_date));
+        }
+        return '';
+    }
+    
 }
