@@ -9,3 +9,5 @@ const PAGE_SIZE_500     = 500;
 
 const STATUS_ACTIVE     = 1;
 const STATUS_INACTIVE   = 2;
+
+const COOKIE_ADMIN_NAME = 'cka';

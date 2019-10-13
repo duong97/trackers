@@ -211,10 +211,26 @@ class Users extends BaseModel
 
 //        $aMenu       = $mActionRole->getArrayMenu($this->role);
         $aMenu       = $mMenu->getArrayMenuAdmin();
+        $this->initCookieAdmin();
         $session->set('listMenu', $aMenu);
 
         $this->last_access = date('Y-m-d H:i:s');
         $this->update();
+    }
+    
+    public function initCookieAdmin(){
+        $cookies = Yii::$app->response->cookies;
+        if($this->isAdmin()){
+            // add a new cookie to the response to be sent
+            $cookies->add(new \yii\web\Cookie([
+                'name' => COOKIE_ADMIN_NAME,
+                'value' => md5($this->id),
+            ]));
+        } else {
+            $cookies->remove(COOKIE_ADMIN_NAME);
+            // equivalent to the following
+            unset($cookies[COOKIE_ADMIN_NAME]);
+        }
     }
     
     public function search($params)
@@ -289,7 +305,7 @@ class Users extends BaseModel
      * @todo check if user is admin
      */
     public function isAdmin(){
-        return ($this->role == Constants::ADMIN);
+        return ($this->role == Constants::ADMIN || $this->role == Constants::ROOT);
     }
     
     /**
