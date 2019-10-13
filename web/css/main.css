@@ -8,7 +8,15 @@ and open the template in the editor.
     Author     : duong
 */
 /*This css use for all page, include in every head tag of app*/
-.ias-trigger{padding-bottom: 25px;}
+.p-0{padding: 0;}
+.m-0{margin: 0;}
+.shorten{
+    width: 100%;
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
+}
+.ias-trigger{padding-bottom: 50px;}
 .ias-noneleft{clear: both;}
 .ias-trigger a{
     background-color: #dadada;
@@ -92,8 +100,12 @@ li.ui-menu-item>div.ui-menu-item-wrapper.ui-state-active{
     position: relative;
     padding: 5px;
     margin: 10px;
-    height: 250px;
-    background: #f7f7f7;
+    border: 2px solid #e8e8e8;
+    border-radius: 2px;
+}
+.prd-container:hover{
+    border: 2px solid red;
+    transition: .4s;
 }
 .prd-container .prd-image{
     text-align: center;
@@ -101,7 +113,6 @@ li.ui-menu-item>div.ui-menu-item-wrapper.ui-state-active{
 }
 .prd-container .prd-image img{
     max-width: 100%;
-    height: 165px;
 }
 .prd-container .tracking-label{
     position: absolute;
@@ -109,13 +120,23 @@ li.ui-menu-item>div.ui-menu-item-wrapper.ui-state-active{
     right: 3px;
 }
 .prd-info{
-    position: absolute;
     bottom: 0;
-    height: 70px;
+    text-align: center;
 }
-.prd-info p{
-    position: absolute;
-    bottom: 0;
+.prd-info .prd-info-name{
+    font-size: 16px;
+    font-weight: 700;
+    text-decoration: none;
+    color: #2B2D42;
+}
+.prd-info .prd-info-name:hover{
+    color: #086694;
+    transition: .3s;
+}
+.prd-info .prd-info-price{
+    font-size: 18px;
+    font-weight: bold;
+    color: red;
 }
 .thumb{
     width: 100px;
@@ -556,7 +577,6 @@ hr.hr-style:before {
     padding-left: 35px;
     margin-bottom: 12px;
     cursor: pointer;
-    font-size: 22px;
     -webkit-user-select: none;
     -moz-user-select: none;
     -ms-user-select: none;

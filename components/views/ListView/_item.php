@@ -10,8 +10,8 @@ $mUserTracking->product_id  = $model->id;
 $isTracked                  = $mUserTracking->isTracked();
 $url                        = Url::to(['/product/action/detail', 'url' => $model->url]);
 ?>
-<div class="prd-cover col-md-2 col-sm-3 col-xs-4">
-    <div class="prd-container card">
+<div class="prd-cover">
+    <div class="prd-container">
         <?php if($isTracked): ?>
             <span class="label label-success tracking-label"><?= Yii::t('app', 'Tracking') ?></span>
         <?php endif; ?>
@@ -21,23 +21,21 @@ $url                        = Url::to(['/product/action/detail', 'url' => $model
             </a>
         </div>
         <div class="prd-info">
-
-            <a href="<?= $url ?>" title="<?= $model->name ?>">
-                <?= MyFormat::shortenName($model->name) ?>
+            <a href="<?= $url ?>" title="<?= $model->name ?>" class="prd-info-name">
+                <?php // echo MyFormat::shortenName($model->name) ?>
+                <div class="shorten"><?php echo $model->name; ?></div>
             </a>
-            <p>
-                <b style="color:#419a13;"><?= MyFormat::formatCurrency($model->price) ?></b>
-                /
-                <?= $model->getSeller() ?>
-                <?php if( !empty($model->numberTracking) ): ?>
-                /
-                <i class="label label-info" title="<?= Yii::t('app', 'Number of people tracking this product') ?>">
-                    <i class="fas fa-eye"></i>
-                    <?= $model->numberTracking ?>
-                </i>
-                <?php endif; ?>
-            </p>
+            <p class="prd-info-price"><?= MyFormat::formatCurrency($model->price) ?></p>
+        </div>
+        <hr style="margin: 0 0 10px 0">
+        <div class="prd-info">
+            <?= $model->getSeller() ?>
+            <?php if( !empty($model->numberTracking) ): ?>
+            <i class="label label-info" title="<?= Yii::t('app', 'Number of people tracking this product') ?>">
+                <i class="fas fa-eye"></i>
+                <?= $model->numberTracking ?>
+            </i>
+            <?php endif; ?>
         </div>
     </div>
 </div>
-    

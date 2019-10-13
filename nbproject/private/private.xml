@@ -11,19 +11,6 @@
         </file>
     </editor-bookmarks>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
-        <group>
-            <file>file:/var/www/html/trackers/modules/admin/views/survey/index.php</file>
-            <file>file:/var/www/html/trackers/modules/admin/views/survey/_form.php</file>
-            <file>file:/var/www/html/trackers/models/BaseModel.php</file>
-            <file>file:/var/www/html/trackers/models/Survey.php</file>
-            <file>file:/var/www/html/trackers/controllers/SiteController.php</file>
-            <file>file:/var/www/html/trackers/views/site/feedback.php</file>
-            <file>file:/var/www/html/trackers/helpers/Constants.php</file>
-            <file>file:/var/www/html/trackers/views/layouts/main.php</file>
-            <file>file:/var/www/html/trackers/web/css/main.css</file>
-            <file>file:/var/www/html/trackers/modules/admin/views/survey/update.php</file>
-            <file>file:/var/www/html/trackers/modules/admin/views/survey/view.php</file>
-            <file>file:/var/www/html/trackers/modules/admin/controllers/SurveyController.php</file>
-        </group>
+        <group/>
     </open-files>
 </project-private>

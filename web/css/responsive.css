@@ -1,5 +1,5 @@
 /*MOBILE*/
-@media (min-width: 400px) and (max-width: 767px) {
+@media (max-width: 767px) {
     .home-background>.banner-container>h1{
         font-size: 25px;
     }

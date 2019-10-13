@@ -77,11 +77,11 @@ class Survey extends BaseModel
         $query = Survey::find();
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
-//            'sort' => [
-//                'defaultOrder' => [
-//                    'created_date' => SORT_DESC,
-//                ]
-//            ],
+            'sort' => [
+                'defaultOrder' => [
+                    'id' => SORT_DESC,
+                ]
+            ],
             'pagination' => [ 
                 'pageSize'=> isset(Yii::$app->params['defaultPageSize']) ? Yii::$app->params['defaultPageSize'] : 10,
             ],
@@ -114,7 +114,10 @@ class Survey extends BaseModel
     }
     
     public function getListActive(){
-        return Survey::find()->where(['status' => STATUS_ACTIVE])->all();
+        return Survey::find()
+                ->where(['status' => STATUS_ACTIVE])
+                ->orderBy(['id'=>SORT_DESC])
+                ->all();
     }
     
     public function renderAnswer(){

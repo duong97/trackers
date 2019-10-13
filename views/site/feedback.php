@@ -16,7 +16,7 @@ $aQuestion = $model->getListActive();
         
         <?php foreach ($aQuestion as $mSurvey) : ?>
         <div>
-            <h4><b><?php echo $mSurvey->question; ?></b></h4>
+            <h3><b><?php echo $mSurvey->question; ?></b></h3>
             <div>
                 <?php echo $mSurvey->renderAnswer(); ?>
             </div>

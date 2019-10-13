@@ -57,8 +57,8 @@ use yii\widgets\ActiveForm;
             $urlManager = \Yii::$app->getUrlManager();
             $url        = $urlManager->createUrl(['product/action/detail', 'url' => $p->url]);
             ?>
-            <div class="prd-cover col-md-2 col-sm-3 col-xs-4">
-                <div class="prd-container card">
+            <div class="prd-cover col-md-3 col-sm-4 col-xs-6">
+                <div class="prd-container">
                     <?php if($isTracked): ?>
                         <span class="label label-success tracking-label"><?= Yii::t('app', 'Tracking') ?></span>
                     <?php endif; ?>
@@ -68,22 +68,21 @@ use yii\widgets\ActiveForm;
                         </a>
                     </div>
                     <div class="prd-info">
-
-                        <a href="<?= $url ?>" title="<?= $p->name ?>">
-                            <?= MyFormat::shortenName($p->name) ?>
+                        <a href="<?= $url ?>" title="<?= $p->name ?>" class="prd-info-name">
+                            <?php // MyFormat::shortenName($p->name) ?>
+                            <div class="shorten"><?php echo $p->name; ?></div>
                         </a>
-                        <p>
-                            <b style="color:#419a13;"><?= MyFormat::formatCurrency($p->price) ?></b>
-                            /
-                            <?= $p->getSeller() ?>
-                            <?php if( !empty($p->numberTracking) ): ?>
-                            /
-                            <i class="label label-info" title="<?= Yii::t('app', 'Number of people tracking this product') ?>">
-                                <i class="fas fa-eye"></i>
-                                <?= $p->numberTracking ?>
-                            </i>
-                            <?php endif; ?>
-                        </p>
+                        <p class="prd-info-price"><?= MyFormat::formatCurrency($p->price) ?></p>
+                    </div>
+                    <hr style="margin: 0 0 10px 0">
+                    <div class="prd-info">
+                        <?= $p->getSeller() ?>
+                        <?php if( !empty($p->numberTracking) ): ?>
+                        <i class="label label-info" title="<?= Yii::t('app', 'Number of people tracking this product') ?>">
+                            <i class="fas fa-eye"></i>
+                            <?= $p->numberTracking ?>
+                        </i>
+                        <?php endif; ?>
                     </div>
                 </div>
             </div>
